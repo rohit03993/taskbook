@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[#F6F7FA] text-navy-900 antialiased;
+}
+
+::selection {
+  background: #3974FC33;
+}
+
+.container-site {
+  @apply mx-auto w-full max-w-6xl px-5;
+}
+
+.kicker {
+  @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-navy-600;
+}

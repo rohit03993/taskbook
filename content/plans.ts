@@ -1,0 +1,45 @@
+export const plans = [
+  {
+    id: "starter",
+    name: "Starter",
+    blurb: "Attendance and marks — core academics only.",
+    featured: false,
+    includes: ["Attendance", "Marks & exams"],
+  },
+  {
+    id: "academic_plus",
+    name: "Academic+",
+    blurb: "Starter plus fees and homework.",
+    featured: false,
+    includes: ["Attendance", "Marks & exams", "Fees & late fees", "Homework"],
+  },
+  {
+    id: "full_crm",
+    name: "Full CRM",
+    blurb: "What most owners take: WhatsApp in the CRM, leads, calling, parent login.",
+    featured: true,
+    includes: [
+      "Everything in Academic+",
+      "Leads & enquiries",
+      "Calling",
+      "Admissions",
+      "Student cases",
+      "WhatsApp inbox & automations",
+      "Parent / student portal",
+      "Reports",
+      "Institute website CMS",
+    ],
+  },
+  {
+    id: "full_results",
+    name: "Full CRM + Results",
+    blurb: "Everything in Full CRM, plus result publish and PDF marksheets.",
+    featured: false,
+    includes: [
+      "Everything in Full CRM",
+      "Results declaration",
+      "PDF marksheets",
+      "Certificates",
+    ],
+  },
+] as const;
