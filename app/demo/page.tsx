@@ -12,7 +12,7 @@ export const metadata: Metadata = pageMeta(
 
 export default function DemoPage() {
   return (
-    <div className="container-site grid gap-12 py-14 lg:grid-cols-2">
+    <div className="container-site grid gap-8 py-10 lg:grid-cols-2 lg:gap-12 lg:py-14">
       <div>
         <PageHero
           kicker="Demo"

@@ -185,28 +185,28 @@ const groups: {
 
 export function InsideSection() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-10 lg:space-y-16">
       {groups.map((group, gi) => (
         <div key={group.heading}>
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-2 sm:mb-6 sm:gap-3">
             <div>
               <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${group.tint}`}>
                 Job {String(gi + 1).padStart(2, "0")}
               </p>
-              <h3 className="mt-1 font-display text-2xl text-navy-900 sm:text-3xl">{group.heading}</h3>
+              <h3 className="mt-1 font-display text-xl text-navy-900 sm:text-3xl">{group.heading}</h3>
             </div>
             <p className="max-w-xs text-sm text-navy-700">{group.note}</p>
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-6">
             {group.items.map((item) => (
               <Link
                 key={item.label}
                 href={`/features/${item.slug}`}
-                className={`group overflow-hidden rounded-[1.6rem] bg-white shadow-card ring-1 ring-navy-900/5 transition hover:-translate-y-0.5 hover:shadow-device ${item.span}`}
+                className={`group overflow-hidden rounded-[1.25rem] bg-white shadow-card ring-1 ring-navy-900/5 transition hover:-translate-y-0.5 hover:shadow-device sm:rounded-[1.6rem] ${item.span}`}
               >
                 <div
                   className={`relative overflow-hidden ${item.art} ${
-                    item.tall ? "h-52 sm:h-60 lg:h-64" : "h-40 sm:h-44"
+                    item.tall ? "h-44 sm:h-60 lg:h-64" : "h-36 sm:h-44"
                   }`}
                 >
                   <div className="absolute inset-0 transition duration-500 group-hover:scale-[1.03]">

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { DualCta, WhatsAppIcon } from "@/components/DualCta";
+import { useEffect, useState } from "react";
+import { DualCta } from "@/components/DualCta";
 import { useSettings } from "@/components/SettingsProvider";
 import { nav, site, whatsappHref } from "@/content/site";
 
@@ -13,13 +13,42 @@ export function Header() {
   const [solutions, setSolutions] = useState(false);
   const path = usePathname();
   const settings = useSettings();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [path]);
+
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.body.dataset.navOpen = "true";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      delete document.body.dataset.navOpen;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   if (path.startsWith("/admin")) return null;
 
+  const solutionsItem = nav.find((item) => "children" in item && item.children);
+  const primaryNav = nav.filter((item) => !("children" in item && item.children));
+
   return (
-    <header className="sticky top-0 z-40 border-b border-navy-900/[0.06] bg-white/80 backdrop-blur-md">
-      <div className="container-site flex h-[4.75rem] items-center justify-between gap-4">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={site.name} onClick={() => setOpen(false)}>
-          <span className="relative h-11 w-11 shrink-0">
+    <header className="sticky top-0 z-50 border-b border-navy-900/[0.06] bg-white/95 backdrop-blur-md">
+      <div className="container-site flex h-14 items-center justify-between gap-3 lg:h-[4.75rem]">
+        <Link
+          href="/"
+          className="flex min-w-0 shrink-0 items-center gap-2"
+          aria-label={site.name}
+          onClick={() => setOpen(false)}
+        >
+          <span className="relative h-8 w-8 shrink-0 lg:h-11 lg:w-11">
             <Image
               src="/logos/taskbook-icon.png"
               alt=""
@@ -30,7 +59,7 @@ export function Header() {
             />
           </span>
           <span className="leading-tight">
-            <span className="block text-[1.35rem] font-bold tracking-tight">
+            <span className="block text-[1.05rem] font-bold tracking-tight lg:text-[1.35rem]">
               <span className="text-navy-900">Task</span>
               <span className="text-[#17B6C4]">Book</span>
             </span>
@@ -93,44 +122,124 @@ export function Header() {
 
         <button
           type="button"
-          className="rounded-md px-2 py-1 text-sm font-semibold text-navy-900 lg:hidden"
+          className="relative -mr-1 flex h-11 w-11 items-center justify-center rounded-xl text-navy-900 lg:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label={open ? "Close menu" : "Open menu"}
         >
-          {open ? "Close" : "Menu"}
+          <span className="flex h-3.5 w-[18px] flex-col justify-between">
+            <span
+              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+                open ? "translate-y-[6.25px] rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+                open ? "scale-x-0 opacity-0" : ""
+              }`}
+            />
+            <span
+              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+                open ? "-translate-y-[6.25px] -rotate-45" : ""
+              }`}
+            />
+          </span>
         </button>
       </div>
 
       {open && (
-        <div className="border-t border-navy-900/10 bg-white px-5 py-4 lg:hidden">
-          <div className="flex flex-col gap-3 text-sm font-medium">
-            {nav.map((item) => (
-              <div key={item.href}>
-                <Link href={item.href} onClick={() => setOpen(false)}>
-                  {item.label}
-                </Link>
-                {"children" in item && item.children && (
-                  <div className="mt-2 ml-3 flex flex-col gap-2 text-navy-700">
-                    {item.children.map((child) => (
-                      <Link key={child.href} href={child.href} onClick={() => setOpen(false)}>
+        <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-14 z-50 flex flex-col bg-white lg:hidden">
+          <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
+            <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+              Product
+            </p>
+            <div className="overflow-hidden rounded-2xl bg-[#F6F7FA] ring-1 ring-navy-900/[0.06]">
+              {primaryNav.map((item) => {
+                const active = path === item.href || path.startsWith(`${item.href}/`);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={`flex min-h-12 items-center justify-between border-b border-navy-900/[0.06] px-4 text-[15px] font-medium last:border-b-0 ${
+                      active ? "bg-white text-navy-900" : "text-navy-800"
+                    }`}
+                  >
+                    {item.label}
+                    <span className="text-navy-400">→</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {solutionsItem && "children" in solutionsItem && solutionsItem.children && (
+              <div className="mt-6">
+                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+                  Who it is for
+                </p>
+                <div className="grid grid-cols-1 gap-2">
+                  {solutionsItem.children.map((child) => {
+                    const active = path === child.href;
+                    return (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        onClick={() => setOpen(false)}
+                        className={`flex min-h-12 items-center justify-between rounded-2xl px-4 text-[15px] font-medium ring-1 ${
+                          active
+                            ? "bg-navy-900 text-white ring-navy-900"
+                            : "bg-[#F6F7FA] text-navy-800 ring-navy-900/[0.06]"
+                        }`}
+                      >
                         {child.label}
+                        <span className={active ? "text-white/60" : "text-navy-400"}>→</span>
                       </Link>
-                    ))}
+                    );
+                  })}
+                </div>
+                {settings.locations.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
                     {settings.locations.map((l) => (
-                      <Link key={l.slug} href={`/locations/${l.slug}`} onClick={() => setOpen(false)}>
+                      <Link
+                        key={l.slug}
+                        href={`/locations/${l.slug}`}
+                        onClick={() => setOpen(false)}
+                        className="rounded-full bg-[#F6F7FA] px-3 py-1.5 text-sm font-medium text-navy-800 ring-1 ring-navy-900/10"
+                      >
                         {l.city}
                       </Link>
                     ))}
                   </div>
                 )}
               </div>
-            ))}
-            <a href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)} className="inline-flex items-center gap-2 text-wa" target="_blank" rel="noopener noreferrer">
-              <WhatsAppIcon /> Talk on WhatsApp
-            </a>
-            <Link href="/demo" onClick={() => setOpen(false)}>
-              Book a demo
-            </Link>
+            )}
+
+            <div className="mt-6">
+              <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+                Company
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { href: "/about", label: "About" },
+                  { href: "/contact", label: "Contact" },
+                  { href: "/demo", label: "Book a demo" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-full bg-[#F6F7FA] px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-navy-900/10"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </nav>
+
+          <div className="border-t border-navy-900/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <DualCta />
           </div>
         </div>
       )}
@@ -142,8 +251,8 @@ export function StickyMobileCta() {
   const path = usePathname();
   if (path.startsWith("/admin")) return null;
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white p-3 lg:hidden">
-      <DualCta className="[&>a]:flex-1" />
+    <div className="mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white/95 px-3 pt-2.5 backdrop-blur-md pb-[max(0.65rem,env(safe-area-inset-bottom))] lg:hidden">
+      <DualCta bar />
     </div>
   );
 }
@@ -203,7 +312,12 @@ export function Footer() {
             <Link href="/contact" className="hover:text-navy-600">Contact</Link>
             <Link href="/privacy" className="hover:text-navy-600">Privacy</Link>
             <Link href="/terms" className="hover:text-navy-600">Terms</Link>
-            <a href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)} className="hover:text-navy-600" target="_blank" rel="noopener noreferrer">
+            <a
+              href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
+              className="hover:text-navy-600"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               WhatsApp
             </a>
           </div>

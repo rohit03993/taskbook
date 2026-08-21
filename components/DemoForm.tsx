@@ -4,10 +4,10 @@ import { FormEvent, useState } from "react";
 import { DualCta } from "@/components/DualCta";
 
 const headaches = [
-  "Attendance to parents",
-  "Fee collection",
-  "Admissions WhatsApp",
-  "Student records in one place",
+  "Chat lives on one person’s phone",
+  "Parents calling for punch / fees",
+  "Visitor comes back, nobody remembers",
+  "Fee receipts still handwritten",
 ] as const;
 
 export function DemoForm() {

@@ -16,7 +16,7 @@ export default async function PricingPage() {
 
   return (
     <>
-      <section className="container-site py-14 pb-28 lg:pb-16">
+      <section className="container-site py-10 pb-28 lg:pb-16">
         <PageHero kicker={pricing.kicker} title={pricing.title} body={pricing.body} />
         <div className="mt-12 grid items-stretch gap-4 lg:grid-cols-3">
           {pricing.plans.map((p) => (

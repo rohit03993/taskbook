@@ -44,53 +44,68 @@ export function PainIcon({ name }: { name: "phone" | "parents" | "visitor" }) {
 
 export function HeroVisual() {
   return (
-    <div className="relative mx-auto h-[460px] w-full max-w-[28rem] lg:h-[540px] lg:max-w-none">
-      <div className="absolute inset-4 rounded-[2rem] bg-gradient-to-br from-navy-50 via-white to-[#E8F8EE]" />
-      <div className="absolute left-2 right-10 top-5 overflow-hidden rounded-[1.5rem] bg-white shadow-device ring-1 ring-navy-900/5">
-        <div className="relative h-44 bg-[#e8eee8] sm:h-52">
-          <Image
-            src="/inside/hero-inbox.png"
-            alt="WhatsApp inbox in the CRM"
-            fill
-            sizes="(min-width: 1024px) 40vw, 90vw"
-            className="object-cover object-center"
-            priority
-          />
+    <>
+      <div className="relative mx-auto aspect-[5/4] w-full overflow-hidden rounded-[1.35rem] bg-[#e8eee8] ring-1 ring-navy-900/10 lg:hidden">
+        <Image
+          src="/inside/hero-inbox.png"
+          alt="WhatsApp inbox in the CRM — staff chat on the same Meta number"
+          fill
+          sizes="100vw"
+          className="object-cover object-top"
+          priority
+        />
+        <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-900/80 to-transparent px-4 pb-3.5 pt-10 text-sm font-medium text-white">
+          Staff chat from the CRM. Same Meta number.
+        </p>
+      </div>
+      <div className="relative mx-auto hidden h-[540px] w-full max-w-none lg:block">
+        <div className="absolute inset-4 rounded-[2rem] bg-gradient-to-br from-navy-50 via-white to-[#E8F8EE]" />
+        <div className="absolute left-2 right-10 top-5 overflow-hidden rounded-[1.5rem] bg-white shadow-device ring-1 ring-navy-900/5">
+          <div className="relative h-52 bg-[#e8eee8]">
+            <Image
+              src="/inside/hero-inbox.png"
+              alt="WhatsApp inbox in the CRM"
+              fill
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="object-cover object-center"
+              priority
+            />
+          </div>
+          <div className="px-4 py-3">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-wa">In the CRM</p>
+            <p className="mt-0.5 text-sm font-medium text-navy-900">Staff chat. Same Meta number.</p>
+          </div>
         </div>
-        <div className="px-4 py-3">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-wa">In the CRM</p>
-          <p className="mt-0.5 text-sm font-medium text-navy-900">Staff chat. Same Meta number.</p>
+        <div className="absolute bottom-[8.25rem] right-0 w-[74%] overflow-hidden rounded-[1.4rem] bg-white shadow-device ring-1 ring-navy-900/5">
+          <div className="relative h-32 bg-[#e8eaf4]">
+            <Image
+              src="/inside/hero-search.png"
+              alt="Search by mobile number"
+              fill
+              sizes="(min-width: 1024px) 30vw, 70vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="px-4 py-2.5">
+            <p className="text-sm font-medium text-navy-900">Type the number. File opens.</p>
+          </div>
+        </div>
+        <div className="absolute bottom-2 left-0 w-[60%] overflow-hidden rounded-[1.4rem] bg-white shadow-device ring-1 ring-navy-900/5">
+          <div className="relative h-32 bg-[#e8eee8]">
+            <Image
+              src="/inside/hero-punch.png"
+              alt="Parent gets WhatsApp when the child punches in"
+              fill
+              sizes="(min-width: 1024px) 28vw, 60vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="px-4 py-2.5">
+            <p className="text-sm font-medium text-navy-900">Parent gets WhatsApp.</p>
+          </div>
         </div>
       </div>
-      <div className="absolute bottom-[8.25rem] right-0 w-[74%] overflow-hidden rounded-[1.4rem] bg-white shadow-device ring-1 ring-navy-900/5">
-        <div className="relative h-28 bg-[#e8eaf4] sm:h-32">
-          <Image
-            src="/inside/hero-search.png"
-            alt="Search by mobile number"
-            fill
-            sizes="(min-width: 1024px) 30vw, 70vw"
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="px-4 py-2.5">
-          <p className="text-sm font-medium text-navy-900">Type the number. File opens.</p>
-        </div>
-      </div>
-      <div className="absolute bottom-2 left-0 w-[60%] overflow-hidden rounded-[1.4rem] bg-white shadow-device ring-1 ring-navy-900/5">
-        <div className="relative h-28 bg-[#e8eee8] sm:h-32">
-          <Image
-            src="/inside/hero-punch.png"
-            alt="Parent gets WhatsApp when the child punches in"
-            fill
-            sizes="(min-width: 1024px) 28vw, 60vw"
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="px-4 py-2.5">
-          <p className="text-sm font-medium text-navy-900">Parent gets WhatsApp.</p>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
 

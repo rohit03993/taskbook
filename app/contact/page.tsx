@@ -16,14 +16,14 @@ export default async function ContactPage() {
   const settings = await getSettings();
 
   return (
-    <div className="container-site grid gap-12 py-14 lg:grid-cols-2">
+    <div className="container-site grid gap-8 py-10 lg:grid-cols-2 lg:gap-12 lg:py-14">
       <div>
         <PageHero
           kicker="Contact"
           title="WhatsApp us, or send the form."
           body="Tell us city and institute size. We reply the same day."
         />
-        <DualCta className="mt-8" />
+        <DualCta className="mt-8 hidden sm:flex" />
         <p className="mt-8 text-sm text-navy-700">
           Email{" "}
           <a className="font-medium text-navy-900" href={`mailto:${settings.email}`}>

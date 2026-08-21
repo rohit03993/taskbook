@@ -7,8 +7,8 @@ export function FaqList() {
   return (
     <div className="divide-y divide-navy-900/10">
       {faqs.map((item) => (
-        <details key={item.q} className="group py-5">
-          <summary className="cursor-pointer list-none font-medium text-navy-900 marker:content-none">
+        <details key={item.q} className="group py-4 sm:py-5">
+          <summary className="cursor-pointer list-none text-[15px] font-medium text-navy-900 marker:content-none sm:text-base">
             <span className="flex items-start justify-between gap-4">
               {item.q}
               <span className="text-navy-600 group-open:rotate-45">+</span>
@@ -67,7 +67,7 @@ export function PageHero({
   return (
     <div className="max-w-3xl">
       {kicker && <p className="kicker">{kicker}</p>}
-      <h1 className="mt-3 font-display text-4xl leading-tight text-navy-900 sm:text-5xl">{title}</h1>
+      <h1 className="mt-3 font-display text-[1.85rem] leading-tight text-navy-900 sm:text-5xl">{title}</h1>
       <p className="mt-4 text-base leading-relaxed text-navy-700 sm:text-lg">{body}</p>
     </div>
   );
