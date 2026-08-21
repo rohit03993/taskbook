@@ -3,23 +3,23 @@ import { PageHero } from "@/components/Blocks";
 import { CtaBanner } from "@/components/DualCta";
 import { InsideSection } from "@/components/InsideSection";
 import { featureHubExtras } from "@/content/modules";
+import { getFeatureHubContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = pageMeta(
-  "Features",
-  "WhatsApp in the CRM, visitor file, student file from a mobile number, fee slips and reports.",
-  "/features",
-);
+export const dynamic = "force-dynamic";
 
-export default function FeaturesPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const hub = await getFeatureHubContent();
+  return pageMeta("Features", hub.body, "/features");
+}
+
+export default async function FeaturesPage() {
+  const hub = await getFeatureHubContent();
+
   return (
     <>
       <section className="container-site py-14">
-        <PageHero
-          kicker="Features"
-          title="WhatsApp in the CRM. Visitor file. Student file. Fee slip. Report."
-          body="Start with the problem: chat should not live on one phone, and a mobile number should open the full person. Rest of the modules support that."
-        />
+        <PageHero kicker={hub.kicker} title={hub.title} body={hub.body} />
         <div className="mt-14">
           <InsideSection />
         </div>

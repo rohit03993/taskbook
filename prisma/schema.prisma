@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdminRole {
+  owner
+  editor
+}
+
+enum LeadStatus {
+  new
+  contacted
+  done
+}
+
+model AdminUser {
+  id           String     @id @default(cuid())
+  phone        String     @unique
+  name         String
+  passwordHash String
+  role         AdminRole  @default(editor)
+  failedLogins Int        @default(0)
+  lockedUntil  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  phone     String
+  ip        String
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([phone, createdAt])
+  @@index([ip, createdAt])
+}
+
+model Lead {
+  id        String     @id @default(cuid())
+  name      String
+  mobile    String
+  institute String
+  type      String     @default("")
+  city      String     @default("")
+  students  String     @default("")
+  headache  String     @default("")
+  status    LeadStatus @default(new)
+  note      String     @default("") @db.Text
+  createdAt DateTime   @default(now()) @map("at")
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Setting {
+  id              String   @id @default("site")
+  whatsappNumber  String   @default("")
+  whatsappMessage String   @db.Text
+  email           String   @default("")
+  webhookUrl      String   @default("")
+  updatedAt       DateTime @updatedAt
+}
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  description     String    @db.Text
+  body            String    @db.LongText
+  metaTitle       String    @default("")
+  metaDescription String    @default("") @db.Text
+  ogTitle         String    @default("")
+  ogDescription   String    @default("") @db.Text
+  canonicalPath   String    @default("")
+  focusKeyword    String
+  extraKeywords   String    @default("")
+  cityTag         String    @default("")
+  published       Boolean   @default(false)
+  publishedAt     DateTime?
+  readMinutes     Int       @default(5)
+  keywordScore    Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model LocationPage {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  city            String
+  headline        String
+  intro           String   @db.Text
+  body            String   @db.LongText
+  metaTitle       String
+  metaDescription String   @db.Text
+  focusKeyword    String
+  faqsJson        String   @db.LongText
+  published       Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ContentBlock {
+  key       String   @id
+  value     String   @db.LongText
+  updatedAt DateTime @updatedAt
+}

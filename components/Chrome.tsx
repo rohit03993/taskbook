@@ -2,13 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { DualCta, WhatsAppIcon } from "@/components/DualCta";
+import { useSettings } from "@/components/SettingsProvider";
 import { nav, site, whatsappHref } from "@/content/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [solutions, setSolutions] = useState(false);
+  const path = usePathname();
+  const settings = useSettings();
+  if (path.startsWith("/admin")) return null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy-900/[0.06] bg-white/80 backdrop-blur-md">
@@ -61,6 +66,15 @@ export function Header() {
                           {child.label}
                         </Link>
                       ))}
+                      {settings.locations.map((l) => (
+                        <Link
+                          key={l.slug}
+                          href={`/locations/${l.slug}`}
+                          className="block px-4 py-2 text-navy-800 hover:bg-navy-50"
+                        >
+                          {l.city}
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -102,11 +116,16 @@ export function Header() {
                         {child.label}
                       </Link>
                     ))}
+                    {settings.locations.map((l) => (
+                      <Link key={l.slug} href={`/locations/${l.slug}`} onClick={() => setOpen(false)}>
+                        {l.city}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>
             ))}
-            <a href={whatsappHref()} className="inline-flex items-center gap-2 text-wa" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)} className="inline-flex items-center gap-2 text-wa" target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon /> Talk on WhatsApp
             </a>
             <Link href="/demo" onClick={() => setOpen(false)}>
@@ -120,6 +139,8 @@ export function Header() {
 }
 
 export function StickyMobileCta() {
+  const path = usePathname();
+  if (path.startsWith("/admin")) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white p-3 lg:hidden">
       <DualCta className="[&>a]:flex-1" />
@@ -128,6 +149,9 @@ export function StickyMobileCta() {
 }
 
 export function Footer() {
+  const path = usePathname();
+  const settings = useSettings();
+  if (path.startsWith("/admin")) return null;
   return (
     <footer className="border-t border-navy-900/10 bg-white pb-24 lg:pb-0">
       <div className="container-site grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -165,6 +189,11 @@ export function Footer() {
             <Link href="/schools" className="hover:text-navy-600">Schools</Link>
             <Link href="/colleges" className="hover:text-navy-600">Colleges</Link>
             <Link href="/institutes" className="hover:text-navy-600">Institutes</Link>
+            {settings.locations.map((l) => (
+              <Link key={l.slug} href={`/locations/${l.slug}`} className="hover:text-navy-600">
+                {l.city}
+              </Link>
+            ))}
           </div>
         </div>
         <div>
@@ -174,7 +203,7 @@ export function Footer() {
             <Link href="/contact" className="hover:text-navy-600">Contact</Link>
             <Link href="/privacy" className="hover:text-navy-600">Privacy</Link>
             <Link href="/terms" className="hover:text-navy-600">Terms</Link>
-            <a href={whatsappHref()} className="hover:text-navy-600" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)} className="hover:text-navy-600" target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>
           </div>

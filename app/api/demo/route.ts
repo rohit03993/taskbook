@@ -1,19 +1,16 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
 import { NextResponse } from "next/server";
+import { addLead } from "@/lib/leads";
+import { getSettings } from "@/lib/settings";
 
-type Lead = {
-  name?: string;
-  mobile?: string;
-  institute?: string;
+function isLead(body: unknown): body is {
+  name: string;
+  mobile: string;
+  institute: string;
   type?: string;
   city?: string;
   students?: string;
   headache?: string;
-  at: string;
-};
-
-function isLead(body: unknown): body is Omit<Lead, "at"> {
+} {
   if (!body || typeof body !== "object") return false;
   const row = body as Record<string, unknown>;
   return typeof row.name === "string" && typeof row.mobile === "string" && typeof row.institute === "string";
@@ -31,26 +28,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  const lead: Lead = { ...json, at: new Date().toISOString() };
-
-  const dir = path.join(process.cwd(), "data");
-  const file = path.join(dir, "leads.json");
+  let lead = null;
   try {
-    await mkdir(dir, { recursive: true });
-    let existing: Lead[] = [];
-    try {
-      existing = JSON.parse(await readFile(file, "utf8")) as Lead[];
-      if (!Array.isArray(existing)) existing = [];
-    } catch {
-      existing = [];
-    }
-    existing.push(lead);
-    await writeFile(file, JSON.stringify(existing, null, 2), "utf8");
+    lead = await addLead(json);
   } catch {
-    // Vercel-style hosts may be read-only; still accept the lead.
+    lead = { ...json, at: new Date().toISOString() };
   }
 
-  const webhook = process.env.LEADS_WEBHOOK_URL;
+  const settings = await getSettings();
+  const webhook = settings.webhookUrl || process.env.LEADS_WEBHOOK_URL;
   if (webhook) {
     try {
       await fetch(webhook, {

@@ -8,15 +8,18 @@ import { AudienceMark, HeroVisual, PainIcon } from "@/components/HomeVisuals";
 import { InsideSection } from "@/components/InsideSection";
 import { audiences } from "@/content/audiences";
 import { faqs } from "@/content/faqs";
+import { getHomeContent } from "@/lib/content";
+import { listLocations } from "@/lib/locations";
 import { plans } from "@/content/plans";
-import { clients, hero, howItWorks, pains } from "@/content/site";
+import { clients } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = pageMeta(
-  "School, college & institute CRM",
-  hero.subhead,
-  "/",
-);
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomeContent();
+  return pageMeta("School, college & institute CRM", home.hero.subhead, "/");
+}
 
 const painIcons = ["phone", "parents", "visitor"] as const;
 
@@ -29,7 +32,9 @@ const howShots: Record<string, string> = {
   "6": "/inside/how-06.png",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [home, locations] = await Promise.all([getHomeContent(), listLocations({ publishedOnly: true })]);
+  const { hero, pains, howItWorks } = home;
   return (
     <>
       <section className="relative overflow-hidden bg-white">
@@ -165,6 +170,22 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
+        {locations.length > 0 && (
+          <div className="mt-10">
+            <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Cities</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {locations.map((l) => (
+                <Link
+                  key={l.slug}
+                  href={`/locations/${l.slug}`}
+                  className="rounded-full bg-white px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-navy-900/10 hover:bg-navy-50"
+                >
+                  School software in {l.city}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="border-y border-navy-900/[0.06] bg-white py-20">

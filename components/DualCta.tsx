@@ -1,4 +1,7 @@
+"use client";
+
 import { whatsappHref } from "@/content/site";
+import { useSettings } from "@/components/SettingsProvider";
 
 type Props = {
   className?: string;
@@ -14,9 +17,12 @@ const demoLight =
   "inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-navy-900 ring-1 ring-navy-900/10 hover:bg-navy-50";
 
 export function DualCta({ className = "", compact, whatsappMessage }: Props) {
+  const settings = useSettings();
+  const href = whatsappHref(whatsappMessage || settings.whatsappMessage, settings.whatsappNumber);
+
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
-      <a href={whatsappHref(whatsappMessage)} className={`${waClass} gap-2`} rel="noopener noreferrer" target="_blank">
+      <a href={href} className={`${waClass} gap-2`} rel="noopener noreferrer" target="_blank">
         <WhatsAppIcon />
         Talk on WhatsApp
       </a>

@@ -2,25 +2,23 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { MockForSlug } from "@/components/ProductMocks";
-import { moduleBySlug, modules } from "@/content/modules";
+import { getResolvedModule } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return modules.map((m) => ({ slug: m.slug }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
-  const mod = moduleBySlug(slug);
+  const mod = await getResolvedModule(slug);
   if (!mod) return {};
   return pageMeta(mod.nav, mod.pain, `/features/${slug}`);
 }
 
 export default async function FeaturePage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const mod = moduleBySlug(slug);
+  const mod = await getResolvedModule(slug);
   if (!mod) notFound();
 
   return (

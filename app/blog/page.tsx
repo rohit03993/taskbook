@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CtaBanner } from "@/components/DualCta";
 import { PageHero } from "@/components/Blocks";
-import { posts } from "@/content/blog";
+import { publicPosts } from "@/lib/blog";
 import { pageMeta } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMeta(
   "Blog",
@@ -11,7 +13,9 @@ export const metadata: Metadata = pageMeta(
   "/blog",
 );
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await publicPosts();
+
   return (
     <>
       <section className="container-site py-14">

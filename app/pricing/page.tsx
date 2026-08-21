@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { PageHero } from "@/components/Blocks";
-import { plans } from "@/content/plans";
+import { getPricingContent } from "@/lib/content";
 import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = pageMeta(
-  "Pricing",
-  "Starter, Academic+, Full CRM, Full CRM + Results. Ask for a quote — we do not put a fake price here.",
-  "/pricing",
-);
+export const dynamic = "force-dynamic";
 
-export default function PricingPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const pricing = await getPricingContent();
+  return pageMeta("Pricing", pricing.body.slice(0, 160), "/pricing");
+}
+
+export default async function PricingPage() {
+  const pricing = await getPricingContent();
+
   return (
     <>
       <section className="container-site py-14">
-        <PageHero
-          kicker="Pricing"
-          title="Choose a pack. Ask for a quote. We set it up for your institute."
-          body="These are the real packs in the product. We do not print a made-up rupee number. Full CRM is what most owners take — WhatsApp in the CRM, leads, calling, and parent login."
-        />
+        <PageHero kicker={pricing.kicker} title={pricing.title} body={pricing.body} />
         <DualCta className="mt-8" />
         <div className="mt-12 grid gap-5 lg:grid-cols-4">
-          {plans.map((p) => (
+          {pricing.plans.map((p) => (
             <div
               key={p.id}
               className={`flex flex-col rounded-[1.5rem] bg-white p-6 ring-1 ${

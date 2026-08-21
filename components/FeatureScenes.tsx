@@ -52,7 +52,7 @@ export function FeatureScene({ name }: { name: SceneName }) {
             IN
           </text>
         </g>
-        <Phone x="118" y="16" />
+        <Phone x={118} y={16} />
         <g transform="translate(132 42)">
           <rect width="76" height="52" rx="12" fill="#DCFCE7" />
           <text x="10" y="18" fontSize="8" fill="#166534" fontFamily="inherit" fontWeight="600">

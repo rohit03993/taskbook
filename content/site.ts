@@ -11,11 +11,12 @@ export const site = {
   email: "hello@taskbook.co.in",
 } as const;
 
-export function whatsappHref(message?: string) {
+export function whatsappHref(message?: string, number?: string) {
   const text =
     message ??
     "Hi, I run a school/college/institute and want a Task Book demo.";
-  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const n = (number ?? site.whatsappNumber).replace(/\D/g, "");
+  return `https://wa.me/${n}?text=${encodeURIComponent(text)}`;
 }
 
 export const nav = [
