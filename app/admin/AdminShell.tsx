@@ -8,11 +8,11 @@ export async function AdminShell({ children }: { children: ReactNode }) {
   if (!staff) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen lg:flex">
+    <div className="flex h-dvh flex-col overflow-hidden bg-[#F4F6F8] lg:flex-row">
       <AdminNav staff={staff} />
-      <div className="min-w-0 flex-1">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-10 lg:py-10">{children}</div>
-      </div>
+      <main className="admin-main min-h-0 min-w-0 flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-3xl px-5 py-7 sm:px-8 sm:py-8">{children}</div>
+      </main>
     </div>
   );
 }

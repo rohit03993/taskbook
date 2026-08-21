@@ -9,8 +9,7 @@ export const metadata = { title: "Admin", robots: { index: false, follow: false 
 export const dynamic = "force-dynamic";
 
 function waLooksWrong(number: string) {
-  const digits = number.replace(/\D/g, "");
-  return digits.length < 11;
+  return number.replace(/\D/g, "").length < 11;
 }
 
 export default async function AdminHomePage() {
@@ -24,87 +23,60 @@ export default async function AdminHomePage() {
   const drafts = posts.length - publishedPosts;
   const waBad = waLooksWrong(settings.whatsappNumber);
 
-  const jobs = [
-    {
-      href: "/admin/leads",
-      title: "Leads",
-      body: counts.fresh ? `${counts.fresh} new demo request${counts.fresh === 1 ? "" : "s"} waiting.` : "No new leads. Open the list anytime.",
-      cta: counts.fresh ? "Open new leads" : "See leads",
-      primary: counts.fresh > 0,
-    },
-    {
-      href: "/admin/blog",
-      title: "Blog",
-      body: drafts ? `${publishedPosts} live · ${drafts} draft` : `${publishedPosts} live posts. Write the next one when you want rank for a keyword.`,
-      cta: "Write or edit",
-      primary: false,
-    },
-    {
-      href: "/admin/locations",
-      title: "City pages",
-      body: locations.length ? `${locations.map((l) => l.city).join(", ")}` : "Add Agra or another city page.",
-      cta: "Edit cities",
-      primary: false,
-    },
-    {
-      href: "/admin/content",
-      title: "Homepage text",
-      body: "Hero, problems, and How it works. Change words without a rebuild.",
-      cta: "Edit homepage",
-      primary: false,
-    },
-  ];
-
   return (
     <AdminShell>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">Today</p>
-      <h1 className="mt-2 font-display text-3xl text-navy-900 sm:text-4xl">What do you want to do?</h1>
-      <p className="mt-2 max-w-xl text-sm text-navy-700">Use the left menu. Daily work is leads. Publish is blogs and cities. Website text is the public pages.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-semibold tracking-tight text-navy-900">Home</h1>
+          <p className="mt-1 text-sm text-navy-700">Leads, blogs, and the public site copy.</p>
+        </div>
+        <Link href="/" className="hidden text-sm font-medium text-navy-600 hover:text-navy-900 sm:inline">
+          Open website
+        </Link>
+      </div>
 
       {waBad && (
-        <div className="mt-6 rounded-2xl bg-amber-50 px-5 py-4 text-sm text-amber-950 ring-1 ring-amber-200">
-          WhatsApp on the public site looks incomplete ({settings.whatsappNumber || "empty"}). Put the full number with country code, like 9198xxxxxxxx.
-          <Link href="/admin/settings" className="ml-2 font-semibold underline">
-            Fix numbers
+        <div className="mt-5 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-3.5 py-2.5 text-sm text-amber-950">
+          <span>WhatsApp number is incomplete. Visitors cannot chat you.</span>
+          <Link href="/admin/settings" className="shrink-0 font-semibold text-navy-800">
+            Fix
           </Link>
         </div>
       )}
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-navy-900/[0.06]">
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">New leads</p>
-          <p className="mt-2 font-display text-4xl text-navy-900">{counts.fresh}</p>
-          <p className="mt-1 text-xs text-navy-700">{counts.total} total</p>
-        </div>
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-navy-900/[0.06]">
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Live blogs</p>
-          <p className="mt-2 font-display text-4xl text-navy-900">{publishedPosts}</p>
-          <p className="mt-1 text-xs text-navy-700">{drafts} draft</p>
-        </div>
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-navy-900/[0.06]">
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">City pages</p>
-          <p className="mt-2 font-display text-4xl text-navy-900">{locations.length}</p>
-          <p className="mt-1 text-xs text-navy-700">SEO landings</p>
-        </div>
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        {[
+          { label: "New leads", value: counts.fresh, sub: `${counts.total} total` },
+          { label: "Live blogs", value: publishedPosts, sub: drafts ? `${drafts} draft` : "All live" },
+          { label: "Cities", value: locations.length, sub: "SEO pages" },
+        ].map((s) => (
+          <div key={s.label} className="rounded-lg border border-navy-900/10 bg-white px-4 py-3.5">
+            <p className="text-[11px] font-medium text-navy-600">{s.label}</p>
+            <p className="mt-1 text-2xl font-semibold tabular-nums text-navy-900">{s.value}</p>
+            <p className="mt-0.5 text-[11px] text-navy-700">{s.sub}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="mt-8 grid gap-3">
-        {jobs.map((job) => (
+      <div className="mt-6 overflow-hidden rounded-lg border border-navy-900/10 bg-white">
+        {[
+          { href: "/admin/leads", title: "Leads", meta: counts.fresh ? `${counts.fresh} new` : "None new" },
+          { href: "/admin/blog", title: "Blog", meta: `${publishedPosts} live` },
+          { href: "/admin/locations", title: "City pages", meta: locations.map((l) => l.city).join(", ") || "None" },
+          { href: "/admin/content", title: "Homepage copy", meta: "Hero, problems, steps" },
+          { href: "/admin/settings", title: "WhatsApp & email", meta: settings.whatsappNumber || "Not set" },
+        ].map((row, i, arr) => (
           <Link
-            key={job.href}
-            href={job.href}
-            className="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-white px-5 py-5 ring-1 ring-navy-900/[0.06] transition hover:ring-navy-600"
+            key={row.href}
+            href={row.href}
+            className={`flex items-center justify-between gap-3 px-4 py-3.5 text-sm hover:bg-navy-50 ${
+              i < arr.length - 1 ? "border-b border-navy-900/10" : ""
+            }`}
           >
-            <div>
-              <p className="font-semibold text-navy-900">{job.title}</p>
-              <p className="mt-1 text-sm text-navy-700">{job.body}</p>
-            </div>
-            <span
-              className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                job.primary ? "bg-navy-900 text-white" : "bg-navy-50 text-navy-800"
-              }`}
-            >
-              {job.cta}
+            <span className="font-medium text-navy-900">{row.title}</span>
+            <span className="flex items-center gap-2 text-navy-600">
+              <span className="max-w-[10rem] truncate text-right text-[13px]">{row.meta}</span>
+              <span aria-hidden>→</span>
             </span>
           </Link>
         ))}

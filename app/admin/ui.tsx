@@ -33,7 +33,7 @@ export function PageHeader({
   return (
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="font-display text-3xl text-navy-900">{title}</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-navy-900">{title}</h1>
         {hint ? <p className="mt-2 max-w-xl text-sm text-navy-700">{hint}</p> : null}
       </div>
       {action}

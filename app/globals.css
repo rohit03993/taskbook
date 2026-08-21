@@ -14,6 +14,24 @@ body {
   @apply bg-[#F6F7FA] text-navy-900 antialiased;
 }
 
+.admin-main {
+  scrollbar-width: thin;
+  scrollbar-color: #c5d7f7 transparent;
+}
+
+.admin-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-main::-webkit-scrollbar-thumb {
+  background: #c5d7f7;
+  border-radius: 99px;
+}
+
 ::selection {
   background: #3974FC33;
 }
