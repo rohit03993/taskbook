@@ -23,7 +23,7 @@ const agraFaqs = [
   },
   {
     q: "Is the price printed on this page?",
-    a: "No. Packs are Starter, Academic+, Full CRM, and Full CRM + Results. Ask for a quote for your campus size and WhatsApp use. We do not put a made-up rupee number here.",
+    a: "Three packs: Starter ₹3,000 (attendance + WhatsApp inbox), Starter + Fees ₹6,000, Full CRM ₹10,000. GST extra. Meta WhatsApp usage is billed by Meta. One campus per install.",
   },
 ];
 
@@ -155,7 +155,7 @@ Front desk, counsellor, accountant, teacher. Different people. One Meta-approved
 
 ## What you can run
 
-WhatsApp inbox in the CRM, live attendance messages, fee PDF receipts, leads and calling, parent login for the copy they can download later. Packs: Starter, Academic+, Full CRM, Full CRM + Results.
+WhatsApp inbox in the CRM, live attendance messages, fee PDF receipts, leads and calling, parent login for the copy they can download later. Packs: Starter ₹3,000, Starter + Fees ₹6,000, Full CRM ₹10,000.
 
 ## City pages
 

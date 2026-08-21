@@ -64,24 +64,38 @@ export async function getHomeContent() {
   };
 }
 
+function freshCopy(stored: string | undefined, fallback: string, staleBits: string[]) {
+  if (!stored?.trim()) return fallback;
+  if (staleBits.some((bit) => stored.includes(bit))) return fallback;
+  return stored;
+}
+
 export async function getPricingContent() {
   const blocks = await getBlocks();
   return {
     kicker: block(blocks, "pricing.kicker", "Pricing"),
-    title: block(
-      blocks,
-      "pricing.title",
-      "Choose a pack. Ask for a quote. We set it up for your institute.",
+    title: freshCopy(
+      blocks["pricing.title"],
+      "Three packs. Starter from ₹3,000 a month.",
+      ["Ask for a quote. We set it up", "made-up rupee", "Bigger packs we quote"],
     ),
-    body: block(
+    body: freshCopy(
+      blocks["pricing.body"],
+      "Starter is attendance plus the WhatsApp inbox. Starter + Fees adds collection and the PDF receipt. Full CRM is the whole desk. GST extra. Meta WhatsApp usage is billed by Meta. One campus, one install.",
+      ["made-up rupee", "We do not print", "Academic+", "Full CRM + Results", "Bigger packs we quote"],
+    ),
+    footnote: block(
       blocks,
-      "pricing.body",
-      "These are the real packs in the product. We do not print a made-up rupee number. Full CRM is what most owners take — WhatsApp in the CRM, leads, calling, and parent login.",
+      "pricing.footnote",
+      "Each institute is its own install. GST extra. Official WhatsApp conversation charges are from Meta, on top of the pack. Setup is quoted once.",
     ),
     plans: plans.map((p) => ({
       ...p,
       name: block(blocks, `plan.${p.id}.name`, p.name),
       blurb: block(blocks, `plan.${p.id}.blurb`, p.blurb),
+      price: block(blocks, `plan.${p.id}.price`, p.price),
+      priceSuffix: block(blocks, `plan.${p.id}.priceSuffix`, p.priceSuffix),
+      priceCaption: block(blocks, `plan.${p.id}.priceCaption`, p.priceCaption),
       includes: parseList(blocks[`plan.${p.id}.includes`], p.includes),
     })),
   };
@@ -143,12 +157,17 @@ export function seedContentEntries() {
     { key: "pricing.kicker", value: "Pricing" },
     {
       key: "pricing.title",
-      value: "Choose a pack. Ask for a quote. We set it up for your institute.",
+      value: "Three packs. Starter from ₹3,000 a month.",
     },
     {
       key: "pricing.body",
       value:
-        "These are the real packs in the product. We do not print a made-up rupee number. Full CRM is what most owners take — WhatsApp in the CRM, leads, calling, and parent login.",
+        "Starter is attendance plus the WhatsApp inbox. Starter + Fees adds collection and the PDF receipt. Full CRM is the whole desk. GST extra. Meta WhatsApp usage is billed by Meta. One campus, one install.",
+    },
+    {
+      key: "pricing.footnote",
+      value:
+        "Each institute is its own install. GST extra. Official WhatsApp conversation charges are from Meta, on top of the pack. Setup is quoted once.",
     },
     { key: "features.kicker", value: "Features" },
     {
@@ -172,6 +191,9 @@ export function seedContentEntries() {
   for (const p of plans) {
     entries.push({ key: `plan.${p.id}.name`, value: p.name });
     entries.push({ key: `plan.${p.id}.blurb`, value: p.blurb });
+    entries.push({ key: `plan.${p.id}.price`, value: p.price });
+    entries.push({ key: `plan.${p.id}.priceSuffix`, value: p.priceSuffix });
+    entries.push({ key: `plan.${p.id}.priceCaption`, value: p.priceCaption });
     entries.push({ key: `plan.${p.id}.includes`, value: JSON.stringify(p.includes) });
   }
   for (const m of modules) {

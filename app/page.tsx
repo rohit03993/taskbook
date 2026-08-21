@@ -193,7 +193,8 @@ export default async function HomePage() {
           <p className="kicker">Packs</p>
           <h2 className="mt-3 font-display text-3xl text-navy-900">Packs you can take</h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-navy-700">
-            Starter, Academic+, Full CRM, or Full CRM + Results. Full CRM is what most owners take.
+            Starter ₹3,000 — attendance and WhatsApp inbox. Starter + Fees ₹6,000. Full CRM ₹10,000 — the whole desk.
+            Full CRM is what most owners take.
           </p>
           <div className="mt-8 flex flex-wrap gap-2">
             {plans.map((p) => (
