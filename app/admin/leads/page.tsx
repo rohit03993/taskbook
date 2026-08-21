@@ -1,5 +1,6 @@
 import { AdminShell } from "@/app/admin/AdminShell";
 import { deleteLeadAction, updateLeadAction } from "@/app/admin/actions";
+import { PageHeader } from "@/app/admin/ui";
 import { listLeads } from "@/lib/leads";
 import { waLink } from "@/lib/settings";
 
@@ -11,8 +12,10 @@ export default async function AdminLeadsPage() {
 
   return (
     <AdminShell>
-      <h1 className="font-display text-3xl text-navy-900">Leads</h1>
-      <p className="mt-2 text-sm text-navy-700">From Book a demo. Mark contacted, add a note, or remove.</p>
+      <PageHeader
+        title="Leads"
+        hint="People who filled Book a demo. WhatsApp them, mark contacted, add a note."
+      />
       {leads.length === 0 ? (
         <p className="mt-10 text-sm text-navy-700">No leads yet. Submit the demo form on the site to test.</p>
       ) : (

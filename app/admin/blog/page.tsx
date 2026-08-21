@@ -1,5 +1,5 @@
 import { AdminShell } from "@/app/admin/AdminShell";
-import { ScoreBadge } from "@/app/admin/ui";
+import { ScoreBadge, PageHeader } from "@/app/admin/ui";
 import { listPosts } from "@/lib/blog";
 import { scoreKeyword } from "@/lib/keyword-score";
 import Link from "next/link";
@@ -12,15 +12,15 @@ export default async function AdminBlogPage() {
 
   return (
     <AdminShell>
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl text-navy-900">Blog</h1>
-          <p className="mt-2 text-sm text-navy-700">Write, score the focus keyword, then publish. Score is on-page, not Google rank.</p>
-        </div>
-        <Link href="/admin/blog/new" className="rounded-full bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white">
-          New post
-        </Link>
-      </div>
+      <PageHeader
+        title="Blog"
+        hint="Write, check the focus keyword, then publish. The score is on the page — not Google rank."
+        action={
+          <Link href="/admin/blog/new" className="rounded-full bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white">
+            New post
+          </Link>
+        }
+      />
       {posts.length === 0 ? (
         <p className="mt-10 text-sm text-navy-700">No posts yet. Seed the database or write the first one.</p>
       ) : (

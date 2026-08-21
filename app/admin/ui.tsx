@@ -21,6 +21,26 @@ export function Field({
   );
 }
 
+export function PageHeader({
+  title,
+  hint,
+  action,
+}: {
+  title: string;
+  hint?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 className="font-display text-3xl text-navy-900">{title}</h1>
+        {hint ? <p className="mt-2 max-w-xl text-sm text-navy-700">{hint}</p> : null}
+      </div>
+      {action}
+    </div>
+  );
+}
+
 export function SaveButton({ children = "Save" }: { children?: ReactNode }) {
   return (
     <button type="submit" className="rounded-full bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white">
