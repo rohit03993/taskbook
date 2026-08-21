@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "node scripts/prisma.cjs generate && next build",
     "start": "next start",
-    "postinstall": "prisma generate",
-    "db:seed": "tsx prisma/seed.ts"
+    "postinstall": "node scripts/prisma.cjs generate",
+    "db:migrate": "node scripts/prisma.cjs migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:generate": "node scripts/prisma.cjs generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

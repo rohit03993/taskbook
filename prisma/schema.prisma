@@ -3,6 +3,7 @@ generator client {
 }
 
 datasource db {
+  // Built at runtime from DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD in .env.local
   provider = "mysql"
   url      = env("DATABASE_URL")
 }

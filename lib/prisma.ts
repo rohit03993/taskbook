@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { applyDbEnv, dbConfigured } from "./db-env";
+
+applyDbEnv();
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export function dbConfigured() {
-  return Boolean(process.env.DATABASE_URL);
-}
+export { dbConfigured };
 
 export const prisma =
   globalForPrisma.prisma ??

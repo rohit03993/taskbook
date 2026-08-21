@@ -12,7 +12,9 @@ export default async function AdminLoginPage() {
       <div className="w-full max-w-md rounded-[1.6rem] bg-white p-8 ring-1 ring-navy-900/[0.06]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-navy-600">Task Book</p>
         <h1 className="mt-3 font-display text-3xl text-navy-900">Staff login</h1>
-        <p className="mt-2 text-sm text-navy-700">Phone number and password. Leads, copy, blogs, and city pages.</p>
+        <p className="mt-2 text-sm text-navy-700">
+          Phone and password. Database settings sit in .env.local — DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD — same as Laravel.
+        </p>
         <LoginForm />
       </div>
     </div>

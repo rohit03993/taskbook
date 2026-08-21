@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { readFile } from "fs/promises";
 import path from "path";
 import { bootstrapCms } from "../lib/bootstrap";
+import { applyDbEnv } from "../lib/db-env";
 import { normalizePhone } from "../lib/phone";
 
 function loadEnvFile(file: string) {
@@ -27,6 +28,13 @@ function loadEnvFile(file: string) {
 
 loadEnvFile(path.join(process.cwd(), ".env"));
 loadEnvFile(path.join(process.cwd(), ".env.local"));
+applyDbEnv();
+if (!process.env.DATABASE_URL) {
+  console.error(
+    "Fill DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD in .env.local (same as Laravel), then retry.",
+  );
+  process.exit(1);
+}
 
 const prisma = new PrismaClient();
 

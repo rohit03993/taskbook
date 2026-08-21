@@ -83,7 +83,10 @@ async function recordAttempt(phone: string, success: boolean) {
 
 export async function loginWithPhone(phoneRaw: string, password: string) {
   if (!dbConfigured()) {
-    return { error: "Set DATABASE_URL (CloudPanel MySQL) and restart the site." };
+    return {
+      error:
+        "Database is not connected. In .env.local set DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD (the ones you created in CloudPanel), then restart the site.",
+    };
   }
   await ensureOwner();
   const { bootstrapCms } = await import("@/lib/bootstrap");
