@@ -40,6 +40,7 @@ export function Header() {
   const primaryNav = nav.filter((item) => !("children" in item && item.children));
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-navy-900/[0.06] bg-white/95 backdrop-blur-md">
       <div className="container-site flex h-14 items-center justify-between gap-3 lg:h-[4.75rem]">
         <Link
@@ -147,10 +148,14 @@ export function Header() {
           </span>
         </button>
       </div>
+    </header>
 
       {open && (
-        <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-14 z-50 flex flex-col bg-white lg:hidden">
-          <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
+        <div
+          id="mobile-nav"
+          className="fixed inset-x-0 top-14 z-[60] flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden bg-white lg:hidden"
+        >
+          <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
             <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
               Product
             </p>
@@ -238,12 +243,12 @@ export function Header() {
             </div>
           </nav>
 
-          <div className="border-t border-navy-900/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+          <div className="shrink-0 border-t border-navy-900/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             <DualCta />
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
