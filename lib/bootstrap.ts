@@ -1,6 +1,6 @@
 import { posts } from "../content/blog";
 import { site } from "../content/site";
-import { seedContentEntries } from "./content";
+import { seedContentEntries, repairStalePlanBlocks } from "./content";
 import { scoreKeyword } from "./keyword-score";
 import { dbConfigured, prisma } from "./prisma";
 
@@ -179,4 +179,6 @@ We do not promise rank 1 on Google. We do not put a made-up price. We do not run
       await prisma.contentBlock.create({ data: entry });
     }
   }
+
+  await repairStalePlanBlocks();
 }

@@ -70,7 +70,50 @@ function freshCopy(stored: string | undefined, fallback: string, staleBits: stri
   return stored;
 }
 
+/** Old CMS rows from Academic+ / five-pack era — never show these on the public site. */
+const STALE_PLAN_COPY = [
+  "Marks & exams",
+  "Academic+",
+  "core academics",
+  "Attendance and marks",
+  "automations",
+  "Student cases",
+];
+
+function freshIncludes(raw: string | undefined, fallback: readonly string[]) {
+  const items = parseList(raw, fallback);
+  const blob = items.join("\n");
+  if (STALE_PLAN_COPY.some((bit) => blob.includes(bit))) return [...fallback];
+  return items;
+}
+
+/** Rewrite old Academic+ pack copy in MySQL so Admin and the public page stay in sync. */
+export async function repairStalePlanBlocks() {
+  await withDb(async (db) => {
+    for (const p of plans) {
+      const incKey = `plan.${p.id}.includes`;
+      const blurbKey = `plan.${p.id}.blurb`;
+      const inc = await db.contentBlock.findUnique({ where: { key: incKey } });
+      if (inc && STALE_PLAN_COPY.some((bit) => inc.value.includes(bit))) {
+        await db.contentBlock.update({
+          where: { key: incKey },
+          data: { value: JSON.stringify(p.includes) },
+        });
+      }
+      const blurb = await db.contentBlock.findUnique({ where: { key: blurbKey } });
+      if (blurb && STALE_PLAN_COPY.some((bit) => blurb.value.includes(bit))) {
+        await db.contentBlock.update({
+          where: { key: blurbKey },
+          data: { value: p.blurb },
+        });
+      }
+    }
+    return true;
+  }, false);
+}
+
 export async function getPricingContent() {
+  await repairStalePlanBlocks();
   const blocks = await getBlocks();
   return {
     kicker: block(blocks, "pricing.kicker", "Pricing"),
@@ -92,11 +135,11 @@ export async function getPricingContent() {
     plans: plans.map((p) => ({
       ...p,
       name: block(blocks, `plan.${p.id}.name`, p.name),
-      blurb: block(blocks, `plan.${p.id}.blurb`, p.blurb),
+      blurb: freshCopy(blocks[`plan.${p.id}.blurb`], p.blurb, STALE_PLAN_COPY),
       price: block(blocks, `plan.${p.id}.price`, p.price),
       priceSuffix: block(blocks, `plan.${p.id}.priceSuffix`, p.priceSuffix),
       priceCaption: block(blocks, `plan.${p.id}.priceCaption`, p.priceCaption),
-      includes: parseList(blocks[`plan.${p.id}.includes`], p.includes),
+      includes: freshIncludes(blocks[`plan.${p.id}.includes`], p.includes),
     })),
   };
 }
