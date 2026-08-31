@@ -1,3 +1,5 @@
+import { existsSync } from "fs";
+import path from "path";
 import { site } from "@/content/site";
 import { DEFAULT_FAVICON, DEFAULT_LOGO, publicBrandSrc } from "@/lib/branding";
 import { prisma, withDb } from "@/lib/prisma";
@@ -22,6 +24,13 @@ export function emptySettings(): SiteSettings {
   };
 }
 
+function fileOnDisk(url: string) {
+  const safe = publicBrandSrc(url, "");
+  if (!safe) return "";
+  const abs = path.join(process.cwd(), "public", safe.replace(/^\//, ""));
+  return existsSync(abs) ? safe : "";
+}
+
 function cleanSettings(next: SiteSettings): SiteSettings {
   return {
     whatsappNumber: next.whatsappNumber.replace(/\D/g, ""),
@@ -43,8 +52,8 @@ export async function getSettings(): Promise<SiteSettings> {
       whatsappMessage: row.whatsappMessage || fallback.whatsappMessage,
       email: row.email || fallback.email,
       webhookUrl: row.webhookUrl || fallback.webhookUrl,
-      logoUrl: row.logoUrl || "",
-      faviconUrl: row.faviconUrl || "",
+      logoUrl: fileOnDisk(row.logoUrl || ""),
+      faviconUrl: fileOnDisk(row.faviconUrl || ""),
     };
   }, fallback);
 }

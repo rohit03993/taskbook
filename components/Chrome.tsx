@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DualCta } from "@/components/DualCta";
+import { BrandMark } from "@/components/BrandMark";
 import { useSettings } from "@/components/SettingsProvider";
-import { DEFAULT_LOGO, publicBrandSrc } from "@/lib/branding";
 import { nav, site, whatsappHref } from "@/content/site";
 
 export function Header() {
@@ -39,7 +38,6 @@ export function Header() {
 
   const solutionsItem = nav.find((item) => "children" in item && item.children);
   const primaryNav = nav.filter((item) => !("children" in item && item.children));
-  const logoSrc = publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
 
   return (
     <>
@@ -51,27 +49,7 @@ export function Header() {
           aria-label={site.name}
           onClick={() => setOpen(false)}
         >
-          <span className="relative h-9 w-9 shrink-0 lg:h-12 lg:w-12">
-            <Image
-              src={logoSrc}
-              alt=""
-              fill
-              sizes="48px"
-              className="object-contain"
-              priority
-            />
-          </span>
-          <span className="leading-tight">
-            <span className="block text-[1.05rem] font-bold tracking-tight lg:text-[1.35rem]">
-              <span className="text-navy-900">TASK</span>
-              <span className="text-[#007BFF]">BOOK</span>
-            </span>
-            <span className="hidden text-[10px] font-medium tracking-wide sm:block">
-              <span className="text-navy-900">Manage.</span>{" "}
-              <span className="text-[#17B6C4]">Automate.</span>{" "}
-              <span className="text-[#2ECC71]">Connect.</span>
-            </span>
-          </span>
+          <BrandMark key={settings.logoUrl || "default"} logoUrl={settings.logoUrl} size="header" />
         </Link>
 
         <nav className="hidden items-center gap-8 text-[13px] font-medium text-navy-900/70 lg:flex">
@@ -268,26 +246,12 @@ export function Footer() {
   const path = usePathname();
   const settings = useSettings();
   if (path.startsWith("/admin")) return null;
-  const logoSrc = publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
   return (
     <footer className="border-t border-navy-900/10 bg-white pb-24 lg:pb-0">
       <div className="container-site grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" className="flex items-center gap-3" aria-label={site.name}>
-            <span className="relative h-14 w-14 shrink-0">
-              <Image src={logoSrc} alt="" fill sizes="56px" className="object-contain" />
-            </span>
-            <span className="leading-tight">
-              <span className="block text-2xl font-bold tracking-tight">
-                <span className="text-navy-900">TASK</span>
-                <span className="text-[#007BFF]">BOOK</span>
-              </span>
-              <span className="mt-0.5 block text-xs font-medium">
-                <span className="text-navy-900">Manage.</span>{" "}
-                <span className="text-[#17B6C4]">Automate.</span>{" "}
-                <span className="text-[#2ECC71]">Connect.</span>
-              </span>
-            </span>
+            <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="footer" />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-navy-700">{site.pitch}</p>
         </div>

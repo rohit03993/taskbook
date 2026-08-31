@@ -46,16 +46,16 @@ export function SettingsForm({ settings, owner }: { settings: SiteSettings; owne
       <div className="space-y-5 rounded-[1.6rem] bg-white p-6 ring-1 ring-navy-900/[0.06] sm:p-8">
         <p className="font-display text-lg text-navy-900">Logo and favicon</p>
         <p className="text-sm text-navy-700">
-          PNG, JPG or WebP, under 2 MB. Header and footer use the logo. The tab icon uses the favicon, or the logo if you
-          do not upload a separate square.
+          PNG, JPG or WebP, under 2 MB. The header and footer show this logo in full — not a tiny square next to extra
+          text. Upload a square PNG for the browser tab.
         </p>
         <fieldset disabled={!owner} className="space-y-6">
           <div>
             <p className="text-sm font-medium text-navy-900">Header and footer logo</p>
-            <div className="mt-2 flex items-center gap-4">
-              <span className="relative h-14 w-14 overflow-hidden rounded-xl bg-navy-50 ring-1 ring-navy-900/10">
+            <div className="mt-2 flex flex-wrap items-center gap-4">
+              <span className="flex h-16 min-w-[9rem] max-w-[16rem] items-center justify-start overflow-hidden rounded-xl bg-navy-50 px-3 ring-1 ring-navy-900/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={logo} alt="" className="h-full w-full object-contain p-1" />
+                <img src={logo} alt="" className="max-h-14 w-auto max-w-full object-contain object-left" />
               </span>
               <input name="logo" type="file" accept="image/png,image/jpeg,image/webp" className="text-sm" />
             </div>
@@ -68,7 +68,7 @@ export function SettingsForm({ settings, owner }: { settings: SiteSettings; owne
           </div>
           <div>
             <p className="text-sm font-medium text-navy-900">Favicon (browser tab)</p>
-            <p className="mt-0.5 text-xs text-navy-700">Square image. Same as the header icon if you skip this.</p>
+            <p className="mt-0.5 text-xs text-navy-700">Square image for the browser tab. Optional.</p>
             <div className="mt-2 flex items-center gap-4">
               <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-navy-50 ring-1 ring-navy-900/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
