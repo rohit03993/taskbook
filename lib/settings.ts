@@ -62,8 +62,8 @@ export function siteLogoSrc(settings: Pick<SiteSettings, "logoUrl">) {
   return publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
 }
 
-export function siteFaviconSrc(settings: Pick<SiteSettings, "logoUrl" | "faviconUrl">) {
-  return publicBrandSrc(settings.faviconUrl, publicBrandSrc(settings.logoUrl, DEFAULT_FAVICON));
+export function siteFaviconSrc(settings: Pick<SiteSettings, "faviconUrl">) {
+  return publicBrandSrc(settings.faviconUrl, DEFAULT_FAVICON);
 }
 
 export async function saveSettings(next: SiteSettings) {

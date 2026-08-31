@@ -1,17 +1,38 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { saveSettingsAction } from "@/app/admin/actions";
 import { fieldClass, Field, SaveButton } from "@/app/admin/ui";
 import { DEFAULT_FAVICON, DEFAULT_LOGO, publicBrandSrc } from "@/lib/branding";
 import type { SiteSettings } from "@/lib/settings";
 
+function FilePick({ name, accept }: { name: string; accept: string }) {
+  const [label, setLabel] = useState("No file chosen");
+  return (
+    <label className="inline-flex cursor-pointer items-center gap-3 text-sm">
+      <span className="rounded-full bg-navy-900 px-3 py-1.5 font-medium text-white">Choose file</span>
+      <span className="text-navy-700">{label}</span>
+      <input
+        name={name}
+        type="file"
+        accept={accept}
+        className="sr-only"
+        onChange={(event) => setLabel(event.target.files?.[0]?.name || "No file chosen")}
+      />
+    </label>
+  );
+}
+
 export function SettingsForm({ settings, owner }: { settings: SiteSettings; owner: boolean }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const logo = publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
-  const favicon = publicBrandSrc(settings.faviconUrl, publicBrandSrc(settings.logoUrl, DEFAULT_FAVICON));
+  const [favicon, setFavicon] = useState(publicBrandSrc(settings.faviconUrl, DEFAULT_FAVICON));
+
+  useEffect(() => {
+    setFavicon(publicBrandSrc(settings.faviconUrl, DEFAULT_FAVICON));
+  }, [settings.faviconUrl]);
 
   async function onSubmit(formData: FormData) {
     setError("");
@@ -57,7 +78,7 @@ export function SettingsForm({ settings, owner }: { settings: SiteSettings; owne
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={logo} alt="" className="max-h-14 w-auto max-w-full object-contain object-left" />
               </span>
-              <input name="logo" type="file" accept="image/png,image/jpeg,image/webp" className="text-sm" />
+              <FilePick name="logo" accept="image/png,image/jpeg,image/webp" />
             </div>
             {settings.logoUrl ? (
               <label className="mt-3 flex items-center gap-2 text-sm text-navy-800">
@@ -69,12 +90,17 @@ export function SettingsForm({ settings, owner }: { settings: SiteSettings; owne
           <div>
             <p className="text-sm font-medium text-navy-900">Favicon (browser tab)</p>
             <p className="mt-0.5 text-xs text-navy-700">Square image for the browser tab. Optional.</p>
-            <div className="mt-2 flex items-center gap-4">
-              <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-navy-50 ring-1 ring-navy-900/10">
+            <div className="mt-2 flex flex-wrap items-center gap-4">
+              <span className="relative h-10 w-10 overflow-hidden rounded-lg bg-white ring-1 ring-navy-900/10">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={favicon} alt="" className="h-full w-full object-contain p-0.5" />
+                <img
+                  src={favicon}
+                  alt=""
+                  className="h-full w-full object-contain p-0.5"
+                  onError={() => setFavicon(DEFAULT_FAVICON)}
+                />
               </span>
-              <input name="favicon" type="file" accept="image/png,image/jpeg,image/webp" className="text-sm" />
+              <FilePick name="favicon" accept="image/png,image/jpeg,image/webp,image/x-icon,.ico" />
             </div>
             {settings.faviconUrl ? (
               <label className="mt-3 flex items-center gap-2 text-sm text-navy-800">

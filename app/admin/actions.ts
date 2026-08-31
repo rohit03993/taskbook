@@ -54,6 +54,9 @@ export async function saveSettingsAction(formData: FormData): Promise<{ error?: 
     faviconUrl,
   });
   revalidatePath("/", "layout");
+  revalidatePath("/icon");
+  revalidatePath("/apple-icon");
+  revalidatePath("/favicon.ico");
   revalidatePath("/admin");
   revalidatePath("/admin/settings");
   revalidatePath("/admin/login");

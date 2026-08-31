@@ -5,7 +5,7 @@ import { Footer, Header, StickyMobileCta } from "@/components/Chrome";
 import { SettingsProvider } from "@/components/SettingsProvider";
 import { site } from "@/content/site";
 import { listLocations } from "@/lib/locations";
-import { getSettings, siteFaviconSrc, siteLogoSrc } from "@/lib/settings";
+import { getSettings, siteLogoSrc } from "@/lib/settings";
 import "./globals.css";
 
 const sans = Outfit({
@@ -22,7 +22,6 @@ const display = Fraunces({
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
-  const icon = siteFaviconSrc(settings);
   const og = siteLogoSrc(settings);
   return {
     metadataBase: new URL(site.url),
@@ -32,8 +31,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: site.pitch,
     icons: {
-      icon: [{ url: icon }],
-      apple: [{ url: icon }],
+      icon: [
+        { url: "/icon", type: "image/png", sizes: "32x32" },
+        { url: "/favicon.ico", sizes: "any" },
+      ],
+      apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
     },
     openGraph: {
       title: site.name,
