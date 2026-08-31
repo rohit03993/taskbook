@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { clearAdminCookie, getStaff, hashPassword, loginWithPhone, requireOwner } from "@/lib/admin-auth";
 import { deleteLead, updateLead, type LeadStatus } from "@/lib/leads";
-import { saveSettings } from "@/lib/settings";
+import { saveBrandingUpload } from "@/lib/branding";
+import { getSettings, saveSettings } from "@/lib/settings";
 import { deletePost, savePost, type BlogInput } from "@/lib/blog";
 import { deleteLocation, saveLocation, type LocationFaq, type LocationInput } from "@/lib/locations";
 import { upsertBlocks } from "@/lib/content";
@@ -28,18 +29,34 @@ export async function logoutAction() {
   redirect("/admin/login");
 }
 
-export async function saveSettingsAction(formData: FormData): Promise<void> {
+export async function saveSettingsAction(formData: FormData): Promise<{ error?: string } | void> {
   const staff = await guard();
   if (staff.role !== "owner") return;
+  const current = await getSettings();
+  let logoUrl = current.logoUrl;
+  let faviconUrl = current.faviconUrl;
+  try {
+    const nextLogo = await saveBrandingUpload(formData.get("logo") as File | null, "logo");
+    const nextFavicon = await saveBrandingUpload(formData.get("favicon") as File | null, "favicon");
+    if (nextLogo) logoUrl = nextLogo;
+    if (nextFavicon) faviconUrl = nextFavicon;
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Could not save the image." };
+  }
+  if (String(formData.get("clearLogo") ?? "") === "on") logoUrl = "";
+  if (String(formData.get("clearFavicon") ?? "") === "on") faviconUrl = "";
   await saveSettings({
     whatsappNumber: String(formData.get("whatsappNumber") ?? ""),
     whatsappMessage: String(formData.get("whatsappMessage") ?? ""),
     email: String(formData.get("email") ?? ""),
     webhookUrl: String(formData.get("webhookUrl") ?? ""),
+    logoUrl,
+    faviconUrl,
   });
   revalidatePath("/", "layout");
   revalidatePath("/admin");
   revalidatePath("/admin/settings");
+  revalidatePath("/admin/login");
 }
 
 export async function updateLeadAction(formData: FormData) {

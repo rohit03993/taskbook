@@ -33,7 +33,7 @@ const groups = [
   {
     title: "Setup",
     items: [
-      { href: "/admin/settings", label: "WhatsApp" },
+      { href: "/admin/settings", label: "WhatsApp & logo" },
       { href: "/admin/staff", label: "Staff" },
     ],
   },

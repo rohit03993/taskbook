@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DualCta } from "@/components/DualCta";
 import { useSettings } from "@/components/SettingsProvider";
+import { DEFAULT_LOGO, publicBrandSrc } from "@/lib/branding";
 import { nav, site, whatsappHref } from "@/content/site";
 
 export function Header() {
@@ -38,6 +39,7 @@ export function Header() {
 
   const solutionsItem = nav.find((item) => "children" in item && item.children);
   const primaryNav = nav.filter((item) => !("children" in item && item.children));
+  const logoSrc = publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
 
   return (
     <>
@@ -51,10 +53,10 @@ export function Header() {
         >
           <span className="relative h-9 w-9 shrink-0 lg:h-12 lg:w-12">
             <Image
-              src="/logos/taskbook-icon.png"
+              src={logoSrc}
               alt=""
               fill
-              sizes="44px"
+              sizes="48px"
               className="object-contain"
               priority
             />
@@ -266,13 +268,14 @@ export function Footer() {
   const path = usePathname();
   const settings = useSettings();
   if (path.startsWith("/admin")) return null;
+  const logoSrc = publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
   return (
     <footer className="border-t border-navy-900/10 bg-white pb-24 lg:pb-0">
       <div className="container-site grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" className="flex items-center gap-3" aria-label={site.name}>
             <span className="relative h-14 w-14 shrink-0">
-              <Image src="/logos/taskbook-icon.png" alt="" fill sizes="56px" className="object-contain" />
+              <Image src={logoSrc} alt="" fill sizes="56px" className="object-contain" />
             </span>
             <span className="leading-tight">
               <span className="block text-2xl font-bold tracking-tight">

@@ -5,7 +5,7 @@ import { Footer, Header, StickyMobileCta } from "@/components/Chrome";
 import { SettingsProvider } from "@/components/SettingsProvider";
 import { site } from "@/content/site";
 import { listLocations } from "@/lib/locations";
-import { getSettings } from "@/lib/settings";
+import { getSettings, siteFaviconSrc, siteLogoSrc } from "@/lib/settings";
 import "./globals.css";
 
 const sans = Outfit({
@@ -20,26 +20,31 @@ const display = Fraunces({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — School software with WhatsApp built in`,
-    template: `%s · ${site.name}`,
-  },
-  description: site.pitch,
-  icons: {
-    icon: [{ url: "/logos/taskbook-icon.png", type: "image/png" }],
-    apple: [{ url: "/apple-icon.png", type: "image/png" }],
-  },
-  openGraph: {
-    title: site.name,
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSettings();
+  const icon = siteFaviconSrc(settings);
+  const og = siteLogoSrc(settings);
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: `${site.name} — School software with WhatsApp built in`,
+      template: `%s · ${site.name}`,
+    },
     description: site.pitch,
-    url: site.url,
-    siteName: site.name,
-    type: "website",
-    images: [{ url: "/logos/taskbook-logo.png", alt: "Task Book" }],
-  },
-};
+    icons: {
+      icon: [{ url: icon }],
+      apple: [{ url: icon }],
+    },
+    openGraph: {
+      title: site.name,
+      description: site.pitch,
+      url: site.url,
+      siteName: site.name,
+      type: "website",
+      images: [{ url: og, alt: "Task Book" }],
+    },
+  };
+}
 
 export const viewport = {
   width: "device-width",
@@ -58,6 +63,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             whatsappNumber: settings.whatsappNumber,
             whatsappMessage: settings.whatsappMessage,
             email: settings.email,
+            logoUrl: settings.logoUrl,
+            faviconUrl: settings.faviconUrl,
             locations: locations.map((l) => ({ slug: l.slug, city: l.city })),
           }}
         >

@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { DEFAULT_FAVICON, DEFAULT_LOGO, publicBrandSrc } from "@/lib/branding";
 import { prisma, withDb } from "@/lib/prisma";
 
 export type SiteSettings = {
@@ -6,6 +7,8 @@ export type SiteSettings = {
   whatsappMessage: string;
   email: string;
   webhookUrl: string;
+  logoUrl: string;
+  faviconUrl: string;
 };
 
 export function emptySettings(): SiteSettings {
@@ -14,6 +17,8 @@ export function emptySettings(): SiteSettings {
     whatsappMessage: "Hi, I run a school/college/institute and want a Task Book demo.",
     email: site.email,
     webhookUrl: process.env.LEADS_WEBHOOK_URL ?? "",
+    logoUrl: "",
+    faviconUrl: "",
   };
 }
 
@@ -23,6 +28,8 @@ function cleanSettings(next: SiteSettings): SiteSettings {
     whatsappMessage: next.whatsappMessage.trim(),
     email: next.email.trim(),
     webhookUrl: next.webhookUrl.trim(),
+    logoUrl: publicBrandSrc(next.logoUrl, "") || "",
+    faviconUrl: publicBrandSrc(next.faviconUrl, "") || "",
   };
 }
 
@@ -36,8 +43,18 @@ export async function getSettings(): Promise<SiteSettings> {
       whatsappMessage: row.whatsappMessage || fallback.whatsappMessage,
       email: row.email || fallback.email,
       webhookUrl: row.webhookUrl || fallback.webhookUrl,
+      logoUrl: row.logoUrl || "",
+      faviconUrl: row.faviconUrl || "",
     };
   }, fallback);
+}
+
+export function siteLogoSrc(settings: Pick<SiteSettings, "logoUrl">) {
+  return publicBrandSrc(settings.logoUrl, DEFAULT_LOGO);
+}
+
+export function siteFaviconSrc(settings: Pick<SiteSettings, "logoUrl" | "faviconUrl">) {
+  return publicBrandSrc(settings.faviconUrl, publicBrandSrc(settings.logoUrl, DEFAULT_FAVICON));
 }
 
 export async function saveSettings(next: SiteSettings) {

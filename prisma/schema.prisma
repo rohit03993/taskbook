@@ -77,6 +77,8 @@ model Setting {
   whatsappMessage String   @db.Text
   email           String   @default("")
   webhookUrl      String   @default("")
+  logoUrl         String   @default("")
+  faviconUrl      String   @default("")
   updatedAt       DateTime @updatedAt
 }
 

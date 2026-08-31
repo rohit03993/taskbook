@@ -6,3 +6,6 @@ out
 data/leads.json
 data/settings.json
 .DS_Store
+tsconfig.tsbuildinfo
+public/uploads/branding/*
+!public/uploads/branding/.gitkeep
