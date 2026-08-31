@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { clearAdminCookie, getStaff, hashPassword, loginWithPhone, requireOwner } from "@/lib/admin-auth";
 import { deleteLead, updateLead, type LeadStatus } from "@/lib/leads";
-import { saveBrandingUpload } from "@/lib/branding";
+import { saveBrandingUpload } from "@/lib/branding-upload";
 import { getSettings, saveSettings } from "@/lib/settings";
 import { deletePost, savePost, type BlogInput } from "@/lib/blog";
 import { deleteLocation, saveLocation, type LocationFaq, type LocationInput } from "@/lib/locations";
