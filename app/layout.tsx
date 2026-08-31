@@ -27,12 +27,17 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: site.pitch,
+  icons: {
+    icon: [{ url: "/logos/taskbook-icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
   openGraph: {
     title: site.name,
     description: site.pitch,
     url: site.url,
     siteName: site.name,
     type: "website",
+    images: [{ url: "/logos/taskbook-logo.png", alt: "Task Book" }],
   },
 };
 

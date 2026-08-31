@@ -49,7 +49,7 @@ export function Header() {
           aria-label={site.name}
           onClick={() => setOpen(false)}
         >
-          <span className="relative h-8 w-8 shrink-0 lg:h-11 lg:w-11">
+          <span className="relative h-9 w-9 shrink-0 lg:h-12 lg:w-12">
             <Image
               src="/logos/taskbook-icon.png"
               alt=""
@@ -61,8 +61,8 @@ export function Header() {
           </span>
           <span className="leading-tight">
             <span className="block text-[1.05rem] font-bold tracking-tight lg:text-[1.35rem]">
-              <span className="text-navy-900">Task</span>
-              <span className="text-[#17B6C4]">Book</span>
+              <span className="text-navy-900">TASK</span>
+              <span className="text-[#007BFF]">BOOK</span>
             </span>
             <span className="hidden text-[10px] font-medium tracking-wide sm:block">
               <span className="text-navy-900">Manage.</span>{" "}
@@ -276,8 +276,8 @@ export function Footer() {
             </span>
             <span className="leading-tight">
               <span className="block text-2xl font-bold tracking-tight">
-                <span className="text-navy-900">Task</span>
-                <span className="text-[#17B6C4]">Book</span>
+                <span className="text-navy-900">TASK</span>
+                <span className="text-[#007BFF]">BOOK</span>
               </span>
               <span className="mt-0.5 block text-xs font-medium">
                 <span className="text-navy-900">Manage.</span>{" "}
