@@ -954,6 +954,7 @@ export function StudentJourney() {
   const booted = useRef(false);
   const timer = useRef<number | null>(null);
   const [ready, setReady] = useState(false);
+  const [guideNudge, setGuideNudge] = useState(false);
   const [step, setStep] = useState<JourneyStep>("call");
   const [progress, setProgress] = useState<JourneyStep>("call");
   const [record, setRecord] = useState<JourneyRecord>(emptyJourney);
@@ -998,6 +999,86 @@ export function StudentJourney() {
     if (!ready) return;
     sessionStorage.setItem(journeyStorageKey, JSON.stringify({ step, progress, record }));
   }, [ready, step, progress, record]);
+
+  const holdPage = ready && progress !== "done";
+  useEffect(() => {
+    if (!holdPage) return;
+    const section = ref.current?.closest("section");
+    if (!section) return;
+    const held: HTMLElement[] = [];
+    let sibling = section.nextElementSibling;
+    while (sibling) {
+      if (sibling instanceof HTMLElement) held.push(sibling);
+      sibling = sibling.nextElementSibling;
+    }
+    const footer = section.parentElement?.parentElement?.querySelector("footer");
+    if (footer instanceof HTMLElement) held.push(footer);
+    held.forEach((node) => { node.inert = true; });
+
+    const limit = () => {
+      const box = section.getBoundingClientRect();
+      const top = window.scrollY + box.top;
+      const bottom = window.scrollY + box.bottom;
+      return Math.max(top, bottom - window.innerHeight);
+    };
+    const clamp = () => {
+      const max = limit();
+      if (window.scrollY > max + 1) {
+        window.scrollTo(0, max);
+        askToContinue();
+      }
+    };
+    const atEnd = () => window.scrollY >= limit() - 2;
+    const askToContinue = () => setGuideNudge(true);
+    const onWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0 && atEnd()) {
+        event.preventDefault();
+        askToContinue();
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "End") {
+        event.preventDefault();
+        askToContinue();
+        return;
+      }
+      if (!["ArrowDown", "PageDown", " "].includes(event.key) || !atEnd()) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.closest("input, textarea, select") || target.isContentEditable)) return;
+      event.preventDefault();
+      askToContinue();
+    };
+    let touchY = 0;
+    const onTouchStart = (event: TouchEvent) => { touchY = event.touches[0]?.clientY ?? 0; };
+    const onTouchMove = (event: TouchEvent) => {
+      const y = event.touches[0]?.clientY ?? touchY;
+      const fingerUp = y < touchY;
+      touchY = y;
+      if (fingerUp && atEnd()) {
+        event.preventDefault();
+        askToContinue();
+      }
+    };
+
+    window.addEventListener("scroll", clamp, { passive: true });
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    clamp();
+    return () => {
+      held.forEach((node) => { node.inert = false; });
+      window.removeEventListener("scroll", clamp);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [holdPage, ref]);
+
+  useEffect(() => {
+    setGuideNudge(false);
+  }, [step]);
 
   useEffect(() => {
     if (!ready) return;
@@ -1099,9 +1180,30 @@ export function StudentJourney() {
   const label = "block text-sm font-medium text-gray-700";
   const revising = journeySteps.indexOf(step) < journeySteps.indexOf(progress);
   const progressIndex = journeySteps.indexOf(progress);
+  const guide = ({
+    call: ["Step 1 of 5", "Save the call.", "The details are already filled in. Press Save call. Attendance opens next."],
+    attendance: ["Step 2 of 5", "Mark the day.", "Press Present or Absent. The fee screen opens next."],
+    fees: ["Step 3 of 5", "Record the fee.", "Choose Cash, Online, UPI, or Cheque. Enter the receipt, transaction, or cheque number, then submit ₹5,000."],
+    marks: ["Step 4 of 5", "Enter the marks.", "Type Mathematics, Science, and English, each out of 100. Then press Save and send."],
+    homework: ["Step 5 of 5", "Send the homework.", "Type the Maths work and the Science work, then press Send to parent. The rest of the page opens after this."],
+  } satisfies Partial<Record<JourneyStep, [string, string, string]>>)[step];
 
   return (
     <div ref={ref}>
+      {holdPage && guide && (
+        <div className="mb-4 rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-lg">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#128C9B]">{guide[0]}</p>
+          <p className="mt-1 text-base font-bold">{guide[1]}</p>
+          <p className="mt-1 text-sm leading-relaxed text-gray-700">{guide[2]}</p>
+          <p className="mt-2 text-sm font-semibold text-gray-500">The page below stays closed until all five steps are saved.</p>
+        </div>
+      )}
+      {holdPage && guideNudge && guide && (
+        <div className="fixed inset-x-0 bottom-0 z-[70] border-t border-amber-300 bg-amber-50 px-4 py-3 text-navy-950 shadow-lg">
+          <p className="text-sm font-bold">{guide[0]}. {guide[1]}</p>
+          <p className="mt-1 text-sm leading-relaxed">{guide[2]} The page stays here until you do this.</p>
+        </div>
+      )}
       <div className="mb-4 flex flex-wrap gap-2">
         {journeySteps.filter((item) => item !== "done").map((item, index) => {
           const current = step === item;

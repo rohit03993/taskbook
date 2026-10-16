@@ -59,7 +59,7 @@ export default async function HomePage() {
       <Dark
         kicker="One student"
         title="Let's do the demo on one student."
-        body="Aarav Kapoor, Class 5-A. The call opens on its own. Each save moves to the next screen. His file underneath keeps the whole session."
+        body="Aarav Kapoor, Class 5-A. Save the call, then the day, the fee, the marks, and the homework. The rest of the page opens after the homework is sent."
       >
         <StudentJourney />
       </Dark>
