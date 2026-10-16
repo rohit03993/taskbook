@@ -219,23 +219,26 @@ const audienceLinks = [
   { href: "/school-crm", label: "School CRM" },
   { href: "/college-crm", label: "College CRM" },
   { href: "/institute-crm", label: "Institute CRM" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/blog", label: "Blog" },
+  { href: "/features", label: "Features" },
 ] as const;
 
-const productLinks = [
-  { href: "/features", label: "Features" },
+const dayLinks = [
   { href: "/features/whatsapp-attendance", label: "Attendance" },
   { href: "/features/fees", label: "Fees" },
   { href: "/features/homework", label: "Homework" },
   { href: "/features/whatsapp-inbox", label: "WhatsApp inbox" },
   { href: "/features/student-360", label: "Student file" },
   { href: "/features/exams", label: "Exams" },
+] as const;
+
+const officeLinks = [
   { href: "/features/admissions", label: "Admission" },
   { href: "/features/leads", label: "Enquiries" },
   { href: "/cases", label: "Cases" },
   { href: "/certificates", label: "Certificates" },
   { href: "/institute-website", label: "Institute website" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/blog", label: "Blog" },
 ] as const;
 
 const companyLinks = [
@@ -253,7 +256,7 @@ function FooterLinks({ label, links }: { label: string; links: readonly { href: 
       <ul className="mt-3 space-y-1">
         {links.map((item) => (
           <li key={item.href}>
-            <Link href={item.href} className="inline-flex py-1 text-sm font-medium text-white hover:text-[#2EC4D6]">
+            <Link href={item.href} className="block py-1 text-sm font-medium leading-snug text-white hover:text-[#2EC4D6]">
               {item.label}
             </Link>
           </li>
@@ -271,7 +274,7 @@ export function Footer() {
   return (
     <footer className="bg-navy-950 pb-[env(safe-area-inset-bottom)] text-white">
       <div className="container-site py-8 lg:py-12">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Link href="/" className="inline-flex items-center rounded-md bg-white px-2 py-1.5" aria-label={site.name}>
               <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="nav" />
@@ -282,7 +285,7 @@ export function Footer() {
           </div>
           <a
             href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-wa px-5 text-sm font-semibold text-white hover:bg-wa-dark"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-wa px-5 text-sm font-semibold text-white hover:bg-wa-dark sm:w-auto"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -291,9 +294,10 @@ export function Footer() {
           </a>
         </div>
 
-        <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 lg:mt-10 lg:grid-cols-4 lg:gap-x-10">
           <FooterLinks label="Who it is for" links={audienceLinks} />
-          <FooterLinks label="Product" links={productLinks} />
+          <FooterLinks label="School day" links={dayLinks} />
+          <FooterLinks label="Office" links={officeLinks} />
           <FooterLinks label="Company" links={companyLinks} />
         </div>
       </div>
