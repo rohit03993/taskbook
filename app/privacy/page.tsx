@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       />
       <div className="mt-8 space-y-4 text-sm leading-relaxed text-navy-800">
         <p>
-          Demo forms collect name, mobile, institute, type, city, student count, and the headache you selected. We use
+          Demo forms collect name, mobile, institute, type, city, student count, and the main problem you selected. We use
           that to call or WhatsApp you about Task Book. We do not sell those leads.
         </p>
         <p>

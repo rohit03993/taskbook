@@ -23,7 +23,7 @@ export default async function FeaturesPage() {
       <section className="container-site py-14">
         <PageHero kicker={hub.kicker} title={hub.title} body={hub.body} />
         <p className="mt-6 max-w-2xl text-sm leading-relaxed text-navy-800">
-          These screens are the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link>. A coaching centre should read <Link href="/institute-crm" className="font-semibold text-navy-950">institute CRM</Link>. A campus in Bangladesh should read <Link href="/bangladesh-crm" className="font-semibold text-navy-950">Bangladesh CRM</Link>. Prices are on <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
+          These screens are the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link>. A coaching centre should read <Link href="/institute-crm" className="font-semibold text-navy-950">institute CRM</Link>. Prices are on <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
         </p>
         <div className="mt-14">
           <InsideSection />

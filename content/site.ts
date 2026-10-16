@@ -26,7 +26,6 @@ export const nav = [
     label: "Solutions",
     children: [
       { href: "/school-crm", label: "School CRM" },
-      { href: "/bangladesh-crm", label: "Bangladesh CRM" },
       { href: "/institute-crm", label: "Institute CRM" },
     ],
   },

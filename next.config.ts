@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { source: "/schools", destination: "/school-crm", permanent: true },
       { source: "/colleges", destination: "/school-crm", permanent: true },
       { source: "/institutes", destination: "/institute-crm", permanent: true },
+      { source: "/bangladesh-crm", destination: "/school-crm", permanent: true },
     ];
   },
 };

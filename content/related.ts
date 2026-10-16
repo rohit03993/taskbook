@@ -5,11 +5,6 @@ const crm: ReadLink = {
   label: "School CRM",
   note: "Attendance, fees, homework and marks on one student. WhatsApp only when you switch it on.",
 };
-const bangladesh: ReadLink = {
-  href: "/bangladesh-crm",
-  label: "Bangladesh CRM",
-  note: "The same campus software. Price for a campus outside India is confirmed on the demo.",
-};
 const institute: ReadLink = {
   href: "/institute-crm",
   label: "Institute CRM",
@@ -70,15 +65,14 @@ export const featureSeoTitle: Record<string, string> = {
 };
 
 const byPath: Record<string, ReadLink[]> = {
-  "/school-crm": [bangladesh, institute, file, attendance, fees, homework, marks, inbox, pricing, blog],
-  "/bangladesh-crm": [crm, institute, attendance, fees, inbox, pricing],
-  "/institute-crm": [crm, bangladesh, admissions, fees, homework, leads, pricing],
-  "/features": [crm, bangladesh, institute, pricing, blog],
-  "/pricing": [crm, bangladesh, institute, inbox, fees, homework],
-  "/blog": [crm, bangladesh, institute, features, pricing],
-  "/about": [crm, bangladesh, institute, features, pricing],
+  "/school-crm": [institute, file, attendance, fees, homework, marks, inbox, pricing, blog],
+  "/institute-crm": [crm, admissions, fees, homework, leads, pricing],
+  "/features": [crm, institute, pricing, blog],
+  "/pricing": [crm, institute, inbox, fees, homework],
+  "/blog": [crm, institute, features, pricing],
+  "/about": [crm, institute, features, pricing],
   "/features/whatsapp-inbox": [crm, institute, leads, staff, post("school-crm-whatsapp-inbox-admissions", "WhatsApp inbox for admissions", "One number. The next shift continues the thread.")],
-  "/features/whatsapp-attendance": [crm, bangladesh, fees, file, post("live-school-attendance-on-whatsapp", "Live attendance on WhatsApp", "The punch is stored first. The message is a switch.")],
+  "/features/whatsapp-attendance": [crm, fees, file, post("live-school-attendance-on-whatsapp", "Live attendance on WhatsApp", "The punch is stored first. The message is a switch.")],
   "/features/student-360": [crm, fees, marks, institute, post("student-profile-attendance-fees-marks", "One student profile", "Attendance, fees, and marks on the same file.")],
   "/features/leads": [crm, institute, admissions, inbox],
   "/features/admissions": [crm, leads, file, institute],
@@ -87,13 +81,13 @@ const byPath: Record<string, ReadLink[]> = {
   "/features/exams": [crm, institute, file, pricing, homework],
   "/features/homework": [crm, institute, fees, tracking, marks],
   "/features/reports": [crm, fees, attendance, pricing],
-  "/features/staff": [crm, inbox, attendance, bangladesh, post("staff-attendance-system-schools", "Staff attendance", "Who reached campus, on the same Starter module.")],
+  "/features/staff": [crm, inbox, attendance, post("staff-attendance-system-schools", "Staff attendance", "Who reached campus, on the same Starter module.")],
   "/features/teacher-tracking": [crm, homework, institute],
-  "/blog/live-school-attendance-on-whatsapp": [crm, attendance, bangladesh, file, pricing],
+  "/blog/live-school-attendance-on-whatsapp": [crm, attendance, file, pricing],
   "/blog/late-fee-reminder-whatsapp-schools": [crm, fees, institute, pricing],
   "/blog/school-crm-whatsapp-inbox-admissions": [crm, inbox, leads, admissions, institute],
   "/blog/student-profile-attendance-fees-marks": [crm, file, fees, marks, institute],
-  "/blog/staff-attendance-system-schools": [crm, staff, attendance, bangladesh],
+  "/blog/staff-attendance-system-schools": [crm, staff, attendance],
   "/blog/coaching-institute-admission-fee-software": [institute, crm, admissions, fees, homework],
   "/blog/college-enquiry-calling-whatsapp": [crm, institute, leads, inbox],
   "/blog/parent-portal-vs-whatsapp-updates": [crm, portal, inbox, pricing],

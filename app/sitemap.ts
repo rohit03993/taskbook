@@ -18,7 +18,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/about",
     "/contact",
     "/school-crm",
-    "/bangladesh-crm",
     "/institute-crm",
     "/blog",
     "/privacy",
