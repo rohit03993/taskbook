@@ -10,6 +10,11 @@ const institute: ReadLink = {
   label: "Institute CRM",
   note: "Visit, call, batch, fee and homework for a coaching institute.",
 };
+const college: ReadLink = {
+  href: "/college-crm",
+  label: "College CRM",
+  note: "Enquiry, call, and one WhatsApp inbox. After admission, the student file.",
+};
 const pricing: ReadLink = {
   href: "/pricing",
   label: "School CRM pricing",
@@ -80,8 +85,9 @@ export const featureSeoTitle: Record<string, string> = {
 };
 
 const byPath: Record<string, ReadLink[]> = {
-  "/school-crm": [institute, cases, certificates, website, file, attendance, fees, homework, marks, inbox, pricing, blog],
-  "/institute-crm": [crm, cases, certificates, website, admissions, fees, homework, leads, pricing],
+  "/school-crm": [college, institute, cases, certificates, website, file, attendance, fees, homework, marks, inbox, pricing, blog],
+  "/college-crm": [crm, institute, cases, admissions, inbox, leads, pricing],
+  "/institute-crm": [crm, college, cases, certificates, website, admissions, fees, homework, leads, pricing],
   "/cases": [crm, institute, file, leads, pricing],
   "/certificates": [crm, institute, marks, file, pricing],
   "/institute-website": [crm, institute, leads, pricing],

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DualCta } from "@/components/DualCta";
+import { DualCta, WhatsAppIcon } from "@/components/DualCta";
 import { BrandMark } from "@/components/BrandMark";
 import { useSettings } from "@/components/SettingsProvider";
 import { nav, site, whatsappHref } from "@/content/site";
@@ -74,15 +74,6 @@ export function Header() {
                           className="block px-4 py-2 text-navy-800 hover:bg-navy-50"
                         >
                           {child.label}
-                        </Link>
-                      ))}
-                      {settings.locations.map((l) => (
-                        <Link
-                          key={l.slug}
-                          href={`/locations/${l.slug}`}
-                          className="block px-4 py-2 text-navy-800 hover:bg-navy-50"
-                        >
-                          {l.city}
                         </Link>
                       ))}
                     </div>
@@ -189,20 +180,6 @@ export function Header() {
                     );
                   })}
                 </div>
-                {settings.locations.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {settings.locations.map((l) => (
-                      <Link
-                        key={l.slug}
-                        href={`/locations/${l.slug}`}
-                        onClick={() => setOpen(false)}
-                        className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-white ring-1 ring-white/15"
-                      >
-                        {l.city}
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </div>
             )}
 
@@ -238,13 +215,25 @@ export function Header() {
   );
 }
 
-const productLinks = [
+const audienceLinks = [
   { href: "/school-crm", label: "School CRM" },
+  { href: "/college-crm", label: "College CRM" },
   { href: "/institute-crm", label: "Institute CRM" },
+] as const;
+
+const productLinks = [
+  { href: "/features", label: "Features" },
+  { href: "/features/whatsapp-attendance", label: "Attendance" },
+  { href: "/features/fees", label: "Fees" },
+  { href: "/features/homework", label: "Homework" },
+  { href: "/features/whatsapp-inbox", label: "WhatsApp inbox" },
+  { href: "/features/student-360", label: "Student file" },
+  { href: "/features/exams", label: "Exams" },
+  { href: "/features/admissions", label: "Admission" },
+  { href: "/features/leads", label: "Enquiries" },
   { href: "/cases", label: "Cases" },
   { href: "/certificates", label: "Certificates" },
   { href: "/institute-website", label: "Institute website" },
-  { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
 ] as const;
@@ -257,6 +246,23 @@ const companyLinks = [
   { href: "/terms", label: "Terms" },
 ] as const;
 
+function FooterLinks({ label, links }: { label: string; links: readonly { href: string; label: string }[] }) {
+  return (
+    <nav aria-label={label}>
+      <p className="text-xs font-semibold uppercase tracking-wider text-white/45">{label}</p>
+      <ul className="mt-3 space-y-1">
+        {links.map((item) => (
+          <li key={item.href}>
+            <Link href={item.href} className="inline-flex py-1 text-sm font-medium text-white hover:text-[#2EC4D6]">
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 export function Footer() {
   const path = usePathname();
   const settings = useSettings();
@@ -265,62 +271,30 @@ export function Footer() {
   return (
     <footer className="bg-navy-950 pb-[env(safe-area-inset-bottom)] text-white">
       <div className="container-site py-8 lg:py-12">
-        <Link href="/" className="inline-flex items-center rounded-md bg-white px-2 py-1.5" aria-label={site.name}>
-          <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="nav" />
-        </Link>
-        <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-          One campus. One install. Your students stay with you.
-        </p>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <Link href="/" className="inline-flex items-center rounded-md bg-white px-2 py-1.5" aria-label={site.name}>
+              <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="nav" />
+            </Link>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
+              One campus. One install. Your students stay with you.
+            </p>
+          </div>
+          <a
+            href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-wa px-5 text-sm font-semibold text-white hover:bg-wa-dark"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+            Talk on WhatsApp
+          </a>
+        </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-x-6 sm:grid-cols-3">
-          <nav aria-label="Product">
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Product</p>
-            <ul className="mt-1">
-              {productLinks.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-white">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <nav aria-label="Company">
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Company</p>
-            <ul className="mt-1">
-              {companyLinks.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-white">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <a
-                  href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
-                  className="flex min-h-11 items-center text-sm font-medium text-white"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  WhatsApp
-                </a>
-              </li>
-            </ul>
-          </nav>
-          {settings.locations.length > 0 && (
-            <nav aria-label="Cities" className="col-span-2 sm:col-span-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Cities</p>
-              <ul className="mt-1">
-                {settings.locations.map((l) => (
-                  <li key={l.slug}>
-                    <Link href={`/locations/${l.slug}`} className="flex min-h-11 items-center text-sm font-medium text-white">
-                      {l.city}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
+        <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <FooterLinks label="Who it is for" links={audienceLinks} />
+          <FooterLinks label="Product" links={productLinks} />
+          <FooterLinks label="Company" links={companyLinks} />
         </div>
       </div>
       <div className="border-t border-white/10">
