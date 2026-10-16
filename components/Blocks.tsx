@@ -3,10 +3,10 @@ import { modules } from "@/content/modules";
 import { FeatureIcon } from "@/components/FeatureIcons";
 import Link from "next/link";
 
-export function FaqList() {
+export function FaqList({ items = faqs }: { items?: readonly { q: string; a: string }[] }) {
   return (
     <div className="divide-y divide-navy-900/10">
-      {faqs.map((item) => (
+      {items.map((item) => (
         <details key={item.q} className="group py-4 sm:py-5">
           <summary className="cursor-pointer list-none text-[15px] font-medium text-navy-900 marker:content-none sm:text-base">
             <span className="flex items-start justify-between gap-4">
