@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { PageHero } from "@/components/Blocks";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
-  "About",
-  "Task Book keeps WhatsApp in the CRM, remembers every visitor, and opens the full file from a mobile number.",
+  "About Task Book",
+  "Task Book is a school CRM for one campus. Staff use their own logins. Parents receive one official WhatsApp number.",
   "/about",
 );
 
@@ -38,6 +39,10 @@ export default function AboutPage() {
         </div>
         <DualCta className="mt-10" />
         <p className="mt-8 text-sm">
+          <Link href="/school-crm" className="font-semibold text-navy-600">
+            School CRM
+          </Link>{" "}
+          ·{" "}
           <Link href="/contact" className="font-semibold text-navy-600">
             Contact
           </Link>{" "}
@@ -47,6 +52,7 @@ export default function AboutPage() {
           </Link>
         </p>
       </section>
+      <RelatedLinks path="/about" />
       <CtaBanner title="Ask for a walkthrough. Not a brochure." body="WhatsApp or book a demo." />
     </>
   );

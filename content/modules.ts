@@ -36,7 +36,7 @@ export const modules: ModulePage[] = [
     nav: "Attendance & fee WhatsApp",
     title: "Child punches in — parent gets WhatsApp. Fee pending — parent gets a reminder.",
     answer:
-      "Recording attendance is on Starter, ₹3,000 a month. The WhatsApp to the parent, after a biometric, face, or teacher punch, is on the Full CRM licence. Meta has to approve the template first. The fee reminder uses that same institute number.",
+      "Recording attendance is on Starter, ₹3,000 a month. The WhatsApp to the parent is on the Full CRM licence, and only when the school turns that message on. Meta has to approve the template first. The fee reminder uses that same institute number.",
     pain: "Parents call: has my child reached? Why is fee pending? You cannot sit on the phone all morning.",
     does: "When attendance is marked (machine, face camera, or teacher), the parent can get a WhatsApp. Fee reminders go the same way, on approved templates. Staff punch can also notify staff.",
     bullets: [
@@ -150,7 +150,7 @@ export const modules: ModulePage[] = [
     nav: "Homework",
     title: "Give homework. Mark done or not done. Send on WhatsApp if you want.",
     answer:
-      "Academic Plus lets a teacher assign homework with a file and mark it done or not done. A WhatsApp link to the parent needs the Full CRM licence. This is not a full learning-management system.",
+      "Academic Plus lets a teacher assign homework with a file. Sending the link is not the same as done: opened is the link, and done is a separate mark by staff. A WhatsApp link to the parent needs the Full CRM licence. This is not a full learning-management system.",
     pain: "Homework is on the board or in a group that one teacher owns.",
     does: "Teacher assigns, attaches file, ticks done / not done. Parent can get a WhatsApp with a link.",
     bullets: [

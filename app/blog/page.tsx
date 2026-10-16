@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CtaBanner } from "@/components/DualCta";
 import { PageHero } from "@/components/Blocks";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { publicPosts } from "@/lib/blog";
 import { pageMeta } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMeta(
-  "Blog",
-  "Practical notes for school, college, and institute owners on WhatsApp attendance, fees, and admissions.",
+  "School CRM guides",
+  "Guides for school, college, and institute owners on attendance, fees, homework, WhatsApp, and the student file.",
   "/blog",
 );
 
@@ -22,8 +23,11 @@ export default async function BlogPage() {
         <PageHero
           kicker="Blog"
           title="How owners actually use WhatsApp, fees, and the student file."
-          body="Short pieces. Each one ends with a demo or WhatsApp — the same two doors as the rest of the site."
+          body="Each guide links to the screen it describes, and back to the school CRM page."
         />
+        <p className="mt-6 text-sm leading-relaxed text-navy-800">
+          Start with <Link href="/school-crm" className="font-semibold text-navy-950">what to check in a school CRM</Link>, then open the job you actually run.
+        </p>
         <div className="mt-12 grid gap-5">
           {posts.map((p) => (
             <Link
@@ -40,6 +44,7 @@ export default async function BlogPage() {
           ))}
         </div>
       </section>
+      <RelatedLinks path="/blog" />
       <CtaBanner title="Read enough. See the screens." body="Book a demo or talk on WhatsApp." />
     </>
   );

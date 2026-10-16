@@ -12,7 +12,7 @@ import { pageMeta } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 
 const description =
-  "School owners and teachers lose the call, the attendance, the homework, and the fee in different places. Task Book keeps that day on one student.";
+  "School owners and teachers lose the call, the attendance, the homework, and the fee in different places. Task Book is a school CRM that keeps that day on one student.";
 
 export async function generateMetadata(): Promise<Metadata> {
   return pageMeta("The school day, then Task Book.", description, "/");
@@ -133,7 +133,7 @@ export default async function HomePage() {
             <FaqList items={questions} />
           </div>
           <p className="mt-4 text-sm text-navy-700">
-            Packs and prices are on <Link href="/pricing" className="font-semibold text-navy-900">Pricing</Link>.
+            A buyer’s guide is on <Link href="/school-crm" className="font-semibold text-navy-900">school CRM</Link>. Packs and prices are on <Link href="/pricing" className="font-semibold text-navy-900">Pricing</Link>.
           </p>
         </div>
       </section>

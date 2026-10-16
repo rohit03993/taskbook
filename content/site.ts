@@ -22,12 +22,12 @@ export function whatsappHref(message?: string, number?: string) {
 export const nav = [
   { href: "/features", label: "Features" },
   {
-    href: "/schools",
+    href: "/school-crm",
     label: "Solutions",
     children: [
-      { href: "/schools", label: "Schools" },
-      { href: "/colleges", label: "Colleges" },
-      { href: "/institutes", label: "Institutes" },
+      { href: "/school-crm", label: "School CRM" },
+      { href: "/bangladesh-crm", label: "Bangladesh CRM" },
+      { href: "/institute-crm", label: "Institute CRM" },
     ],
   },
   { href: "/pricing", label: "Pricing" },

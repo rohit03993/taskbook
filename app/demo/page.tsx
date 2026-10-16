@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DemoForm } from "@/components/DemoForm";
 import { PageHero } from "@/components/Blocks";
 import { MockFindStudent, MockInbox } from "@/components/ProductMocks";
@@ -19,6 +20,9 @@ export default function DemoPage() {
           title="We will open the same screens your staff will use."
           body="Bring your real problem: WhatsApp on one phone, a visitor nobody remembers, or parents calling for attendance and fees. We type a number, open a chat, show a fee PDF."
         />
+        <p className="mt-4 text-sm leading-relaxed text-navy-800">
+          Read <Link href="/school-crm" className="font-semibold text-navy-950">what a school CRM should do</Link> before the call, or open <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
+        </p>
         <div className="mt-10 hidden gap-6 lg:grid">
           <MockInbox />
           <MockFindStudent />

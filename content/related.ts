@@ -1,0 +1,104 @@
+export type ReadLink = { href: string; label: string; note: string };
+
+const crm: ReadLink = {
+  href: "/school-crm",
+  label: "School CRM",
+  note: "Attendance, fees, homework and marks on one student. WhatsApp only when you switch it on.",
+};
+const bangladesh: ReadLink = {
+  href: "/bangladesh-crm",
+  label: "Bangladesh CRM",
+  note: "The same campus software. Price for a campus outside India is confirmed on the demo.",
+};
+const institute: ReadLink = {
+  href: "/institute-crm",
+  label: "Institute CRM",
+  note: "Visit, call, batch, fee and homework for a coaching institute.",
+};
+const pricing: ReadLink = {
+  href: "/pricing",
+  label: "School CRM pricing",
+  note: "Starter ₹3,000, Academic Plus ₹6,000, Full CRM ₹10,000. GST extra.",
+};
+const features: ReadLink = {
+  href: "/features",
+  label: "School CRM features",
+  note: "The student file, WhatsApp, fees, homework, marks, and staff logins.",
+};
+const blog: ReadLink = {
+  href: "/blog",
+  label: "School CRM guides",
+  note: "Short notes on attendance, fees, admissions, and the parent login.",
+};
+
+const feature = (slug: string, label: string, note: string): ReadLink => ({
+  href: `/features/${slug}`,
+  label,
+  note,
+});
+const post = (slug: string, label: string, note: string): ReadLink => ({
+  href: `/blog/${slug}`,
+  label,
+  note,
+});
+
+const file = feature("student-360", "Student file", "Search by name, roll, or registered mobile.");
+const attendance = feature("whatsapp-attendance", "School attendance software", "Present, absent, or on leave. Parent WhatsApp only if you turn it on.");
+const fees = feature("fees", "School fee management software", "The receipt is on Academic Plus. The WhatsApp reminder needs Full CRM.");
+const homework = feature("homework", "School homework software", "Opened is the link. Done is a separate mark by staff.");
+const marks = feature("exams", "School exam software", "Marks start on Starter. The PDF marksheet is Full results.");
+const inbox = feature("whatsapp-inbox", "School WhatsApp CRM", "Many staff logins. Parents still see one institute number.");
+const leads = feature("leads", "Enquiry and calling", "The visit and the call stay on that mobile. Full CRM.");
+const admissions = feature("admissions", "Admission to roll number", "The old visits stay after the student gets a roll number.");
+const portal = feature("portal", "Parent login", "The receipt and the record. WhatsApp is the alert.");
+const staff = feature("staff", "Staff logins", "Each person has a login. The WhatsApp number stays the institute’s.");
+const tracking = feature("teacher-tracking", "Teacher tracking", "Course plan and class progress. Academic Plus. Not a sold score.");
+
+export const featureSeoTitle: Record<string, string> = {
+  "whatsapp-inbox": "School WhatsApp CRM",
+  "whatsapp-attendance": "School attendance software",
+  "student-360": "Student information system",
+  leads: "School enquiry and calling CRM",
+  admissions: "School admission software",
+  fees: "School fee management software",
+  portal: "Parent login for a school",
+  exams: "School exam and marksheet software",
+  homework: "School homework software",
+  reports: "School CRM reports",
+  staff: "Staff logins for a school CRM",
+  "teacher-tracking": "Teacher tracking for schools",
+};
+
+const byPath: Record<string, ReadLink[]> = {
+  "/school-crm": [bangladesh, institute, file, attendance, fees, homework, marks, inbox, pricing, blog],
+  "/bangladesh-crm": [crm, institute, attendance, fees, inbox, pricing],
+  "/institute-crm": [crm, bangladesh, admissions, fees, homework, leads, pricing],
+  "/features": [crm, bangladesh, institute, pricing, blog],
+  "/pricing": [crm, bangladesh, institute, inbox, fees, homework],
+  "/blog": [crm, bangladesh, institute, features, pricing],
+  "/about": [crm, bangladesh, institute, features, pricing],
+  "/features/whatsapp-inbox": [crm, institute, leads, staff, post("school-crm-whatsapp-inbox-admissions", "WhatsApp inbox for admissions", "One number. The next shift continues the thread.")],
+  "/features/whatsapp-attendance": [crm, bangladesh, fees, file, post("live-school-attendance-on-whatsapp", "Live attendance on WhatsApp", "The punch is stored first. The message is a switch.")],
+  "/features/student-360": [crm, fees, marks, institute, post("student-profile-attendance-fees-marks", "One student profile", "Attendance, fees, and marks on the same file.")],
+  "/features/leads": [crm, institute, admissions, inbox],
+  "/features/admissions": [crm, leads, file, institute],
+  "/features/fees": [crm, institute, attendance, pricing, post("late-fee-reminder-whatsapp-schools", "Fee reminders", "The PDF receipt, then the WhatsApp if Full CRM is on.")],
+  "/features/portal": [crm, inbox, fees, homework, post("parent-portal-vs-whatsapp-updates", "Portal and WhatsApp", "The alert and the record are both on Full CRM.")],
+  "/features/exams": [crm, institute, file, pricing, homework],
+  "/features/homework": [crm, institute, fees, tracking, marks],
+  "/features/reports": [crm, fees, attendance, pricing],
+  "/features/staff": [crm, inbox, attendance, bangladesh, post("staff-attendance-system-schools", "Staff attendance", "Who reached campus, on the same Starter module.")],
+  "/features/teacher-tracking": [crm, homework, institute],
+  "/blog/live-school-attendance-on-whatsapp": [crm, attendance, bangladesh, file, pricing],
+  "/blog/late-fee-reminder-whatsapp-schools": [crm, fees, institute, pricing],
+  "/blog/school-crm-whatsapp-inbox-admissions": [crm, inbox, leads, admissions, institute],
+  "/blog/student-profile-attendance-fees-marks": [crm, file, fees, marks, institute],
+  "/blog/staff-attendance-system-schools": [crm, staff, attendance, bangladesh],
+  "/blog/coaching-institute-admission-fee-software": [institute, crm, admissions, fees, homework],
+  "/blog/college-enquiry-calling-whatsapp": [crm, institute, leads, inbox],
+  "/blog/parent-portal-vs-whatsapp-updates": [crm, portal, inbox, pricing],
+};
+
+export function linksFor(path: string): ReadLink[] {
+  return byPath[path] ?? [crm, features, pricing];
+}

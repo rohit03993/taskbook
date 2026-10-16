@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { JsonLd, MarkdownBody } from "@/components/MarkdownBody";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { publicPostBySlug } from "@/lib/blog";
 import { absoluteUrl } from "@/lib/schema";
 import { pageMeta } from "@/lib/seo";
@@ -58,6 +59,7 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
         </div>
         <DualCta className="mt-10" />
       </article>
+      <RelatedLinks path={`/blog/${post.slug}`} />
       <CtaBanner title="See the same flow on your campus." body="WhatsApp or book a demo." />
     </>
   );

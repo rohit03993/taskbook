@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [{ source: "/favicon.ico", destination: "/icon" }];
   },
+  async redirects() {
+    return [
+      { source: "/schools", destination: "/school-crm", permanent: true },
+      { source: "/colleges", destination: "/school-crm", permanent: true },
+      { source: "/institutes", destination: "/institute-crm", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

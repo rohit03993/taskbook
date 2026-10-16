@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { JsonLd } from "@/components/MarkdownBody";
 import { PageHero } from "@/components/Blocks";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { getPricingContent } from "@/lib/content";
 import { softwareApplicationLd } from "@/lib/schema";
 import { pageMeta } from "@/lib/seo";
@@ -10,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const pricing = await getPricingContent();
-  return pageMeta("Pricing", pricing.body.slice(0, 160), "/pricing");
+  return pageMeta("School CRM pricing", pricing.body.slice(0, 160), "/pricing");
 }
 
 export default async function PricingPage() {
@@ -86,8 +88,12 @@ export default async function PricingPage() {
           ))}
         </div>
         <p className="mt-8 max-w-2xl text-sm leading-relaxed text-navy-700">{pricing.footnote}</p>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-navy-800">
+          What each pack is for is explained on the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link> page. WhatsApp is on Full CRM, not on Starter.
+        </p>
         <DualCta className="mt-8" />
       </section>
+      <RelatedLinks path="/pricing" />
       <CtaBanner
         title="One campus. The licence you turn on."
         body={`${pricing.plans

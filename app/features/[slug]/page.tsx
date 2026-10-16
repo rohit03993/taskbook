@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { MockForSlug } from "@/components/ProductMocks";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { getResolvedModule } from "@/lib/content";
+import { featureSeoTitle } from "@/content/related";
 import { pageMeta } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const mod = await getResolvedModule(slug);
   if (!mod) return {};
-  return pageMeta(mod.nav, mod.answer, `/features/${slug}`);
+  return pageMeta(featureSeoTitle[slug] || mod.nav, mod.answer, `/features/${slug}`);
 }
 
 export default async function FeaturePage({ params }: { params: Promise<Params> }) {
@@ -39,10 +42,14 @@ export default async function FeaturePage({ params }: { params: Promise<Params> 
             ))}
           </ul>
           <p className="mt-6 rounded-xl bg-navy-50 px-4 py-3 text-sm text-navy-800">{mod.whatsappWhen}</p>
+          <p className="mt-4 text-sm leading-relaxed text-navy-800">
+            This screen is part of the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link>. Packs are on <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
+          </p>
           <DualCta className="mt-8" />
         </div>
         <MockForSlug slug={mod.slug} />
       </article>
+      <RelatedLinks path={`/features/${mod.slug}`} />
       <CtaBanner title="Want this on your campus?" body="We set up your institute. You keep the data." />
     </>
   );
