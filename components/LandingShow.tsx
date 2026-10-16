@@ -734,6 +734,13 @@ type JourneyRecord = {
 
 const journeyStorageKey = "tb-aarav-demo";
 const journeySteps: JourneyStep[] = ["call", "attendance", "fees", "marks", "homework", "done"];
+const holdLines: Record<Exclude<JourneyStep, "done">, string> = {
+  call: "Save this call. Then you can move forward.",
+  attendance: "Press Present or Absent.",
+  fees: "Choose the payment and type the number.",
+  marks: "Type the three marks.",
+  homework: "Send the homework. This opens the rest of the page.",
+};
 const emptyJourney: JourneyRecord = { call: null, attendance: null, fees: null, marks: null, homework: null };
 const callPurposes = ["Fee query", "Attendance", "Documents", "Academic", "Complaint", "General", "Callback needed", "Resolved"];
 const payModes: PayMode[] = ["Cash", "Online", "UPI", "Cheque"];
@@ -1328,11 +1335,11 @@ export function StudentJourney() {
       <div className="mt-6">
         <JourneyDossier record={record} />
       </div>
-      {holdPage && holdHint && (
+      {holdPage && holdHint && step !== "done" && (
         <div className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4" role="status">
           <div className="animate-rise w-full max-w-sm rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-2xl ring-1 ring-navy-950/10">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#128C9B]">5-step demo</p>
-            <p className="mt-1 text-sm font-semibold leading-snug">Complete these 5 steps. Then you can move forward.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#128C9B]">Step {journeySteps.indexOf(step) + 1} of 5</p>
+            <p className="mt-1 text-sm font-semibold leading-snug">{holdLines[step]}</p>
           </div>
         </div>
       )}
