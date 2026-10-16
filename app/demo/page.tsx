@@ -6,7 +6,7 @@ import { MockFindStudent, MockInbox } from "@/components/ProductMocks";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
-  "Book a demo",
+  "Book a school CRM demo",
   "Name, institute, city. We call or chat on WhatsApp the same day.",
   "/demo",
 );

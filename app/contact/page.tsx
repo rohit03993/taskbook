@@ -7,7 +7,7 @@ import { getSettings } from "@/lib/settings";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
-  "Contact",
+  "Contact for a school demo",
   "Talk to Task Book on WhatsApp or send a demo request.",
   "/contact",
 );

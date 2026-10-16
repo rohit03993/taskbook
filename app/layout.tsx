@@ -23,12 +23,10 @@ const display = Fraunces({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSettings();
-  const og = siteLogoSrc(settings);
   return {
     metadataBase: new URL(site.url),
     title: {
-      default: `${site.name} — School software with WhatsApp built in`,
+      default: "School CRM for attendance, fees and WhatsApp",
       template: `%s · ${site.name}`,
     },
     description: site.pitch,
@@ -40,12 +38,18 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [{ url: "/apple-icon", type: "image/png", sizes: "180x180" }],
     },
     openGraph: {
-      title: site.name,
+      title: "School CRM for attendance, fees and WhatsApp · Task Book",
       description: site.pitch,
       url: site.url,
       siteName: site.name,
       type: "website",
-      images: [{ url: og, alt: "Task Book" }],
+      images: [{ url: "/logos/taskbook-logo-full.png", alt: "Task Book" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "School CRM for attendance, fees and WhatsApp · Task Book",
+      description: site.pitch,
+      images: ["/logos/taskbook-logo-full.png"],
     },
   };
 }

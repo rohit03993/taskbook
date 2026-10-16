@@ -15,7 +15,7 @@ const description =
   "School owners and teachers lose the call, the attendance, the homework, and the fee in different places. Task Book is a school CRM that keeps that day on one student.";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMeta("The school day, then Task Book.", description, "/");
+  return pageMeta("School CRM for attendance, fees and WhatsApp", description, "/");
 }
 
 function Dark({ kicker, title, body, children, frame = false }: { kicker: string; title: string; body: string; children: ReactNode; frame?: boolean }) {

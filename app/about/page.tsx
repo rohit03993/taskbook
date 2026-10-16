@@ -7,7 +7,7 @@ import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
-  "About Task Book",
+  "About",
   "Task Book is a school CRM for one campus. Staff use their own logins. Parents receive one official WhatsApp number.",
   "/about",
 );
