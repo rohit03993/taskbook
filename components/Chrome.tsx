@@ -41,18 +41,18 @@ export function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-950/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-navy-900/10 bg-white">
       <div className="container-site flex h-16 items-center justify-between gap-3 lg:h-[4.75rem]">
         <Link
           href="/"
-          className="inline-flex min-w-0 max-w-[42vw] shrink items-center overflow-hidden rounded-md bg-white px-1.5 py-1 sm:max-w-none"
+          className="inline-flex min-w-0 max-w-[42vw] shrink items-center overflow-hidden sm:max-w-none"
           aria-label={site.name}
           onClick={() => setOpen(false)}
         >
           <BrandMark key={settings.logoUrl || "default"} logoUrl={settings.logoUrl} size="nav" />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-[13px] font-medium text-white/70 lg:flex">
+        <nav className="hidden items-center gap-8 text-[15px] font-medium text-navy-900 lg:flex">
           {nav.map((item) =>
             "children" in item && item.children ? (
               <div
@@ -61,7 +61,7 @@ export function Header() {
                 onMouseEnter={() => setSolutions(true)}
                 onMouseLeave={() => setSolutions(false)}
               >
-                <Link href={item.href} className="transition hover:text-white">
+                <Link href={item.href} className="transition hover:text-[#128C9B]">
                   {item.label}
                 </Link>
                 {solutions && (
@@ -90,7 +90,7 @@ export function Header() {
                 )}
               </div>
             ) : (
-              <Link key={item.href} href={item.href} className="transition hover:text-white">
+              <Link key={item.href} href={item.href} className="transition hover:text-[#128C9B]">
                 {item.label}
               </Link>
             ),
@@ -98,19 +98,19 @@ export function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <DualCta compact onDark />
+          <DualCta />
         </div>
 
         <div className="flex items-center gap-1.5 lg:hidden">
           <Link
             href="/demo"
-            className="inline-flex h-9 items-center rounded-full bg-white px-3.5 text-[13px] font-semibold text-navy-950"
+            className="inline-flex h-10 items-center rounded-full bg-navy-950 px-3.5 text-[15px] font-semibold text-white"
           >
             Book a demo
           </Link>
         <button
           type="button"
-          className="relative flex h-11 w-11 items-center justify-center rounded-xl text-white"
+          className="relative flex h-11 w-11 items-center justify-center rounded-xl text-navy-950"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -118,17 +118,17 @@ export function Header() {
         >
           <span className="flex h-3.5 w-[18px] flex-col justify-between">
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-navy-950 transition duration-200 ${
                 open ? "translate-y-[6.25px] rotate-45" : ""
               }`}
             />
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-navy-950 transition duration-200 ${
                 open ? "scale-x-0 opacity-0" : ""
               }`}
             />
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-navy-950 transition duration-200 ${
                 open ? "-translate-y-[6.25px] -rotate-45" : ""
               }`}
             />
