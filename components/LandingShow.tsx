@@ -1180,13 +1180,14 @@ export function StudentJourney() {
   const label = "block text-sm font-medium text-gray-700";
   const revising = journeySteps.indexOf(step) < journeySteps.indexOf(progress);
   const progressIndex = journeySteps.indexOf(progress);
-  const guide = ({
+  const guides: Partial<Record<JourneyStep, [string, string, string]>> = {
     call: ["Step 1 of 5", "Save the call.", "The details are already filled in. Press Save call. Attendance opens next."],
     attendance: ["Step 2 of 5", "Mark the day.", "Press Present or Absent. The fee screen opens next."],
     fees: ["Step 3 of 5", "Record the fee.", "Choose Cash, Online, UPI, or Cheque. Enter the receipt, transaction, or cheque number, then submit ₹5,000."],
     marks: ["Step 4 of 5", "Enter the marks.", "Type Mathematics, Science, and English, each out of 100. Then press Save and send."],
     homework: ["Step 5 of 5", "Send the homework.", "Type the Maths work and the Science work, then press Send to parent. The rest of the page opens after this."],
-  } satisfies Partial<Record<JourneyStep, [string, string, string]>>)[step];
+  };
+  const guide = guides[step];
 
   return (
     <div ref={ref}>
