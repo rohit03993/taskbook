@@ -23,7 +23,7 @@ export default async function ContactPage() {
           title="WhatsApp us, or send the form."
           body="Tell us city and institute size. We reply the same day."
         />
-        <DualCta className="mt-8 hidden sm:flex" />
+        <DualCta className="mt-8" />
         <p className="mt-8 text-sm text-navy-700">
           Email{" "}
           <a className="font-medium text-navy-900" href={`mailto:${settings.email}`}>

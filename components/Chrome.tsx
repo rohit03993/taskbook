@@ -41,18 +41,18 @@ export function Header() {
 
   return (
     <>
-    <header className="sticky top-0 z-50 border-b border-navy-900/[0.06] bg-white/95 backdrop-blur-md">
-      <div className="container-site flex h-14 items-center justify-between gap-3 lg:h-[4.75rem]">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-950/95 backdrop-blur-md">
+      <div className="container-site flex h-16 items-center justify-between gap-3 lg:h-[4.75rem]">
         <Link
           href="/"
-          className="flex min-w-0 shrink-0 items-center gap-2"
+          className="inline-flex min-w-0 max-w-[42vw] shrink items-center overflow-hidden rounded-md bg-white px-1.5 py-1 sm:max-w-none"
           aria-label={site.name}
           onClick={() => setOpen(false)}
         >
-          <BrandMark key={settings.logoUrl || "default"} logoUrl={settings.logoUrl} size="header" />
+          <BrandMark key={settings.logoUrl || "default"} logoUrl={settings.logoUrl} size="nav" />
         </Link>
 
-        <nav className="hidden items-center gap-8 text-[13px] font-medium text-navy-900/70 lg:flex">
+        <nav className="hidden items-center gap-8 text-[13px] font-medium text-white/70 lg:flex">
           {nav.map((item) =>
             "children" in item && item.children ? (
               <div
@@ -61,7 +61,7 @@ export function Header() {
                 onMouseEnter={() => setSolutions(true)}
                 onMouseLeave={() => setSolutions(false)}
               >
-                <Link href={item.href} className="transition hover:text-navy-900">
+                <Link href={item.href} className="transition hover:text-white">
                   {item.label}
                 </Link>
                 {solutions && (
@@ -90,7 +90,7 @@ export function Header() {
                 )}
               </div>
             ) : (
-              <Link key={item.href} href={item.href} className="transition hover:text-navy-900">
+              <Link key={item.href} href={item.href} className="transition hover:text-white">
                 {item.label}
               </Link>
             ),
@@ -98,12 +98,19 @@ export function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <DualCta compact />
+          <DualCta compact onDark />
         </div>
 
+        <div className="flex items-center gap-1.5 lg:hidden">
+          <Link
+            href="/demo"
+            className="inline-flex h-9 items-center rounded-full bg-white px-3.5 text-[13px] font-semibold text-navy-950"
+          >
+            Book a demo
+          </Link>
         <button
           type="button"
-          className="relative -mr-1 flex h-11 w-11 items-center justify-center rounded-xl text-navy-900 lg:hidden"
+          className="relative flex h-11 w-11 items-center justify-center rounded-xl text-white"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -111,35 +118,36 @@ export function Header() {
         >
           <span className="flex h-3.5 w-[18px] flex-col justify-between">
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
                 open ? "translate-y-[6.25px] rotate-45" : ""
               }`}
             />
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
                 open ? "scale-x-0 opacity-0" : ""
               }`}
             />
             <span
-              className={`block h-[1.5px] w-full rounded-full bg-navy-900 transition duration-200 ${
+              className={`block h-[1.5px] w-full rounded-full bg-white transition duration-200 ${
                 open ? "-translate-y-[6.25px] -rotate-45" : ""
               }`}
             />
           </span>
         </button>
+        </div>
       </div>
     </header>
 
       {open && (
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 top-14 z-[60] flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden bg-white lg:hidden"
+          className="fixed inset-x-0 top-16 z-[60] flex h-[calc(100dvh-4rem)] flex-col overflow-hidden bg-navy-950 lg:hidden"
         >
           <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-            <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+            <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
               Product
             </p>
-            <div className="overflow-hidden rounded-2xl bg-[#F6F7FA] ring-1 ring-navy-900/[0.06]">
+            <div className="overflow-hidden rounded-2xl ring-1 ring-white/10">
               {primaryNav.map((item) => {
                 const active = path === item.href || path.startsWith(`${item.href}/`);
                 return (
@@ -147,12 +155,12 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className={`flex min-h-12 items-center justify-between border-b border-navy-900/[0.06] px-4 text-[15px] font-medium last:border-b-0 ${
-                      active ? "bg-white text-navy-900" : "text-navy-800"
+                    className={`flex min-h-12 items-center justify-between border-b border-white/10 px-4 text-[15px] font-medium last:border-b-0 ${
+                      active ? "bg-white text-navy-950" : "text-white"
                     }`}
                   >
                     {item.label}
-                    <span className="text-navy-400">→</span>
+                    <span className={active ? "text-navy-950/40" : "text-white/40"}>→</span>
                   </Link>
                 );
               })}
@@ -160,7 +168,7 @@ export function Header() {
 
             {solutionsItem && "children" in solutionsItem && solutionsItem.children && (
               <div className="mt-6">
-                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+                <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
                   Who it is for
                 </p>
                 <div className="grid grid-cols-1 gap-2">
@@ -172,13 +180,11 @@ export function Header() {
                         href={child.href}
                         onClick={() => setOpen(false)}
                         className={`flex min-h-12 items-center justify-between rounded-2xl px-4 text-[15px] font-medium ring-1 ${
-                          active
-                            ? "bg-navy-900 text-white ring-navy-900"
-                            : "bg-[#F6F7FA] text-navy-800 ring-navy-900/[0.06]"
+                          active ? "bg-white text-navy-950 ring-white" : "text-white ring-white/10"
                         }`}
                       >
                         {child.label}
-                        <span className={active ? "text-white/60" : "text-navy-400"}>→</span>
+                        <span className={active ? "text-navy-950/40" : "text-white/40"}>→</span>
                       </Link>
                     );
                   })}
@@ -190,7 +196,7 @@ export function Header() {
                         key={l.slug}
                         href={`/locations/${l.slug}`}
                         onClick={() => setOpen(false)}
-                        className="rounded-full bg-[#F6F7FA] px-3 py-1.5 text-sm font-medium text-navy-800 ring-1 ring-navy-900/10"
+                        className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium text-white ring-1 ring-white/15"
                       >
                         {l.city}
                       </Link>
@@ -201,7 +207,7 @@ export function Header() {
             )}
 
             <div className="mt-6">
-              <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy-600">
+              <p className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
                 Company
               </p>
               <div className="flex flex-wrap gap-2">
@@ -214,7 +220,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-full bg-[#F6F7FA] px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-navy-900/10"
+                    className="inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium text-white ring-1 ring-white/15"
                   >
                     {item.label}
                   </Link>
@@ -223,22 +229,12 @@ export function Header() {
             </div>
           </nav>
 
-          <div className="shrink-0 border-t border-navy-900/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-            <DualCta />
+          <div className="shrink-0 border-t border-white/10 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <DualCta onDark />
           </div>
         </div>
       )}
     </>
-  );
-}
-
-export function StickyMobileCta() {
-  const path = usePathname();
-  if (path.startsWith("/admin")) return null;
-  return (
-    <div className="mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden">
-      <DualCta bar />
-    </div>
   );
 }
 
@@ -265,22 +261,22 @@ export function Footer() {
   if (path.startsWith("/admin")) return null;
 
   return (
-    <footer className="border-t border-navy-900/10 bg-white pb-[calc(4.75rem+env(safe-area-inset-bottom))] lg:pb-0">
+    <footer className="bg-navy-950 pb-[env(safe-area-inset-bottom)] text-white">
       <div className="container-site py-8 lg:py-12">
-        <Link href="/" className="inline-flex items-center" aria-label={site.name}>
-          <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="header" />
+        <Link href="/" className="inline-flex items-center rounded-md bg-white px-2 py-1.5" aria-label={site.name}>
+          <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="nav" />
         </Link>
-        <p className="mt-3 max-w-sm text-sm leading-relaxed text-navy-700">
+        <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
           One campus. One install. Your students stay with you.
         </p>
 
         <div className="mt-6 grid grid-cols-2 gap-x-6 sm:grid-cols-3">
           <nav aria-label="Product">
-            <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Product</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Product</p>
             <ul className="mt-1">
               {productLinks.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -288,11 +284,11 @@ export function Footer() {
             </ul>
           </nav>
           <nav aria-label="Company">
-            <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Company</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Company</p>
             <ul className="mt-1">
               {companyLinks.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-white">
                     {item.label}
                   </Link>
                 </li>
@@ -300,7 +296,7 @@ export function Footer() {
               <li>
                 <a
                   href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
-                  className="flex min-h-11 items-center text-sm font-medium text-navy-900"
+                  className="flex min-h-11 items-center text-sm font-medium text-white"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -311,11 +307,11 @@ export function Footer() {
           </nav>
           {settings.locations.length > 0 && (
             <nav aria-label="Cities" className="col-span-2 sm:col-span-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Cities</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/45">Cities</p>
               <ul className="mt-1">
                 {settings.locations.map((l) => (
                   <li key={l.slug}>
-                    <Link href={`/locations/${l.slug}`} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                    <Link href={`/locations/${l.slug}`} className="flex min-h-11 items-center text-sm font-medium text-white">
                       {l.city}
                     </Link>
                   </li>
@@ -325,8 +321,8 @@ export function Footer() {
           )}
         </div>
       </div>
-      <div className="border-t border-navy-900/10">
-        <p className="container-site py-4 text-xs text-navy-600">© {new Date().getFullYear()} {site.name}</p>
+      <div className="border-t border-white/10">
+        <p className="container-site py-4 text-xs text-white/45">© {new Date().getFullYear()} {site.name}</p>
       </div>
     </footer>
   );

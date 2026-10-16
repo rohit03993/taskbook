@@ -7,8 +7,8 @@ type Props = {
   className?: string;
   compact?: boolean;
   whatsappMessage?: string;
-  /** Side-by-side full-width buttons — used by the mobile sticky bar. */
-  bar?: boolean;
+  /** Light buttons for the navy header and the dark hero. */
+  onDark?: boolean;
 };
 
 const waClass =
@@ -18,40 +18,25 @@ const demoSolid =
 const demoLight =
   "inline-flex h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-navy-900 ring-1 ring-navy-900/10 hover:bg-navy-50 sm:h-auto sm:py-2.5";
 
-export function DualCta({ className = "", compact, whatsappMessage, bar }: Props) {
+export function DualCta({ className = "", compact, whatsappMessage, onDark }: Props) {
   const settings = useSettings();
   const href = whatsappHref(whatsappMessage || settings.whatsappMessage, settings.whatsappNumber);
+  const wa = onDark
+    ? "inline-flex h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold text-white ring-1 ring-white/30 hover:bg-white/10"
+    : `${waClass} gap-2`;
+  const demo = onDark
+    ? "inline-flex h-11 items-center justify-center rounded-full bg-white px-4 text-sm font-semibold text-navy-950 hover:bg-navy-50"
+    : compact
+      ? demoLight
+      : demoSolid;
 
   return (
-    <div
-      className={
-        bar
-          ? `flex w-full items-center gap-2 ${className}`
-          : `flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3 ${className}`
-      }
-    >
-      <a
-        href={href}
-        aria-label="Talk on WhatsApp"
-        className={
-          bar
-            ? "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-wa text-white"
-            : `${waClass} w-full gap-2 sm:w-auto`
-        }
-        rel="noopener noreferrer"
-        target="_blank"
-      >
+    <div className={`flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3 ${className}`}>
+      <a href={href} className={`${wa} w-full sm:w-auto`} rel="noopener noreferrer" target="_blank">
         <WhatsAppIcon />
-        {bar ? <span className="sr-only">WhatsApp</span> : "Talk on WhatsApp"}
+        Talk on WhatsApp
       </a>
-      <a
-        href="/demo"
-        className={
-          bar
-            ? "inline-flex h-11 min-w-0 flex-1 items-center justify-center rounded-full bg-navy-900 text-sm font-semibold text-white"
-            : `${compact ? demoLight : demoSolid} w-full sm:w-auto`
-        }
-      >
+      <a href="/demo" className={`${demo} w-full sm:w-auto`}>
         Book a demo
       </a>
     </div>
@@ -66,9 +51,7 @@ export function CtaBanner({ title, body }: { title: string; body: string }) {
           <p className="font-display text-[1.75rem] leading-snug text-white sm:text-4xl">{title}</p>
           <p className="mt-3 text-sm leading-relaxed text-white/75">{body}</p>
         </div>
-        <div className="hidden sm:block">
-          <DualCta compact />
-        </div>
+        <DualCta compact />
       </div>
     </section>
   );

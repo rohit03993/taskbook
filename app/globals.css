@@ -44,19 +44,53 @@ body {
   @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-navy-600;
 }
 
-.snap-row {
-  @apply -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 sm:-mx-5 sm:px-5 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0;
-  scrollbar-width: none;
+.hero-wash {
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 0%, rgba(46, 196, 214, 0.22), transparent 60%),
+    radial-gradient(ellipse 50% 45% at 0% 100%, rgba(57, 116, 252, 0.28), transparent 55%);
 }
 
-.snap-row::-webkit-scrollbar {
-  display: none;
+.stage-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 12.5% 100%;
 }
 
-.snap-card {
-  @apply w-[min(86vw,22rem)] shrink-0 snap-center lg:w-auto;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-body[data-nav-open] .mobile-sticky-cta {
-  display: none;
+.animate-rise {
+  animation: rise 0.45s ease both;
+}
+
+@keyframes story-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-story {
+  transform-origin: left;
+  animation: story-progress var(--story-ms, 5200ms) linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-story {
+    animation: none;
+  }
+
+  .animate-story {
+    transform: scaleX(1);
+  }
 }

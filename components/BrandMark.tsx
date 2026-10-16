@@ -9,7 +9,7 @@ export function BrandMark({
   size = "header",
 }: {
   logoUrl?: string;
-  size?: "header" | "footer";
+  size?: "nav" | "header" | "footer";
 }) {
   const custom = Boolean(logoUrl?.trim());
   const initial = publicBrandSrc(logoUrl, DEFAULT_LOGO);
@@ -29,12 +29,16 @@ export function BrandMark({
       }}
       className={
         showLockup
-          ? size === "header"
-            ? "h-[41px] w-auto max-h-[49px] max-w-[13.5rem] object-contain object-left sm:h-[49px] sm:max-h-[57px] sm:max-w-[16rem]"
-            : "h-[51px] w-auto max-h-[67px] max-w-[16rem] object-contain object-left"
-          : size === "header"
-            ? "h-[37px] w-[37px] object-contain lg:h-[49px] lg:w-[49px]"
-            : "h-[59px] w-[59px] object-contain"
+          ? size === "nav"
+            ? "h-8 w-auto max-h-8 max-w-[9rem] object-contain object-left sm:h-10 sm:max-h-10 sm:max-w-[14rem]"
+            : size === "header"
+              ? "h-[41px] w-auto max-h-[49px] max-w-[13.5rem] object-contain object-left sm:h-[49px] sm:max-h-[57px] sm:max-w-[16rem]"
+              : "h-[51px] w-auto max-h-[67px] max-w-[16rem] object-contain object-left"
+          : size === "nav"
+            ? "h-8 w-8 object-contain"
+            : size === "header"
+              ? "h-[37px] w-[37px] object-contain lg:h-[49px] lg:w-[49px]"
+              : "h-[59px] w-[59px] object-contain"
       }
     />
   );
@@ -47,7 +51,11 @@ export function BrandMark({
     <>
       {img}
       <span className="leading-tight">
-        <span className={`block font-bold tracking-tight ${size === "header" ? "text-[1.05rem] lg:text-[1.35rem]" : "text-2xl"}`}>
+        <span
+          className={`block font-bold tracking-tight ${
+            size === "nav" ? "text-sm sm:text-base" : size === "header" ? "text-[1.05rem] lg:text-[1.35rem]" : "text-2xl"
+          }`}
+        >
           <span className="text-navy-900">TASK</span>
           <span className="text-[#007BFF]">BOOK</span>
         </span>

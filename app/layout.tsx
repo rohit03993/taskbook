@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Outfit } from "next/font/google";
-import { Footer, Header, StickyMobileCta } from "@/components/Chrome";
+import { Footer, Header } from "@/components/Chrome";
 import { JsonLd } from "@/components/MarkdownBody";
 import { SettingsProvider } from "@/components/SettingsProvider";
 import { site } from "@/content/site";
@@ -76,7 +76,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Header />
           <main>{children}</main>
           <Footer />
-          <StickyMobileCta />
         </SettingsProvider>
       </body>
     </html>

@@ -86,7 +86,7 @@ export default async function PricingPage() {
           ))}
         </div>
         <p className="mt-8 max-w-2xl text-sm leading-relaxed text-navy-700">{pricing.footnote}</p>
-        <DualCta className="mt-8 hidden sm:flex" />
+        <DualCta className="mt-8" />
       </section>
       <CtaBanner
         title="One campus. The licence you turn on."
