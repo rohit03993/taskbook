@@ -43,13 +43,13 @@ export async function generateMetadata(): Promise<Metadata> {
       url: site.url,
       siteName: site.name,
       type: "website",
-      images: [{ url: "/logos/taskbook-logo-full.png", alt: "Task Book" }],
+      images: [{ url: "/logos/taskbook-og.png", width: 1200, height: 630, alt: "Task Book" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "School CRM for attendance, fees and WhatsApp · Task Book",
       description: site.pitch,
-      images: ["/logos/taskbook-logo-full.png"],
+      images: ["/logos/taskbook-og.png"],
     },
   };
 }

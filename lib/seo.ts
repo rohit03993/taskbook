@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
 
-const shareImage = "/logos/taskbook-logo-full.png";
+const shareImage = "/logos/taskbook-og.png";
 
 export function pageMeta(title: string, description: string, path = ""): Metadata {
   const url = `${site.url}${path}`;
@@ -16,7 +16,7 @@ export function pageMeta(title: string, description: string, path = ""): Metadat
       url,
       siteName: site.name,
       type: "website",
-      images: [{ url: shareImage, alt: "Task Book" }],
+      images: [{ url: shareImage, width: 1200, height: 630, alt: "Task Book" }],
     },
     twitter: {
       card: "summary_large_image",
