@@ -213,7 +213,7 @@ export function InsideSection() {
                     {item.photo ? (
                       <Image
                         src={item.photo}
-                        alt={item.label}
+                        alt={`${item.label}. ${item.line}`}
                         fill
                         sizes="(min-width: 1024px) 50vw, 100vw"
                         className={

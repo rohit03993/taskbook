@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DualCta, CtaBanner } from "@/components/DualCta";
-import { MarkdownBody } from "@/components/MarkdownBody";
+import { JsonLd, MarkdownBody } from "@/components/MarkdownBody";
 import { publicPostBySlug } from "@/lib/blog";
+import { absoluteUrl } from "@/lib/schema";
 import { pageMeta } from "@/lib/seo";
+import { site } from "@/content/site";
 
 export const dynamic = "force-dynamic";
 
@@ -29,8 +31,22 @@ export default async function BlogPostPage({ params }: { params: Promise<Params>
   const post = await publicPostBySlug(slug);
   if (!post) notFound();
 
+  const pageUrl = absoluteUrl(post.canonicalPath || `/blog/${slug}`);
+
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          datePublished: post.date,
+          author: { "@type": "Organization", name: site.name, url: site.url },
+          publisher: { "@type": "Organization", name: site.name, url: site.url },
+          mainEntityOfPage: pageUrl,
+        }}
+      />
       <article className="container-site max-w-3xl py-14">
         <p className="text-xs text-navy-700">
           {post.date} · {post.readMinutes} min read

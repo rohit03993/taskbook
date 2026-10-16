@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Outfit } from "next/font/google";
 import { Footer, Header, StickyMobileCta } from "@/components/Chrome";
+import { JsonLd } from "@/components/MarkdownBody";
 import { SettingsProvider } from "@/components/SettingsProvider";
 import { site } from "@/content/site";
 import { listLocations } from "@/lib/locations";
+import { organizationLd } from "@/lib/schema";
 import { getSettings, siteLogoSrc } from "@/lib/settings";
 import "./globals.css";
 
@@ -60,6 +62,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="font-sans">
+        <JsonLd data={organizationLd(siteLogoSrc(settings))} />
         <SettingsProvider
           value={{
             whatsappNumber: settings.whatsappNumber,

@@ -143,9 +143,52 @@ function fromStatic(): PublicPost[] {
   }));
 }
 
+const STALE_OPENINGS = [
+  "The first call of the day is rarely an emergency.",
+  "Most schools do not have a fee problem.",
+  "Admissions WhatsApp on a personal phone looks fast",
+  "Ask a class teacher for attendance",
+  "Parents notice when a teacher is missing.",
+  "Coaching institutes do not fail on teaching first.",
+  "A college enquiry is a phone number",
+  "WhatsApp is where parents already are.",
+];
+
+async function replaceStalePosts<
+  T extends {
+    id: string;
+    slug: string;
+    body: string;
+    description: string;
+    metaDescription: string;
+    readMinutes: number;
+  },
+>(rows: T[]) {
+  for (const row of rows) {
+    if (!STALE_OPENINGS.some((opening) => row.body.startsWith(opening))) continue;
+    const source = staticPosts.find((post) => post.slug === row.slug);
+    if (!source) continue;
+    const body = source.body.join("\n\n");
+    await prisma.blogPost.update({
+      where: { id: row.id },
+      data: {
+        body,
+        description: source.description,
+        metaDescription: source.description,
+        readMinutes: source.readMinutes,
+      },
+    });
+    row.body = body;
+    row.description = source.description;
+    row.metaDescription = source.description;
+    row.readMinutes = source.readMinutes;
+  }
+}
+
 export async function publicPosts(): Promise<PublicPost[]> {
   const rows = await listPosts({ publishedOnly: true });
   if (!rows.length) return fromStatic();
+  await replaceStalePosts(rows);
   return rows.map((p) => ({
     slug: p.slug,
     title: p.title,

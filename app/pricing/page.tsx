@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { DualCta, CtaBanner } from "@/components/DualCta";
+import { JsonLd } from "@/components/MarkdownBody";
 import { PageHero } from "@/components/Blocks";
 import { getPricingContent } from "@/lib/content";
+import { softwareApplicationLd } from "@/lib/schema";
 import { pageMeta } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +18,7 @@ export default async function PricingPage() {
 
   return (
     <>
+      <JsonLd data={softwareApplicationLd()} />
       <section className="container-site py-10 pb-28 lg:pb-16">
         <PageHero kicker={pricing.kicker} title={pricing.title} body={pricing.body} />
         <div className="mt-10 grid items-stretch gap-4 sm:mt-12 lg:grid-cols-2">

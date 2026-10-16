@@ -3,6 +3,7 @@ import { publicPosts } from "@/lib/blog";
 import { modules } from "@/content/modules";
 import { site } from "@/content/site";
 import { listLocations } from "@/lib/locations";
+import { contentUpdated } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -28,11 +29,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPaths.map((p) => ({
       url: `${site.url}${p || "/"}`,
-      lastModified: new Date(),
+      lastModified: contentUpdated,
     })),
     ...modules.map((m) => ({
       url: `${site.url}/features/${m.slug}`,
-      lastModified: new Date(),
+      lastModified: contentUpdated,
     })),
     ...posts.map((p) => ({
       url: `${site.url}/blog/${p.slug}`,

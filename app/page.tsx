@@ -154,7 +154,7 @@ export default async function HomePage() {
           <div className="relative mx-auto aspect-[3/4] w-full max-w-lg overflow-hidden rounded-[1.35rem] bg-[#F6F7FA] ring-1 ring-navy-900/[0.06] lg:order-2 lg:rounded-[1.6rem]">
             <Image
               src="/inside/after-pdf.png"
-              alt="XYZ School fee receipt PDF with View PDF and Download PDF"
+              alt="Fee receipt PDF with the institute name, receipt number, and amount in words"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="object-contain object-top p-3 sm:p-4"

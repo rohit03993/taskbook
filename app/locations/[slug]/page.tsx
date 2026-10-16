@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DualCta, CtaBanner } from "@/components/DualCta";
 import { JsonLd, MarkdownBody } from "@/components/MarkdownBody";
-import { site } from "@/content/site";
 import { getLocationBySlug, parseFaqs } from "@/lib/locations";
 import { pageMeta } from "@/lib/seo";
 
@@ -34,25 +33,9 @@ export default async function LocationPage({ params }: { params: Promise<Params>
     })),
   };
 
-  const appLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Task Book",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    offers: {
-      "@type": "Offer",
-      availability: "https://schema.org/InStock",
-      url: `${site.url}/demo`,
-    },
-    description: row.metaDescription,
-    areaServed: row.city,
-  };
-
   return (
     <>
       <JsonLd data={faqLd} />
-      <JsonLd data={appLd} />
       <article className="container-site max-w-3xl py-14">
         <p className="kicker">{row.city}</p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-navy-900 sm:text-5xl">{row.headline}</h1>

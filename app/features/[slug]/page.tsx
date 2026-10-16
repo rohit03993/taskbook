@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const mod = await getResolvedModule(slug);
   if (!mod) return {};
-  return pageMeta(mod.nav, mod.pain, `/features/${slug}`);
+  return pageMeta(mod.nav, mod.answer, `/features/${slug}`);
 }
 
 export default async function FeaturePage({ params }: { params: Promise<Params> }) {
@@ -28,7 +28,8 @@ export default async function FeaturePage({ params }: { params: Promise<Params> 
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-navy-600">{mod.nav}</p>
           <p className="mt-2 text-sm font-medium text-navy-800">Licence: {mod.pack}</p>
           <h1 className="mt-3 font-display text-4xl leading-tight text-navy-900 sm:text-5xl">{mod.title}</h1>
-          <p className="mt-5 text-base leading-relaxed text-navy-700">{mod.pain}</p>
+          <p className="mt-5 text-lg leading-relaxed text-navy-900">{mod.answer}</p>
+          <p className="mt-4 text-base leading-relaxed text-navy-700">{mod.pain}</p>
           <p className="mt-4 text-base leading-relaxed text-navy-800">{mod.does}</p>
           <ul className="mt-6 space-y-2 text-sm text-navy-800">
             {mod.bullets.map((b) => (
