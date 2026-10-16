@@ -18,14 +18,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMeta("The school day, then Task Book.", description, "/");
 }
 
-function Dark({ kicker, title, body, children }: { kicker: string; title: string; body: string; children: ReactNode }) {
+function Dark({ kicker, title, body, children, frame = false }: { kicker: string; title: string; body: string; children: ReactNode; frame?: boolean }) {
   return (
-    <section className="border-t border-white/10 bg-navy-950 py-14 text-white lg:py-20">
+    <section className={`border-t border-white/10 bg-navy-950 text-white ${frame ? "py-2 sm:py-14 lg:py-20" : "py-14 lg:py-20"}`}>
       <div className="container-site">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">{kicker}</p>
-        <h2 className="mt-3 max-w-3xl font-display text-[1.8rem] leading-tight sm:text-4xl">{title}</h2>
-        <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">{body}</p>
-        <div className="mt-8 lg:mt-10">{children}</div>
+        <h2 className={`max-w-3xl font-display leading-tight sm:text-4xl ${frame ? "mt-1.5 text-[1.35rem] sm:mt-3" : "mt-3 text-[1.8rem]"}`}>{title}</h2>
+        <p className={`max-w-2xl leading-relaxed text-white/70 ${frame ? "mt-1.5 text-sm sm:mt-3 sm:text-[15px]" : "mt-3 text-[15px]"}`}>{body}</p>
+        <div className={frame ? "mt-3 sm:mt-8 lg:mt-10" : "mt-8 lg:mt-10"}>{children}</div>
       </div>
     </section>
   );
@@ -58,8 +58,9 @@ export default async function HomePage() {
 
       <Dark
         kicker="One student"
+        frame
         title="Let's do the demo on one student."
-        body="Aarav Kapoor, Class 5-A. Save the call, then the day, the fee, the marks, and the homework. The rest of the page opens after the homework is sent."
+        body="Fill this form and try the demo. You can move forward only after that."
       >
         <StudentJourney />
       </Dark>

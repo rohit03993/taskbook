@@ -954,14 +954,12 @@ export function StudentJourney() {
   const booted = useRef(false);
   const timer = useRef<number | null>(null);
   const [ready, setReady] = useState(false);
-  const [guideNudge, setGuideNudge] = useState(false);
   const [step, setStep] = useState<JourneyStep>("call");
   const [progress, setProgress] = useState<JourneyStep>("call");
   const [record, setRecord] = useState<JourneyRecord>(emptyJourney);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [direction, setDirection] = useState("Outgoing");
-  const [connected, setConnected] = useState(true);
   const [who, setWho] = useState("Father");
   const [purpose, setPurpose] = useState("Fee query");
   const [notes, setNotes] = useState("Discussed pending fees with the parent for this week.");
@@ -972,7 +970,8 @@ export function StudentJourney() {
   const [english, setEnglish] = useState("");
   const [mathsWork, setMathsWork] = useState("");
   const [scienceWork, setScienceWork] = useState("");
-  const field = "mt-1.5 h-11 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm font-normal text-gray-950";
+  const [holdHint, setHoldHint] = useState(false);
+  const field = "mt-1 h-10 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm font-normal text-gray-950 sm:mt-1.5 sm:h-11";
 
   useEffect(() => {
     try {
@@ -1016,37 +1015,41 @@ export function StudentJourney() {
     held.forEach((node) => { node.inert = true; });
 
     const limit = () => {
-      const box = section.getBoundingClientRect();
-      const top = window.scrollY + box.top;
-      const bottom = window.scrollY + box.bottom;
-      return Math.max(top, bottom - window.innerHeight);
+      const stage = stageRef.current;
+      const stageBottom = stage
+        ? window.scrollY + stage.getBoundingClientRect().bottom
+        : window.scrollY + section.getBoundingClientRect().bottom;
+      return Math.max(0, stageBottom - window.innerHeight + 16);
+    };
+    let hintOn = false;
+    const showHint = (on: boolean) => {
+      if (hintOn === on) return;
+      hintOn = on;
+      setHoldHint(on);
     };
     const clamp = () => {
       const max = limit();
-      if (window.scrollY > max + 1) {
-        window.scrollTo(0, max);
-        askToContinue();
-      }
+      if (window.scrollY > max + 1) window.scrollTo(0, max);
+      else if (window.scrollY < max - 48) showHint(false);
     };
     const atEnd = () => window.scrollY >= limit() - 2;
-    const askToContinue = () => setGuideNudge(true);
     const onWheel = (event: WheelEvent) => {
       if (event.deltaY > 0 && atEnd()) {
         event.preventDefault();
-        askToContinue();
+        showHint(true);
       }
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "End") {
         event.preventDefault();
-        askToContinue();
+        showHint(true);
         return;
       }
       if (!["ArrowDown", "PageDown", " "].includes(event.key) || !atEnd()) return;
       const target = event.target;
       if (target instanceof HTMLElement && (target.closest("input, textarea, select") || target.isContentEditable)) return;
       event.preventDefault();
-      askToContinue();
+      showHint(true);
     };
     let touchY = 0;
     const onTouchStart = (event: TouchEvent) => { touchY = event.touches[0]?.clientY ?? 0; };
@@ -1056,7 +1059,7 @@ export function StudentJourney() {
       touchY = y;
       if (fingerUp && atEnd()) {
         event.preventDefault();
-        askToContinue();
+        showHint(true);
       }
     };
 
@@ -1067,6 +1070,7 @@ export function StudentJourney() {
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     clamp();
     return () => {
+      setHoldHint(false);
       held.forEach((node) => { node.inert = false; });
       window.removeEventListener("scroll", clamp);
       window.removeEventListener("wheel", onWheel);
@@ -1077,23 +1081,22 @@ export function StudentJourney() {
   }, [holdPage, ref]);
 
   useEffect(() => {
-    setGuideNudge(false);
-  }, [step]);
-
-  useEffect(() => {
     if (!ready) return;
     if (!booted.current) {
       booted.current = true;
       return;
     }
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    stageRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    const section = ref.current?.closest("section");
+    const headerHeight = document.querySelector("header")?.getBoundingClientRect().height ?? 0;
+    if (!section) return;
+    const top = window.scrollY + section.getBoundingClientRect().top - headerHeight - 8;
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
   }, [ready, step, ref]);
 
   function fillStep(next: JourneyStep, saved: JourneyRecord) {
     if (next === "call" && saved.call) {
       setDirection(saved.call.direction);
-      setConnected(saved.call.connected);
       setWho(saved.call.who === "No answer" ? "Father" : saved.call.who);
       setPurpose(saved.call.purpose);
       setNotes(saved.call.notes);
@@ -1141,7 +1144,7 @@ export function StudentJourney() {
       return;
     }
     advance("attendance", {
-      call: { direction, connected, who: connected ? who : "No answer", purpose, notes: notes.trim() },
+      call: { direction, connected: true, who, purpose, notes: notes.trim() },
     }, "Call saved on Aarav Kapoor.");
   }
 
@@ -1180,38 +1183,16 @@ export function StudentJourney() {
   const label = "block text-sm font-medium text-gray-700";
   const revising = journeySteps.indexOf(step) < journeySteps.indexOf(progress);
   const progressIndex = journeySteps.indexOf(progress);
-  const guides: Partial<Record<JourneyStep, [string, string, string]>> = {
-    call: ["Step 1 of 5", "Save the call.", "The details are already filled in. Press Save call. Attendance opens next."],
-    attendance: ["Step 2 of 5", "Mark the day.", "Press Present or Absent. The fee screen opens next."],
-    fees: ["Step 3 of 5", "Record the fee.", "Choose Cash, Online, UPI, or Cheque. Enter the receipt, transaction, or cheque number, then submit ₹5,000."],
-    marks: ["Step 4 of 5", "Enter the marks.", "Type Mathematics, Science, and English, each out of 100. Then press Save and send."],
-    homework: ["Step 5 of 5", "Send the homework.", "Type the Maths work and the Science work, then press Send to parent. The rest of the page opens after this."],
-  };
-  const guide = guides[step];
 
   return (
     <div ref={ref}>
-      {holdPage && guide && (
-        <div className="mb-4 rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-lg">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#128C9B]">{guide[0]}</p>
-          <p className="mt-1 text-base font-bold">{guide[1]}</p>
-          <p className="mt-1 text-sm leading-relaxed text-gray-700">{guide[2]}</p>
-          <p className="mt-2 text-sm font-semibold text-gray-500">The page below stays closed until all five steps are saved.</p>
-        </div>
-      )}
-      {holdPage && guideNudge && guide && (
-        <div className="fixed inset-x-0 bottom-0 z-[70] border-t border-amber-300 bg-amber-50 px-4 py-3 text-navy-950 shadow-lg">
-          <p className="text-sm font-bold">{guide[0]}. {guide[1]}</p>
-          <p className="mt-1 text-sm leading-relaxed">{guide[2]} The page stays here until you do this.</p>
-        </div>
-      )}
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="mb-2 flex gap-1 sm:mb-4 sm:flex-wrap sm:gap-2">
         {journeySteps.filter((item) => item !== "done").map((item, index) => {
           const current = step === item;
           const open = index <= progressIndex;
           const done = index < progressIndex;
-          const className = `inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold capitalize ${current ? "bg-white text-navy-950" : open ? "bg-white/15 text-white" : "bg-white/5 text-white/40"}`;
-          const mark = <span className="font-mono text-xs">{done ? "✓" : index + 1}</span>;
+          const className = `inline-flex h-8 min-w-0 flex-1 items-center justify-center gap-0.5 whitespace-nowrap rounded-full px-0.5 text-[10px] font-semibold capitalize leading-none sm:h-11 sm:flex-none sm:gap-2 sm:px-4 sm:text-sm ${current ? "bg-white text-navy-950" : open ? "bg-white/15 text-white" : "bg-white/5 text-white/40"}`;
+          const mark = <span className="font-mono text-[9px] sm:text-xs">{done ? "✓" : index + 1}</span>;
           return open ? (
             <button key={item} type="button" aria-pressed={current} onClick={() => openStep(item)} className={className}>{mark}{item}</button>
           ) : (
@@ -1230,12 +1211,10 @@ export function StudentJourney() {
           )}
 
           {!notice && step === "call" && (
-            <div className="relative min-h-[28rem] overflow-hidden rounded-2xl bg-navy-950/80 p-3 sm:p-6">
-              <p className="px-2 pt-2 text-sm text-white/80">Aarav Kapoor · 9822000101</p>
-              <div className="mx-auto mt-3 max-w-lg rounded-2xl bg-white p-4 shadow-xl sm:p-5">
-                <p className="text-lg font-bold">Log student call</p>
-                <p className="mt-0.5 text-sm text-gray-500">Aarav Kapoor · enrolled student</p>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-2xl bg-navy-950/80 p-2 sm:p-6">
+              <div className="mx-auto max-w-lg rounded-2xl bg-white p-3 shadow-xl sm:p-5">
+                <p className="text-base font-bold sm:text-lg">Log student call</p>
+                <div className="mt-3 grid gap-2 sm:mt-4 sm:grid-cols-2 sm:gap-3">
                   <label className={label}>Direction
                     <select className={field} value={direction} onChange={(event) => setDirection(event.target.value)}>
                       <option>Outgoing</option>
@@ -1247,27 +1226,20 @@ export function StudentJourney() {
                       {callPurposes.map((item) => <option key={item}>{item}</option>)}
                     </select>
                   </label>
-                  <label className={label}>Who answered
-                    <select className={field} value={who} disabled={!connected} onChange={(event) => setWho(event.target.value)}>
+                  <label className={`${label} sm:col-span-2`}>Who answered
+                    <select className={field} value={who} onChange={(event) => setWho(event.target.value)}>
                       <option>Father</option>
                       <option>Mother</option>
                       <option>Student</option>
                       <option>Guardian</option>
                     </select>
                   </label>
-                  <label className="flex items-end gap-2 pb-3 text-sm font-medium text-gray-700">
-                    <input type="checkbox" checked={connected} onChange={(event) => setConnected(event.target.checked)} className="h-4 w-4 rounded border-gray-300" />
-                    Call connected
-                  </label>
                 </div>
                 <label className={label}>Call notes
-                  <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={3} className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-normal" />
+                  <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={2} className="mt-1.5 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-normal" />
                 </label>
                 {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-                <span className="mt-4 inline-flex flex-col items-start">
-                  {seen && !revising && <ClickCue />}
-                  <button type="button" onClick={saveCall} className="h-11 rounded-xl bg-amber-500 px-5 text-sm font-bold text-white">{revising ? "Update call" : "Save call"}</button>
-                </span>
+                <button type="button" onClick={saveCall} className="mt-2 h-11 w-full rounded-xl bg-amber-500 px-5 text-sm font-bold text-white sm:mt-4 sm:h-12 sm:w-auto">{revising ? "Update call" : "Save call"}</button>
               </div>
             </div>
           )}
@@ -1275,21 +1247,18 @@ export function StudentJourney() {
           {!notice && step === "attendance" && (
             <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-950/5">
               <p className="text-lg font-bold">Is Aarav present today?</p>
-              <p className="mt-1 text-sm text-gray-500">{todayLabel()} · Class 5-A · Roll 501</p>
-              <span className="mt-4 inline-flex flex-col items-start">
-                {seen && !revising && <ClickCue />}
-                <span className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => advance("fees", { attendance: { status: "Present", date: record.attendance?.date || todayLabel() } }, `Present on ${record.attendance?.date || todayLabel()}. A parent WhatsApp goes out only when the school turns that message on.`)} className={`h-11 rounded-xl bg-emerald-600 px-5 text-sm font-bold text-white ${record.attendance?.status === "Present" ? "ring-2 ring-white" : ""}`}>Present</button>
-                  <button type="button" onClick={() => advance("fees", { attendance: { status: "Absent", date: record.attendance?.date || todayLabel() } }, `Absent on ${record.attendance?.date || todayLabel()}.`)} className={`h-11 rounded-xl bg-red-600 px-5 text-sm font-bold text-white ${record.attendance?.status === "Absent" ? "ring-2 ring-white" : ""}`}>Absent</button>
-                </span>
-              </span>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">Press Present or Absent. Then we will move forward. {todayLabel()} · Class 5-A · Roll 501.</p>
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                <button type="button" onClick={() => advance("fees", { attendance: { status: "Present", date: record.attendance?.date || todayLabel() } }, `Present on ${record.attendance?.date || todayLabel()}. A parent WhatsApp goes out only when the school turns that message on.`)} className={`h-12 w-full rounded-xl bg-emerald-600 px-5 text-sm font-bold text-white sm:w-auto ${record.attendance?.status === "Present" ? "ring-2 ring-white" : ""}`}>Present</button>
+                <button type="button" onClick={() => advance("fees", { attendance: { status: "Absent", date: record.attendance?.date || todayLabel() } }, `Absent on ${record.attendance?.date || todayLabel()}.`)} className={`h-12 w-full rounded-xl bg-red-600 px-5 text-sm font-bold text-white sm:w-auto ${record.attendance?.status === "Absent" ? "ring-2 ring-white" : ""}`}>Absent</button>
+              </div>
             </div>
           )}
 
           {!notice && step === "fees" && (
             <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-950/5">
               <p className="text-lg font-bold">Fee due today</p>
-              <p className="mt-1 text-sm text-gray-500">Total {rupee(30000)} · Submit {rupee(5000)} · {todayLabel()}</p>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">Total {rupee(30000)}. Collect {rupee(5000)} today. Choose how it was paid, type the number, then press Submit.</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <label className={label}>Payment
                   <select className={field} value={mode} onChange={(event) => { setMode(event.target.value as PayMode | ""); setReference(""); }}>
@@ -1304,17 +1273,14 @@ export function StudentJourney() {
                 )}
               </div>
               {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-              <span className="mt-4 inline-flex flex-col items-start">
-                {seen && !revising && <ClickCue />}
-                <button type="button" onClick={saveFee} className="h-11 rounded-xl bg-amber-500 px-5 text-sm font-bold text-white">{revising ? "Update fee" : `Submit ${rupee(5000)}`}</button>
-              </span>
+              <button type="button" onClick={saveFee} className="mt-4 h-12 w-full rounded-xl bg-amber-500 px-5 text-sm font-bold text-white sm:w-auto">{revising ? "Update fee" : `Submit ${rupee(5000)}`}</button>
             </div>
           )}
 
           {!notice && step === "marks" && (
             <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-950/5">
               <p className="text-lg font-bold">Unit test marks</p>
-              <p className="mt-1 text-sm text-gray-500">Aarav Kapoor · each subject out of 100. Save sends them on WhatsApp.</p>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">Type Mathematics, Science, and English out of 100. Then press Save and send.</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {([
                   ["Mathematics", mathematics, setMathematics],
@@ -1327,17 +1293,14 @@ export function StudentJourney() {
                 ))}
               </div>
               {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-              <span className="mt-4 inline-flex flex-col items-start">
-                {seen && !revising && <ClickCue />}
-                <button type="button" onClick={saveMarks} className="h-11 rounded-xl bg-amber-500 px-5 text-sm font-bold text-white">{revising ? "Update and send" : "Save and send"}</button>
-              </span>
+              <button type="button" onClick={saveMarks} className="mt-4 h-12 w-full rounded-xl bg-amber-500 px-5 text-sm font-bold text-white sm:w-auto">{revising ? "Update and send" : "Save and send"}</button>
             </div>
           )}
 
           {!notice && step === "homework" && (
             <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-950/5">
               <p className="text-lg font-bold">Homework for today</p>
-              <p className="mt-1 text-sm text-gray-500">Class 5-A. This sends one message to the parent.</p>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">Type Maths and Science, then press Send to parent. This opens the rest of the page.</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <label className={label}>Maths
                   <input value={mathsWork} onChange={(event) => setMathsWork(event.target.value)} className={field} placeholder="Page 42" />
@@ -1347,10 +1310,7 @@ export function StudentJourney() {
                 </label>
               </div>
               {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-              <span className="mt-4 inline-flex flex-col items-start">
-                {seen && !revising && <ClickCue />}
-                <button type="button" onClick={saveHomework} className="h-11 rounded-xl bg-amber-500 px-5 text-sm font-bold text-white">{revising ? "Update and send" : "Send to parent"}</button>
-              </span>
+              <button type="button" onClick={saveHomework} className="mt-4 h-12 w-full rounded-xl bg-amber-500 px-5 text-sm font-bold text-white sm:w-auto">{revising ? "Update and send" : "Send to parent"}</button>
             </div>
           )}
 
@@ -1368,6 +1328,14 @@ export function StudentJourney() {
       <div className="mt-6">
         <JourneyDossier record={record} />
       </div>
+      {holdPage && holdHint && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4" role="status">
+          <div className="animate-rise w-full max-w-sm rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-2xl ring-1 ring-navy-950/10">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#128C9B]">5-step demo</p>
+            <p className="mt-1 text-sm font-semibold leading-snug">Complete these 5 steps. Then you can move forward.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
