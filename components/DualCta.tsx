@@ -32,16 +32,25 @@ export function DualCta({ className = "", compact, whatsappMessage, bar }: Props
     >
       <a
         href={href}
-        className={`${waClass} gap-1.5 ${bar ? "h-11 min-w-0 flex-1 px-3 text-[13px] sm:h-11" : "w-full gap-2 sm:w-auto"}`}
+        aria-label="Talk on WhatsApp"
+        className={
+          bar
+            ? "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-wa text-white"
+            : `${waClass} w-full gap-2 sm:w-auto`
+        }
         rel="noopener noreferrer"
         target="_blank"
       >
         <WhatsAppIcon />
-        {bar ? "WhatsApp" : "Talk on WhatsApp"}
+        {bar ? <span className="sr-only">WhatsApp</span> : "Talk on WhatsApp"}
       </a>
       <a
         href="/demo"
-        className={`${compact ? demoLight : demoSolid} ${bar ? "h-11 min-w-0 flex-1 px-3 text-[13px] sm:h-11" : "w-full sm:w-auto"}`}
+        className={
+          bar
+            ? "inline-flex h-11 min-w-0 flex-1 items-center justify-center rounded-full bg-navy-900 text-sm font-semibold text-white"
+            : `${compact ? demoLight : demoSolid} w-full sm:w-auto`
+        }
       >
         Book a demo
       </a>
@@ -52,7 +61,7 @@ export function DualCta({ className = "", compact, whatsappMessage, bar }: Props
 export function CtaBanner({ title, body }: { title: string; body: string }) {
   return (
     <section className="bg-navy-900">
-      <div className="container-site flex flex-col gap-5 py-12 pb-24 sm:flex-row sm:items-end sm:justify-between sm:py-16 sm:pb-16">
+      <div className="container-site flex flex-col gap-5 py-12 sm:flex-row sm:items-end sm:justify-between sm:py-16">
         <div className="max-w-xl">
           <p className="font-display text-[1.75rem] leading-snug text-white sm:text-4xl">{title}</p>
           <p className="mt-3 text-sm leading-relaxed text-white/75">{body}</p>

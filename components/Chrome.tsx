@@ -236,69 +236,97 @@ export function StickyMobileCta() {
   const path = usePathname();
   if (path.startsWith("/admin")) return null;
   return (
-    <div className="mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white/95 px-3 pt-2.5 backdrop-blur-md pb-[max(0.65rem,env(safe-area-inset-bottom))] lg:hidden">
+    <div className="mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-navy-900/10 bg-white px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden">
       <DualCta bar />
     </div>
   );
 }
 
+const productLinks = [
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/schools", label: "Schools" },
+  { href: "/colleges", label: "Colleges" },
+  { href: "/institutes", label: "Institutes" },
+  { href: "/blog", label: "Blog" },
+] as const;
+
+const companyLinks = [
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/demo", label: "Book a demo" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+] as const;
+
 export function Footer() {
   const path = usePathname();
   const settings = useSettings();
   if (path.startsWith("/admin")) return null;
+
   return (
-    <footer className="border-t border-navy-900/10 bg-white pb-24 lg:pb-0">
-      <div className="container-site grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <Link href="/" className="flex items-center gap-3" aria-label={site.name}>
-            <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="footer" />
-          </Link>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-navy-700">{site.pitch}</p>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-700">Product</p>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-navy-800">
-            <Link href="/features" className="hover:text-navy-600">Features</Link>
-            <Link href="/pricing" className="hover:text-navy-600">Pricing</Link>
-            <Link href="/demo" className="hover:text-navy-600">Book a demo</Link>
-            <Link href="/blog" className="hover:text-navy-600">Blog</Link>
-          </div>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-700">Solutions</p>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-navy-800">
-            <Link href="/schools" className="hover:text-navy-600">Schools</Link>
-            <Link href="/colleges" className="hover:text-navy-600">Colleges</Link>
-            <Link href="/institutes" className="hover:text-navy-600">Institutes</Link>
-            {settings.locations.map((l) => (
-              <Link key={l.slug} href={`/locations/${l.slug}`} className="hover:text-navy-600">
-                {l.city}
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-navy-700">Company</p>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-navy-800">
-            <Link href="/about" className="hover:text-navy-600">About</Link>
-            <Link href="/contact" className="hover:text-navy-600">Contact</Link>
-            <Link href="/privacy" className="hover:text-navy-600">Privacy</Link>
-            <Link href="/terms" className="hover:text-navy-600">Terms</Link>
-            <a
-              href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
-              className="hover:text-navy-600"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WhatsApp
-            </a>
-          </div>
+    <footer className="border-t border-navy-900/10 bg-white pb-[calc(4.75rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <div className="container-site py-8 lg:py-12">
+        <Link href="/" className="inline-flex items-center" aria-label={site.name}>
+          <BrandMark key={settings.logoUrl || "default-footer"} logoUrl={settings.logoUrl} size="header" />
+        </Link>
+        <p className="mt-3 max-w-sm text-sm leading-relaxed text-navy-700">
+          One campus. One install. Your students stay with you.
+        </p>
+
+        <div className="mt-6 grid grid-cols-2 gap-x-6 sm:grid-cols-3">
+          <nav aria-label="Product">
+            <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Product</p>
+            <ul className="mt-1">
+              {productLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <nav aria-label="Company">
+            <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Company</p>
+            <ul className="mt-1">
+              {companyLinks.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a
+                  href={whatsappHref(settings.whatsappMessage, settings.whatsappNumber)}
+                  className="flex min-h-11 items-center text-sm font-medium text-navy-900"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp
+                </a>
+              </li>
+            </ul>
+          </nav>
+          {settings.locations.length > 0 && (
+            <nav aria-label="Cities" className="col-span-2 sm:col-span-1">
+              <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">Cities</p>
+              <ul className="mt-1">
+                {settings.locations.map((l) => (
+                  <li key={l.slug}>
+                    <Link href={`/locations/${l.slug}`} className="flex min-h-11 items-center text-sm font-medium text-navy-900">
+                      {l.city}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
-      <div className="border-t border-navy-900/10 py-5">
-        <p className="container-site text-xs text-navy-700">
-          © {new Date().getFullYear()} {site.name}. Set up for your institute — one school, one install.
-        </p>
+      <div className="border-t border-navy-900/10">
+        <p className="container-site py-4 text-xs text-navy-600">© {new Date().getFullYear()} {site.name}</p>
       </div>
     </footer>
   );

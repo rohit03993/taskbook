@@ -23,42 +23,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const painIcons = ["phone", "parents", "visitor"] as const;
 
-const howShots: Record<string, string> = {
-  "1": "/inside/how-01.png",
-  "2": "/inside/how-02.png",
-  "3": "/inside/how-03.png",
-  "4": "/inside/how-04.png",
-  "5": "/inside/how-05.png",
-  "6": "/inside/how-06.png",
-};
-
 export default async function HomePage() {
   const [home, locations] = await Promise.all([getHomeContent(), listLocations({ publishedOnly: true })]);
   const { hero, pains, howItWorks } = home;
   return (
     <>
-      <section className="relative overflow-hidden bg-white">
-        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-gradient-to-bl from-navy-50/80 to-transparent lg:block" />
-        <div className="container-site grid items-center gap-8 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-8 lg:py-20">
+      <section className="bg-white">
+        <div className="container-site grid items-center gap-8 py-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 lg:py-16">
           <div>
             <p className="kicker">For school, college and institute owners</p>
             <h1 className="mt-3 max-w-xl font-display text-[1.85rem] leading-[1.15] text-navy-900 sm:mt-5 sm:text-5xl lg:text-[3.15rem]">
               {hero.headline}
             </h1>
-            <p className="mt-4 hidden max-w-md text-base leading-relaxed text-navy-700 sm:mt-6 sm:block sm:text-lg">
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-navy-700 sm:mt-6 sm:text-lg">
               {hero.subhead}
             </p>
-
-            <ul className="mt-5 space-y-2.5 sm:hidden">
-              {pains.map((p) => (
-                <li key={p.n} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-navy-800">
-                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-navy-900 text-[10px] font-semibold text-white">
-                    {p.n.replace(/^0/, "")}
-                  </span>
-                  {p.title}
-                </li>
-              ))}
-            </ul>
 
             <DualCta className="mt-6 hidden sm:flex sm:mt-9" />
             <p className="mt-5 hidden text-xs leading-relaxed text-navy-700 sm:mt-8 sm:block">
@@ -75,11 +54,11 @@ export default async function HomePage() {
           <h2 className="mt-3 max-w-2xl font-display text-[1.65rem] leading-snug text-navy-900 sm:text-4xl">
             We did not start with modules. We started with what owners lose every day.
           </h2>
-          <ol className="mt-8 snap-row lg:mt-12">
+          <ol className="mt-8 grid gap-3 lg:mt-12 lg:grid-cols-3 lg:gap-4">
             {pains.map((p, i) => (
               <li
                 key={p.n}
-                className="snap-card flex flex-col rounded-[1.35rem] bg-white p-5 ring-1 ring-navy-900/[0.06] sm:p-8 lg:rounded-[1.6rem]"
+                className="flex flex-col rounded-xl bg-white p-5 ring-1 ring-navy-900/[0.06]"
               >
                 <div className="flex items-center justify-between">
                   <PainIcon name={painIcons[i]} />
@@ -102,65 +81,23 @@ export default async function HomePage() {
             One person. One mobile number. From the first visit to the fee PDF.
           </h2>
 
-          <div className="-mx-4 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:-mx-5 sm:px-5 lg:hidden [&::-webkit-scrollbar]:hidden">
+          <ol className="mt-8 divide-y divide-navy-900/10 border-y border-navy-900/10">
             {howItWorks.map((s) => (
-              <article
-                key={s.step}
-                className="w-[min(88vw,22rem)] shrink-0 snap-center overflow-hidden rounded-[1.25rem] bg-[#F6F7FA] ring-1 ring-navy-900/[0.06]"
-              >
-                <div className="relative aspect-[4/3]">
-                  <Image src={howShots[s.step]} alt={s.title} fill sizes="90vw" className="object-cover object-top" />
-                </div>
-                <div className="p-4">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-navy-600">Step {s.step}</p>
-                  <h3 className="mt-1 font-display text-lg leading-snug text-navy-900">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-navy-700">{s.body}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <p className="mt-2 text-center text-[11px] text-navy-600 lg:hidden">Swipe the steps →</p>
-
-          <div className="mt-16 hidden space-y-20 lg:block">
-            {howItWorks.map((s, i) => (
-              <div
-                key={s.step}
-                className={`grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ${i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""}`}
-              >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.6rem] bg-[#F6F7FA] ring-1 ring-navy-900/[0.06]">
-                  <Image
-                    src={howShots[s.step]}
-                    alt={s.title}
-                    fill
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover object-top"
-                  />
-                </div>
+              <li key={s.step} className="grid grid-cols-[2.5rem_1fr] gap-3 py-5 sm:grid-cols-[3rem_1fr] sm:gap-5">
+                <p className="font-display text-2xl text-navy-600">{s.step}</p>
                 <div>
-                  <p className="inline-flex items-center rounded-full bg-navy-50 px-3 py-1 text-xs font-semibold text-navy-700">
-                    Step {s.step}
-                  </p>
-                  <h3 className="mt-4 font-display text-2xl text-navy-900 sm:text-[1.75rem]">{s.title}</h3>
-                  <p className="mt-4 max-w-md text-base leading-relaxed text-navy-700">{s.body}</p>
+                  <h3 className="font-display text-lg leading-snug text-navy-900 sm:text-xl">{s.title}</h3>
+                  <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-navy-700 sm:text-base">{s.body}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
       <section className="container-site py-12 lg:py-24">
-        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <div className="relative mx-auto aspect-[3/4] w-full max-w-lg overflow-hidden rounded-[1.35rem] bg-[#F6F7FA] ring-1 ring-navy-900/[0.06] lg:order-2 lg:rounded-[1.6rem]">
-            <Image
-              src="/inside/after-pdf.png"
-              alt="Fee receipt PDF with the institute name, receipt number, and amount in words"
-              fill
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              className="object-contain object-top p-3 sm:p-4"
-            />
-          </div>
-          <div className="lg:order-1">
+        <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-16">
+          <div>
             <p className="kicker">After collection</p>
             <h2 className="mt-3 font-display text-[1.65rem] leading-snug text-navy-900 sm:text-4xl">
               The receipt is a PDF from the software
@@ -170,8 +107,17 @@ export default async function HomePage() {
               PDF or Download PDF on the student. Nothing is written by hand.
             </p>
             <Link href="/features/fees" className="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-navy-600 hover:text-navy-900">
-              Fees & receipts →
+              Fees and receipts →
             </Link>
+          </div>
+          <div className="relative mx-auto aspect-[4/3] w-full max-w-md overflow-hidden rounded-xl bg-[#F6F7FA] ring-1 ring-navy-900/[0.06] lg:max-w-lg">
+            <Image
+              src="/inside/after-pdf.png"
+              alt="Fee receipt PDF with the institute name, receipt number, and amount in words"
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-contain object-top p-3 sm:p-4"
+            />
           </div>
         </div>
       </section>
@@ -236,7 +182,7 @@ export default async function HomePage() {
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-navy-700">
             GST extra. Meta WhatsApp usage billed by Meta. One campus per install. Full CRM is what most owners take.
           </p>
-          <div className="mt-7 grid gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
+          <div className="mt-7 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4">
             {plans.map((p) => (
               <Link
                 key={p.id}
