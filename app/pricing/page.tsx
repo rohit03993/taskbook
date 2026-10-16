@@ -18,13 +18,13 @@ export default async function PricingPage() {
     <>
       <section className="container-site py-10 pb-28 lg:pb-16">
         <PageHero kicker={pricing.kicker} title={pricing.title} body={pricing.body} />
-        <div className="mt-10 grid items-stretch gap-4 sm:mt-12 lg:grid-cols-3">
+        <div className="mt-10 grid items-stretch gap-4 sm:mt-12 lg:grid-cols-2">
           {pricing.plans.map((p) => (
             <article
               key={p.id}
               className={`flex flex-col rounded-[1.35rem] p-5 ring-1 sm:rounded-2xl sm:p-6 ${
                 p.featured
-                  ? "bg-navy-900 text-white ring-navy-900 lg:scale-[1.03]"
+                  ? "bg-navy-900 text-white ring-navy-900"
                   : "bg-white text-navy-900 ring-navy-900/10"
               }`}
             >
@@ -86,8 +86,11 @@ export default async function PricingPage() {
         <DualCta className="mt-8 hidden sm:flex" />
       </section>
       <CtaBanner
-        title="Three packs. One campus."
-        body="Starter ₹3,000 · Starter + Fees ₹6,000 · Full CRM ₹10,000 a month. GST extra. WhatsApp usage as per Meta."
+        title="One campus. The licence you turn on."
+        body={`${pricing.plans
+          .filter((p) => p.price)
+          .map((p) => `${p.name} ${p.price}`)
+          .join(" · ")} a month. Full results is quoted. GST extra. WhatsApp usage as per Meta.`}
       />
     </>
   );

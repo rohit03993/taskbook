@@ -1,6 +1,8 @@
 # Task Book marketing website
 
-Public SaaS site for school, college, and institute owners. This is **not** the CRM. The product lives in `Full school soft/school-crm`.
+Public site for school, college, and institute owners. This is not the CRM. The product lives in `Full school soft/school-crm`.
+
+A demo request is saved in this site’s MySQL database and shown under `/admin/leads`. The walkthrough itself is a separate install of the school CRM.
 
 ## Run locally
 
@@ -13,9 +15,16 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Set `NEXT_PUBLIC_WHATSAPP_NUMBER` (country code + number, digits only) in `.env.local`. Optional: `LEADS_WEBHOOK_URL` to forward demo form posts.
+Fill these in `.env.local` before the buttons and the admin work:
 
-Demo leads are stored in `data/leads.json` when the filesystem is writable.
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` — country code + number, digits only
+- `ADMIN_PHONE` and `ADMIN_PASSWORD` — owner login for `/admin`
+- `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` — MySQL database for leads, blog, and settings
+
+Optional:
+
+- `LEADS_WEBHOOK_URL` — POST each new demo lead as JSON
+- `LEADS_NOTIFY_EMAIL` plus `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — email the same lead
 
 ## Build
 

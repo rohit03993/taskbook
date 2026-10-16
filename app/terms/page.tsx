@@ -24,11 +24,12 @@ export default function TermsPage() {
         </p>
         <p>
           Feature lists match the current product. We do not promise bus GPS, library, payroll, or live classes. WhatsApp
-          is official Meta API; template approval is Meta’s process, not ours.
+          is official Meta API on the Full CRM licence and above. Template approval is Meta’s process, not ours.
         </p>
         <p>
           Each customer is one install per institute unless a later written agreement says otherwise. Public prices are
-          not listed; quotes depend on size and WhatsApp volume.
+          on the pricing page: Starter, Academic Plus, and Full CRM. Full results is quoted. GST is extra. Meta WhatsApp
+          usage is billed by Meta.
         </p>
         <p>Contact {site.email} for licence wording.</p>
       </div>

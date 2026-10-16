@@ -26,6 +26,7 @@ export default async function FeaturePage({ params }: { params: Promise<Params> 
       <article className="container-site grid items-start gap-12 py-14 lg:grid-cols-2">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-navy-600">{mod.nav}</p>
+          <p className="mt-2 text-sm font-medium text-navy-800">Licence: {mod.pack}</p>
           <h1 className="mt-3 font-display text-4xl leading-tight text-navy-900 sm:text-5xl">{mod.title}</h1>
           <p className="mt-5 text-base leading-relaxed text-navy-700">{mod.pain}</p>
           <p className="mt-4 text-base leading-relaxed text-navy-800">{mod.does}</p>

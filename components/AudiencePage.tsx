@@ -28,6 +28,10 @@ function AudienceView({
               </li>
             ))}
           </ul>
+          <p className="mt-6 text-sm text-navy-700">
+            WhatsApp, leads, calling and the parent login are the Full CRM licence. Certificates are Full results.
+            Attendance and marks start on Starter. Fees and homework start on Academic Plus.
+          </p>
           <DualCta className="mt-8" />
         </div>
         <div className="rounded-[1.6rem] bg-navy-50 p-4 sm:p-6">{mock}</div>

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { addLead } from "@/lib/leads";
+import { notifyLead } from "@/lib/notify";
 import { getSettings } from "@/lib/settings";
 
 function isLead(body: unknown): body is {
@@ -28,26 +29,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  let lead = null;
+  let lead;
   try {
     lead = await addLead(json);
   } catch {
-    lead = { ...json, at: new Date().toISOString() };
+    return NextResponse.json({ ok: false }, { status: 503 });
   }
 
   const settings = await getSettings();
-  const webhook = settings.webhookUrl || process.env.LEADS_WEBHOOK_URL;
-  if (webhook) {
-    try {
-      await fetch(webhook, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(lead),
-      });
-    } catch {
-      // ignore webhook failure — form already captured
-    }
-  }
+  await notifyLead(lead, {
+    webhook: settings.webhookUrl || process.env.LEADS_WEBHOOK_URL,
+    email: settings.email,
+  });
 
   return NextResponse.json({ ok: true });
 }

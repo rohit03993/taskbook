@@ -23,7 +23,7 @@ const agraFaqs = [
   },
   {
     q: "Is the price printed on this page?",
-    a: "Three packs: Starter ₹3,000 (attendance + WhatsApp inbox), Starter + Fees ₹6,000, Full CRM ₹10,000. GST extra. Meta WhatsApp usage is billed by Meta. One campus per install.",
+    a: "Starter ₹3,000 is attendance and marks. Academic Plus ₹6,000 adds fees, homework, and teacher tracking. Full CRM ₹10,000 adds leads, calling, admission, WhatsApp, the parent login, reports, and the institute website. Full results (marksheets and certificates) is quoted. GST extra. Meta WhatsApp usage is billed by Meta. One campus per install.",
   },
 ];
 
@@ -131,7 +131,7 @@ We sit with your staff. Classes, fee rules, logins, and Meta WhatsApp templates 
 
 ## Honest limits
 
-There is no chat lock. We do not sell a public India-wide parent app for every school. Price depends on size and WhatsApp use — ask for a quote, do not look for a fake rupee figure on this site.
+There is no chat lock. We do not sell a public India-wide parent app for every school. Prices are on the pricing page. Starter is ₹3,000, Academic Plus is ₹6,000, Full CRM is ₹10,000. Full results is quoted. GST extra.
 
 See [WhatsApp in the CRM](/features/whatsapp-inbox), [attendance WhatsApp](/features/whatsapp-attendance), and [fees](/features/fees). For a national overview, read [school software in India](/locations/india).`,
         metaTitle: "Best school software in Agra | Task Book WhatsApp CRM",
@@ -155,7 +155,7 @@ Front desk, counsellor, accountant, teacher. Different people. One Meta-approved
 
 ## What you can run
 
-WhatsApp inbox in the CRM, live attendance messages, fee PDF receipts, leads and calling, parent login for the copy they can download later. Packs: Starter ₹3,000, Starter + Fees ₹6,000, Full CRM ₹10,000.
+WhatsApp inbox in the CRM, live attendance messages, fee PDF receipts, leads and calling, parent login for the copy they can download later. Packs: Starter ₹3,000, Academic Plus ₹6,000, Full CRM ₹10,000. Full results is quoted.
 
 ## City pages
 
@@ -163,7 +163,7 @@ If you want local wording, start with [school software in Agra](/locations/agra)
 
 ## What we do not claim
 
-We do not promise rank 1 on Google. We do not put a made-up price. We do not run a hundred schools in one database.`,
+We do not promise rank 1 on Google. Prices are the ones on the pricing page. We do not run a hundred schools in one database.`,
         metaTitle: "School software in India | Task Book WhatsApp CRM",
         metaDescription:
           "School, college and institute CRM in India with Meta WhatsApp, punch-in messages, fee receipts, and a file from a mobile number. One campus per install.",
@@ -181,4 +181,39 @@ We do not promise rank 1 on Google. We do not put a made-up price. We do not run
   }
 
   await repairStalePlanBlocks();
+  await repairLocationCopy();
+}
+
+const LOCATION_REPLACEMENTS: [string, string][] = [
+  [
+    "Three packs: Starter ₹3,000 (attendance + WhatsApp inbox), Starter + Fees ₹6,000, Full CRM ₹10,000. GST extra. Meta WhatsApp usage is billed by Meta. One campus per install.",
+    "Starter ₹3,000 is attendance and marks. Academic Plus ₹6,000 adds fees, homework, and teacher tracking. Full CRM ₹10,000 adds leads, calling, admission, WhatsApp, the parent login, reports, and the institute website. Full results (marksheets and certificates) is quoted. GST extra. Meta WhatsApp usage is billed by Meta. One campus per install.",
+  ],
+  [
+    "Packs: Starter ₹3,000, Starter + Fees ₹6,000, Full CRM ₹10,000.",
+    "Packs: Starter ₹3,000, Academic Plus ₹6,000, Full CRM ₹10,000. Full results is quoted.",
+  ],
+  [
+    "Price depends on size and WhatsApp use — ask for a quote, do not look for a fake rupee figure on this site.",
+    "Prices are on the pricing page. Starter is ₹3,000, Academic Plus is ₹6,000, Full CRM is ₹10,000. Full results is quoted. GST extra.",
+  ],
+  ["We do not put a made-up price.", "Prices are the ones on the pricing page."],
+];
+
+function replaceStale(value: string) {
+  return LOCATION_REPLACEMENTS.reduce((text, [from, to]) => text.replaceAll(from, to), value);
+}
+
+async function repairLocationCopy() {
+  const rows = await prisma.locationPage.findMany();
+  for (const row of rows) {
+    const body = replaceStale(row.body);
+    const intro = replaceStale(row.intro);
+    const faqsJson = replaceStale(row.faqsJson);
+    if (body === row.body && intro === row.intro && faqsJson === row.faqsJson) continue;
+    await prisma.locationPage.update({
+      where: { id: row.id },
+      data: { body, intro, faqsJson },
+    });
+  }
 }

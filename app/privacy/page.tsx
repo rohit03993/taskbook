@@ -23,8 +23,8 @@ export default function PrivacyPage() {
           that to call or WhatsApp you about Task Book. We do not sell those leads.
         </p>
         <p>
-          If a webhook or mailbox is configured on the server, the same fields are forwarded to the sales team. Local
-          installs may also keep a copy in a leads file on that server.
+          Those leads are stored in this website’s database. If a webhook is set, the same fields are posted there. If
+          mail is configured on the server, a copy is emailed to the sales inbox. We do not keep a separate leads file.
         </p>
         <p>
           School student data — attendance, fees, WhatsApp threads — lives on the institute install, not on this

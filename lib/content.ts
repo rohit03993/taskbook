@@ -70,14 +70,19 @@ function freshCopy(stored: string | undefined, fallback: string, staleBits: stri
   return stored;
 }
 
-/** Old CMS rows from Academic+ / five-pack era — never show these on the public site. */
+/** Old public copy that no longer matches the CRM licence packs. */
 const STALE_PLAN_COPY = [
-  "Marks & exams",
-  "Academic+",
-  "core academics",
-  "Attendance and marks",
-  "automations",
-  "Student cases",
+  "Starter + Fees",
+  "Official WhatsApp inbox in the CRM",
+  "Attendance WhatsApp to parents (when you switch it on)",
+  "Homework, exams, results, PDF marksheets",
+  "Punch attendance. Chat from the CRM",
+  "plus collect fees and send the PDF receipt",
+  "The full desk:",
+  "all features",
+  "Starter is attendance plus the WhatsApp inbox",
+  "the whole desk",
+  "Official WhatsApp conversation charges",
 ];
 
 function freshIncludes(raw: string | undefined, fallback: readonly string[]) {
@@ -87,25 +92,48 @@ function freshIncludes(raw: string | undefined, fallback: readonly string[]) {
   return items;
 }
 
-/** Rewrite old Academic+ pack copy in MySQL so Admin and the public page stay in sync. */
+const PRICING_TITLE = "Four licences. Starter from ₹3,000 a month.";
+const PRICING_BODY =
+  "Starter is attendance and marks. Academic Plus adds fees, homework, and teacher tracking. Full CRM adds leads, calling, admission, WhatsApp, the parent login, reports, and the institute website. Full results adds published results, marksheets, and certificates. GST extra. Meta WhatsApp usage is billed by Meta. One campus, one install.";
+const PRICING_FOOTNOTE =
+  "Each institute is its own install. The licence turns a module on or off. Turning one off hides it and keeps the data. GST extra. Official WhatsApp charges are from Meta, on top of the pack. Setup is quoted once.";
+
+function isStale(value: string | null | undefined) {
+  return Boolean(value && STALE_PLAN_COPY.some((bit) => value.includes(bit)));
+}
+
+/** Rewrite old pack copy in MySQL so Admin and the public page match the CRM licences. */
 export async function repairStalePlanBlocks() {
   await withDb(async (db) => {
-    for (const p of plans) {
-      const incKey = `plan.${p.id}.includes`;
-      const blurbKey = `plan.${p.id}.blurb`;
-      const inc = await db.contentBlock.findUnique({ where: { key: incKey } });
-      if (inc && STALE_PLAN_COPY.some((bit) => inc.value.includes(bit))) {
-        await db.contentBlock.update({
-          where: { key: incKey },
-          data: { value: JSON.stringify(p.includes) },
-        });
+    await db.contentBlock.deleteMany({ where: { key: { startsWith: "plan.fees." } } });
+
+    const pageBits: { key: string; value: string }[] = [
+      { key: "pricing.title", value: PRICING_TITLE },
+      { key: "pricing.body", value: PRICING_BODY },
+      { key: "pricing.footnote", value: PRICING_FOOTNOTE },
+    ];
+    for (const bit of pageBits) {
+      const row = await db.contentBlock.findUnique({ where: { key: bit.key } });
+      if (row && isStale(row.value)) {
+        await db.contentBlock.update({ where: { key: bit.key }, data: { value: bit.value } });
       }
-      const blurb = await db.contentBlock.findUnique({ where: { key: blurbKey } });
-      if (blurb && STALE_PLAN_COPY.some((bit) => blurb.value.includes(bit))) {
-        await db.contentBlock.update({
-          where: { key: blurbKey },
-          data: { value: p.blurb },
-        });
+    }
+
+    for (const p of plans) {
+      const fields: { suffix: string; value: string }[] = [
+        { suffix: "name", value: p.name },
+        { suffix: "blurb", value: p.blurb },
+        { suffix: "price", value: p.price },
+        { suffix: "priceSuffix", value: p.priceSuffix },
+        { suffix: "priceCaption", value: p.priceCaption },
+        { suffix: "includes", value: JSON.stringify(p.includes) },
+      ];
+      for (const field of fields) {
+        const key = `plan.${p.id}.${field.suffix}`;
+        const row = await db.contentBlock.findUnique({ where: { key } });
+        if (row && isStale(row.value)) {
+          await db.contentBlock.update({ where: { key }, data: { value: field.value } });
+        }
       }
     }
     return true;
@@ -117,28 +145,16 @@ export async function getPricingContent() {
   const blocks = await getBlocks();
   return {
     kicker: block(blocks, "pricing.kicker", "Pricing"),
-    title: freshCopy(
-      blocks["pricing.title"],
-      "Three packs. Starter from ₹3,000 a month.",
-      ["Ask for a quote. We set it up", "made-up rupee", "Bigger packs we quote"],
-    ),
-    body: freshCopy(
-      blocks["pricing.body"],
-      "Starter is attendance plus the WhatsApp inbox. Starter + Fees adds collection and the PDF receipt. Full CRM is the whole desk. GST extra. Meta WhatsApp usage is billed by Meta. One campus, one install.",
-      ["made-up rupee", "We do not print", "Academic+", "Full CRM + Results", "Bigger packs we quote"],
-    ),
-    footnote: block(
-      blocks,
-      "pricing.footnote",
-      "Each institute is its own install. GST extra. Official WhatsApp conversation charges are from Meta, on top of the pack. Setup is quoted once.",
-    ),
+    title: freshCopy(blocks["pricing.title"], PRICING_TITLE, STALE_PLAN_COPY),
+    body: freshCopy(blocks["pricing.body"], PRICING_BODY, STALE_PLAN_COPY),
+    footnote: freshCopy(blocks["pricing.footnote"], PRICING_FOOTNOTE, STALE_PLAN_COPY),
     plans: plans.map((p) => ({
       ...p,
-      name: block(blocks, `plan.${p.id}.name`, p.name),
+      name: freshCopy(blocks[`plan.${p.id}.name`], p.name, STALE_PLAN_COPY),
       blurb: freshCopy(blocks[`plan.${p.id}.blurb`], p.blurb, STALE_PLAN_COPY),
       price: block(blocks, `plan.${p.id}.price`, p.price),
       priceSuffix: block(blocks, `plan.${p.id}.priceSuffix`, p.priceSuffix),
-      priceCaption: block(blocks, `plan.${p.id}.priceCaption`, p.priceCaption),
+      priceCaption: freshCopy(blocks[`plan.${p.id}.priceCaption`], p.priceCaption, STALE_PLAN_COPY),
       includes: freshIncludes(blocks[`plan.${p.id}.includes`], p.includes),
     })),
   };
@@ -198,20 +214,9 @@ export function seedContentEntries() {
     { key: "hero.headline", value: hero.headline },
     { key: "hero.subhead", value: hero.subhead },
     { key: "pricing.kicker", value: "Pricing" },
-    {
-      key: "pricing.title",
-      value: "Three packs. Starter from ₹3,000 a month.",
-    },
-    {
-      key: "pricing.body",
-      value:
-        "Starter is attendance plus the WhatsApp inbox. Starter + Fees adds collection and the PDF receipt. Full CRM is the whole desk. GST extra. Meta WhatsApp usage is billed by Meta. One campus, one install.",
-    },
-    {
-      key: "pricing.footnote",
-      value:
-        "Each institute is its own install. GST extra. Official WhatsApp conversation charges are from Meta, on top of the pack. Setup is quoted once.",
-    },
+    { key: "pricing.title", value: PRICING_TITLE },
+    { key: "pricing.body", value: PRICING_BODY },
+    { key: "pricing.footnote", value: PRICING_FOOTNOTE },
     { key: "features.kicker", value: "Features" },
     {
       key: "features.title",

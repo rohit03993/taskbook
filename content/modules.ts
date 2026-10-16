@@ -6,6 +6,8 @@ export type ModulePage = {
   does: string;
   bullets: string[];
   whatsappWhen: string;
+  /** Which CRM licence turns this on. */
+  pack: string;
   featured?: boolean;
 };
 
@@ -22,6 +24,7 @@ export const modules: ModulePage[] = [
       "Call the lead from the CRM, then keep talking on WhatsApp in the same file.",
     ],
     whatsappWhen: "This is the inbox itself. Attendance, fee reminders and campaigns also use this same number.",
+    pack: "Full CRM",
     featured: true,
   },
   {
@@ -35,7 +38,8 @@ export const modules: ModulePage[] = [
       "Fee reminder with pending amount and due date.",
       "Staff IN/OUT can also go on WhatsApp.",
     ],
-    whatsappWhen: "These messages go from your Meta-approved institute number, not from a personal group.",
+    whatsappWhen: "These messages go from your Meta-approved institute number, not from a personal group. Attendance itself is on Starter. The WhatsApp message needs the Full CRM licence.",
+    pack: "Full CRM",
     featured: true,
   },
   {
@@ -50,6 +54,7 @@ export const modules: ModulePage[] = [
       "Find student is the fastest screen at the front desk.",
     ],
     whatsappWhen: "The Messages tab is the same WhatsApp chat as the inbox. Nothing is on a personal phone.",
+    pack: "Student file on every licence. Visitor and lead search on Full CRM.",
     featured: true,
   },
   {
@@ -64,6 +69,7 @@ export const modules: ModulePage[] = [
       "Convert to student: unique roll number, batch assigned.",
     ],
     whatsappWhen: "After a connected call you can send WhatsApp from the CRM. The chat stays with the same person.",
+    pack: "Full CRM",
   },
   {
     slug: "admissions",
@@ -77,6 +83,7 @@ export const modules: ModulePage[] = [
       "From this day, attendance and fees sit on this student.",
     ],
     whatsappWhen: "Follow-up after visit or call can go on WhatsApp from the same file.",
+    pack: "Full CRM",
   },
   {
     slug: "fees",
@@ -89,7 +96,8 @@ export const modules: ModulePage[] = [
       "View PDF and Download PDF from the student Receipts tab.",
       "Late fee reminder on WhatsApp.",
     ],
-    whatsappWhen: "Fee reminder uses the same Meta number as attendance and the inbox.",
+    whatsappWhen: "The receipt is on Academic Plus. The fee reminder on WhatsApp needs the Full CRM licence as well.",
+    pack: "Academic Plus",
   },
   {
     slug: "portal",
@@ -103,19 +111,21 @@ export const modules: ModulePage[] = [
       "No Play Store app for the whole country — this is your institute login.",
     ],
     whatsappWhen: "WhatsApp for the instant update. Login for the copy they can download later.",
+    pack: "Full CRM",
   },
   {
     slug: "exams",
     nav: "Exams & marksheets",
     title: "Marks in Excel. Result when you say publish. Marksheet as PDF.",
     pain: "Marks live in a teacher’s sheet. Result day is a rush. Parent is not told.",
-    does: "Create the exam, upload marks, check, then publish. PDF marksheets with your institute name.",
+    does: "Marks and exam windows are on Starter. You upload from Excel and check them. Publishing the result, and the PDF marksheet, turn on with the Full results licence. Parents see published marks on the portal when that licence and the portal are both on.",
     bullets: [
-      "Upload from Excel.",
+      "Upload marks from Excel.",
       "Publish only when you are ready.",
-      "Parent can see published marks on the login.",
+      "PDF marksheet with your institute name.",
     ],
-    whatsappWhen: "You can notify on WhatsApp after results are published.",
+    whatsappWhen: "A WhatsApp after results are published needs the Full CRM WhatsApp licence as well.",
+    pack: "Marks on Starter. Publish and PDF marksheet on Full results.",
   },
   {
     slug: "homework",
@@ -128,7 +138,8 @@ export const modules: ModulePage[] = [
       "Review for the coordinator.",
       "Not-done can be reminded.",
     ],
-    whatsappWhen: "Homework WhatsApp uses the same institute number.",
+    whatsappWhen: "Homework is on Academic Plus. The WhatsApp link needs the Full CRM licence as well.",
+    pack: "Academic Plus",
   },
   {
     slug: "reports",
@@ -141,7 +152,8 @@ export const modules: ModulePage[] = [
       "Call report for the telecalling team.",
       "Fee collection and pending lists.",
     ],
-    whatsappWhen: "Parents already got the daily update on WhatsApp. Reports are for you.",
+    whatsappWhen: "Parents already got the daily update on WhatsApp when that licence is on. Reports are for you.",
+    pack: "Full CRM",
   },
   {
     slug: "staff",
@@ -155,6 +167,21 @@ export const modules: ModulePage[] = [
       "Staff punch in and out, like students.",
     ],
     whatsappWhen: "Inbox is for the people who talk to parents. API keys stay with the owner.",
+    pack: "Every licence",
+  },
+  {
+    slug: "teacher-tracking",
+    nav: "Teacher tracking",
+    title: "A course plan the teacher follows, and the academic head can close.",
+    pain: "The syllabus lives in a register. The owner cannot see which chapter a section has reached.",
+    does: "Build the standard course plan: programme, subject, chapters, topics. Copy it onto a section. The teacher submits progress. The academic head finalizes it. The student file and the parent login show the topics.",
+    bullets: [
+      "One plan, reused on a section.",
+      "Teacher submits. Academic head finalizes.",
+      "Parents see topics, not internal minutes.",
+    ],
+    whatsappWhen: "This screen is the planner. It does not send WhatsApp by itself.",
+    pack: "Academic Plus",
   },
 ];
 
@@ -165,18 +192,18 @@ export function moduleBySlug(slug: string) {
 export const featureHubExtras = [
   {
     title: "Complaints / cases",
-    body: "A grievance stays on the student. Open, give to another staff, close. Not lost in a group chat.",
+    body: "A grievance stays on the student. Open, give to another staff, close. Not lost in a group chat. This is on the Full CRM licence.",
   },
   {
     title: "Certificates",
-    body: "TC, bonafide, character, fee certificate — PDF with your letterhead.",
+    body: "TC, bonafide, character, fee certificate — PDF with your letterhead. This is the Full results licence.",
   },
   {
     title: "Your institute website",
-    body: "Simple public site for the school — home, courses, contact. Separate from this Task Book site.",
+    body: "Simple public site for the school — home, courses, contact. Separate from this Task Book site. This is on the Full CRM licence.",
   },
   {
     title: "Biometric, face, gate screen",
-    body: "Machine or face camera for punch. A TV at the gate can show the latest punch with photo.",
+    body: "Machine or face camera for punch. A TV at the gate can show the latest punch with photo. Attendance is on Starter.",
   },
 ] as const;

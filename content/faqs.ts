@@ -17,11 +17,11 @@ export const faqs = [
   },
   {
     q: "Do parents get attendance and fee messages?",
-    a: "Yes, when you switch it on. Punch in can send attendance WhatsApp. Pending fee can send a reminder with the amount. Same institute number.",
+    a: "Yes, on the Full CRM licence, when you switch it on. Punch in can send attendance WhatsApp. Pending fee can send a reminder with the amount. Same institute number. Attendance and the fee ledger themselves start on earlier licences.",
   },
   {
     q: "Are fee slips and reports automatic?",
-    a: "Yes. After you collect a fee, the slip is generated. Reports for fees, attendance, calls and admissions download from the reports screen. You do not make a new Excel every week.",
+    a: "The fee receipt PDF is on Academic Plus. Reports for fees, attendance, calls and admissions are on Full CRM. You do not make a new Excel every week.",
   },
   {
     q: "Does each school share one database with other schools?",

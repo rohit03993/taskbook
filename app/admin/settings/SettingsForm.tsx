@@ -58,7 +58,10 @@ export function SettingsForm({ settings, owner }: { settings: SiteSettings; owne
           <Field label="Contact email">
             <input name="email" type="email" defaultValue={settings.email} className={fieldClass} />
           </Field>
-          <Field label="Leads webhook URL" hint="Optional. Each new demo form lead is POSTed here as JSON.">
+          <Field
+            label="Leads webhook URL"
+            hint="Optional. Each new demo lead is saved under Leads, then POSTed here as JSON. Email also goes out when SMTP is set on the server."
+          >
             <input name="webhookUrl" defaultValue={settings.webhookUrl} placeholder="https://..." className={fieldClass} />
           </Field>
         </fieldset>

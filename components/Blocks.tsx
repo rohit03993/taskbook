@@ -34,6 +34,7 @@ export function ModuleGrid() {
     homework: "homework",
     reports: "reports",
     staff: "staff",
+    "teacher-tracking": "exam",
   };
 
   return (

@@ -12,7 +12,7 @@ export default async function AdminPricingContentPage() {
     <AdminShell>
       <h1 className="text-xl font-semibold tracking-tight text-navy-900">Pricing</h1>
       <p className="mt-2 text-sm text-navy-700">
-        Starter ₹3,000, Starter + Fees ₹6,000, Full CRM ₹10,000. Change a number here and the public page updates.
+        These match the CRM licences. Starter ₹3,000, Academic Plus ₹6,000, Full CRM ₹10,000. Full results stays blank until you set a price. A change here updates the public page.
       </p>
       <ContentForm
         fields={[
