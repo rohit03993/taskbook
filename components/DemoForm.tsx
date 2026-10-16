@@ -10,7 +10,7 @@ const headaches = [
   "Fee receipts still handwritten",
 ] as const;
 
-export function DemoForm() {
+export function DemoForm({ dense = false }: { dense?: boolean }) {
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -37,12 +37,12 @@ export function DemoForm() {
   }
 
   return (
-    <div className="rounded-[1.6rem] bg-white p-6 shadow-card ring-1 ring-navy-900/[0.06] sm:p-8">
+    <div className={`h-full rounded-[1.6rem] bg-white shadow-card ring-1 ring-navy-900/[0.06] ${dense ? "p-5 sm:p-6" : "p-6 sm:p-8"}`}>
       <p className="font-display text-2xl text-navy-900">Book a demo</p>
       <p className="mt-2 text-sm text-navy-700">
         Your name, institute, city. We WhatsApp or call the same day.
       </p>
-      <form onSubmit={onSubmit} className="mt-6 grid gap-4 sm:grid-cols-2">
+      <form onSubmit={onSubmit} className={`grid sm:grid-cols-2 ${dense ? "mt-4 gap-3" : "mt-6 gap-4"}`}>
         <label className="block text-sm">
           <span className="font-medium">Your name</span>
           <input required name="name" className="mt-1 w-full rounded-xl border border-navy-900/15 bg-navy-50 px-3 py-2.5 outline-none focus:ring-2 focus:ring-navy-600/25" />
@@ -81,7 +81,7 @@ export function DemoForm() {
         </label>
         <label className="block text-sm sm:col-span-2">
           <span className="font-medium">Message, if you want</span>
-          <textarea name="note" rows={3} className="mt-1 w-full rounded-xl border border-navy-900/15 bg-navy-50 px-3 py-2.5 outline-none focus:ring-2 focus:ring-navy-600/25" />
+          <textarea name="note" rows={dense ? 2 : 3} className="mt-1 w-full rounded-xl border border-navy-900/15 bg-navy-50 px-3 py-2.5 outline-none focus:ring-2 focus:ring-navy-600/25" />
         </label>
         <div className="sm:col-span-2">
           <button
@@ -96,9 +96,11 @@ export function DemoForm() {
       {message && (
         <p className={`mt-4 text-sm ${status === "error" ? "text-red-700" : "text-navy-800"}`}>{message}</p>
       )}
-      <div className="mt-6 border-t border-navy-900/10 pt-5">
-        <DualCta className="[&>a:last-child]:hidden" />
-      </div>
+      {!dense && (
+        <div className="mt-6 border-t border-navy-900/10 pt-5">
+          <DualCta className="[&>a:last-child]:hidden" />
+        </div>
+      )}
     </div>
   );
 }

@@ -48,6 +48,7 @@ body {
   background:
     radial-gradient(ellipse 70% 50% at 80% 0%, rgba(46, 196, 214, 0.22), transparent 60%),
     radial-gradient(ellipse 50% 45% at 0% 100%, rgba(57, 116, 252, 0.28), transparent 55%);
+  animation: wash-drift 16s ease-in-out infinite;
 }
 
 .stage-grid {
@@ -70,6 +71,98 @@ body {
   animation: rise 0.45s ease both;
 }
 
+@keyframes wash-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-1.5%, 1%, 0) scale(1.04);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-pop {
+  animation: pop-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes step-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 196, 214, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(46, 196, 214, 0);
+  }
+}
+
+.animate-step {
+  animation: step-pulse 1.6s ease-out infinite;
+}
+
+@keyframes flow {
+  from {
+    transform: translateX(-40%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+.animate-flow {
+  animation: flow 2.4s ease-in-out infinite;
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(18px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.animate-lift {
+  animation: lift 0.55s ease both;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-nudge {
+  animation: nudge 1.1s ease-in-out infinite;
+}
+
+@keyframes float-card {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float-card 7s ease-in-out infinite;
+}
+
 @keyframes story-progress {
   from {
     transform: scaleX(0);
@@ -85,8 +178,15 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-wash,
   .animate-rise,
-  .animate-story {
+  .animate-story,
+  .animate-pop,
+  .animate-step,
+  .animate-flow,
+  .animate-nudge,
+  .animate-float,
+  .animate-lift {
     animation: none;
   }
 
