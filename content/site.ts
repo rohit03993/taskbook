@@ -104,8 +104,3 @@ export const moduleShots: Record<string, string> = {
   reports: "/screens/reports-dash.png",
   staff: "/screens/crm-inbox.png",
 };
-
-export const clients = [
-  { name: "Motion Education", host: "motion.taskbook.co.in", logo: "/logos/motion-logo.svg" },
-  { name: "Horizon", host: "horizon.taskbook.co.in", logo: "/logos/horizon-logo.svg" },
-] as const;

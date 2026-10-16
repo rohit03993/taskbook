@@ -53,7 +53,7 @@ export async function listLeads(): Promise<Lead[]> {
 }
 
 export async function addLead(
-  input: Omit<Lead, "id" | "status" | "note" | "at"> & { at?: string },
+  input: Omit<Lead, "id" | "status" | "note" | "at"> & { at?: string; note?: string },
 ) {
   const created = await prisma.lead.create({
     data: {
@@ -64,6 +64,7 @@ export async function addLead(
       city: input.city ?? "",
       students: input.students ?? "",
       headache: input.headache ?? "",
+      note: input.note ?? "",
       createdAt: input.at ? new Date(input.at) : undefined,
     },
   });

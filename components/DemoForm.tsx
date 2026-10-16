@@ -79,13 +79,17 @@ export function DemoForm() {
             ))}
           </select>
         </label>
+        <label className="block text-sm sm:col-span-2">
+          <span className="font-medium">Message, if you want</span>
+          <textarea name="note" rows={3} className="mt-1 w-full rounded-xl border border-navy-900/15 bg-navy-50 px-3 py-2.5 outline-none focus:ring-2 focus:ring-navy-600/25" />
+        </label>
         <div className="sm:col-span-2">
           <button
             type="submit"
             disabled={status === "sending"}
             className="w-full rounded-full bg-navy-900 py-3 text-sm font-semibold text-white disabled:opacity-60"
           >
-            {status === "sending" ? "Sending…" : "Request a demo"}
+            {status === "sending" ? "Sending…" : "Book your live demo"}
           </button>
         </div>
       </form>
