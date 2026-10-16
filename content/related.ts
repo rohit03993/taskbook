@@ -48,6 +48,21 @@ const admissions = feature("admissions", "Admission to roll number", "The old vi
 const portal = feature("portal", "Parent login", "The receipt and the record. WhatsApp is the alert.");
 const staff = feature("staff", "Staff logins", "Each person has a login. The WhatsApp number stays the institute’s.");
 const tracking = feature("teacher-tracking", "Teacher tracking", "Course plan and class progress. Academic Plus. Not a sold score.");
+const cases: ReadLink = {
+  href: "/cases",
+  label: "Cases",
+  note: "A complaint stays on the enrolled student. Full CRM. Open, assign, close.",
+};
+const certificates: ReadLink = {
+  href: "/certificates",
+  label: "Certificates",
+  note: "TC, bonafide, character, birth, and fee certificate. Full results.",
+};
+const website: ReadLink = {
+  href: "/institute-website",
+  label: "Institute website",
+  note: "Home, courses, and contact for one campus. Full CRM.",
+};
 
 export const featureSeoTitle: Record<string, string> = {
   "whatsapp-inbox": "School WhatsApp CRM",
@@ -65,20 +80,23 @@ export const featureSeoTitle: Record<string, string> = {
 };
 
 const byPath: Record<string, ReadLink[]> = {
-  "/school-crm": [institute, file, attendance, fees, homework, marks, inbox, pricing, blog],
-  "/institute-crm": [crm, admissions, fees, homework, leads, pricing],
-  "/features": [crm, institute, pricing, blog],
+  "/school-crm": [institute, cases, certificates, website, file, attendance, fees, homework, marks, inbox, pricing, blog],
+  "/institute-crm": [crm, cases, certificates, website, admissions, fees, homework, leads, pricing],
+  "/cases": [crm, institute, file, leads, pricing],
+  "/certificates": [crm, institute, marks, file, pricing],
+  "/institute-website": [crm, institute, leads, pricing],
+  "/features": [crm, institute, cases, certificates, website, pricing, blog],
   "/pricing": [crm, institute, inbox, fees, homework],
   "/blog": [crm, institute, features, pricing],
   "/about": [crm, institute, features, pricing],
   "/features/whatsapp-inbox": [crm, institute, leads, staff, post("school-crm-whatsapp-inbox-admissions", "WhatsApp inbox for admissions", "One number. The next shift continues the thread.")],
   "/features/whatsapp-attendance": [crm, fees, file, post("live-school-attendance-on-whatsapp", "Live attendance on WhatsApp", "The punch is stored first. The message is a switch.")],
-  "/features/student-360": [crm, fees, marks, institute, post("student-profile-attendance-fees-marks", "One student profile", "Attendance, fees, and marks on the same file.")],
-  "/features/leads": [crm, institute, admissions, inbox],
+  "/features/student-360": [crm, cases, fees, marks, institute, post("student-profile-attendance-fees-marks", "One student profile", "Attendance, fees, and marks on the same file.")],
+  "/features/leads": [crm, institute, website, admissions, inbox],
   "/features/admissions": [crm, leads, file, institute],
   "/features/fees": [crm, institute, attendance, pricing, post("late-fee-reminder-whatsapp-schools", "Fee reminders", "The PDF receipt, then the WhatsApp if Full CRM is on.")],
   "/features/portal": [crm, inbox, fees, homework, post("parent-portal-vs-whatsapp-updates", "Portal and WhatsApp", "The alert and the record are both on Full CRM.")],
-  "/features/exams": [crm, institute, file, pricing, homework],
+  "/features/exams": [crm, certificates, institute, file, pricing, homework],
   "/features/homework": [crm, institute, fees, tracking, marks],
   "/features/reports": [crm, fees, attendance, pricing],
   "/features/staff": [crm, inbox, attendance, post("staff-attendance-system-schools", "Staff attendance", "Who reached campus, on the same Starter module.")],

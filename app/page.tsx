@@ -133,7 +133,7 @@ export default async function HomePage() {
             <FaqList items={questions} />
           </div>
           <p className="mt-4 text-sm text-navy-700">
-            A buyer’s guide is on <Link href="/school-crm" className="font-semibold text-navy-900">school CRM</Link>. Packs and prices are on <Link href="/pricing" className="font-semibold text-navy-900">Pricing</Link>.
+            The day is written on <Link href="/school-crm" className="font-semibold text-navy-900">school CRM</Link>. A coaching centre should read <Link href="/institute-crm" className="font-semibold text-navy-900">institute CRM</Link>. Packs and prices are on <Link href="/pricing" className="font-semibold text-navy-900">Pricing</Link>.
           </p>
         </div>
       </section>

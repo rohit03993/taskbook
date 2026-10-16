@@ -48,7 +48,7 @@ export default function InstituteCrmPage() {
         Full CRM, ₹10,000 a month, is the pack most institutes need if the enquiry and the parent message matter. It adds the walk-in, the call list, admission, the shared WhatsApp inbox, the parent login, and reports you can download. Many logins, one institute number. If a counsellor leaves, the chat does not leave with their phone.
       </p>
       <p>
-        GST is extra. Meta bills WhatsApp on its own. One institute is one install. Full results, for a published marksheet and certificates, is quoted. The same rules are written on the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link> page and on <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
+        GST is extra. Meta bills WhatsApp on its own. One institute is one install. Full results, for a published marksheet and <Link href="/certificates" className="font-semibold text-navy-950">certificates</Link>, is quoted. A complaint on an enrolled student is a <Link href="/cases" className="font-semibold text-navy-950">case</Link> on Full CRM. The campus can also run its own <Link href="/institute-website" className="font-semibold text-navy-950">website</Link> with home, courses, and contact. The same pack rules are written on the <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link> page and on <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
       </p>
       <h2 className="font-display text-2xl text-navy-950">Homework, fee and the parent message</h2>
       <p>

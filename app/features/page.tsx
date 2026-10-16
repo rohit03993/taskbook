@@ -31,10 +31,10 @@ export default async function FeaturesPage() {
         <h2 className="mt-16 font-display text-2xl text-navy-900">Also in the product</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featureHubExtras.map((x) => (
-            <div key={x.title} className="rounded-[1.4rem] bg-white p-5 ring-1 ring-navy-900/[0.06]">
+            <Link key={x.title} href={x.href} className="rounded-[1.4rem] bg-white p-5 ring-1 ring-navy-900/[0.06] hover:ring-navy-600">
               <p className="font-medium text-navy-900">{x.title}</p>
               <p className="mt-2 text-sm text-navy-700">{x.body}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

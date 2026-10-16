@@ -241,6 +241,9 @@ export function Header() {
 const productLinks = [
   { href: "/school-crm", label: "School CRM" },
   { href: "/institute-crm", label: "Institute CRM" },
+  { href: "/cases", label: "Cases" },
+  { href: "/certificates", label: "Certificates" },
+  { href: "/institute-website", label: "Institute website" },
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },

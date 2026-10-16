@@ -219,17 +219,21 @@ export const featureHubExtras = [
   {
     title: "Complaints / cases",
     body: "A grievance stays on the student. Open, give to another staff, close. Not lost in a group chat. This is on the Full CRM licence.",
+    href: "/cases",
   },
   {
     title: "Certificates",
-    body: "TC, bonafide, character, fee certificate — PDF with your letterhead. This is the Full results licence.",
+    body: "TC, bonafide, character, birth, and fee certificate — PDF from the student file. This is the Full results licence.",
+    href: "/certificates",
   },
   {
     title: "Your institute website",
     body: "Simple public site for the school — home, courses, contact. Separate from this Task Book site. This is on the Full CRM licence.",
+    href: "/institute-website",
   },
   {
     title: "Biometric, face, gate screen",
     body: "Machine or face camera for punch. A TV at the gate can show the latest punch with photo. Attendance is on Starter.",
+    href: "/features/whatsapp-attendance",
   },
 ] as const;

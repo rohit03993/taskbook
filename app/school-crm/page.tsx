@@ -52,7 +52,10 @@ export default function SchoolCrmPage() {
         Full CRM is ₹10,000 a month. It includes Academic Plus, and adds enquiries, calls, admission, cases, WhatsApp, the parent login, reports, and a simple website for the institute. Many staff can use the WhatsApp inbox. The parent still sees one school number. Reports for attendance, fees, admission and calls can be downloaded as Excel, CSV or PDF. GST is extra. Meta bills the WhatsApp usage. One campus is one install.
       </p>
       <p>
-        Full results is quoted. It adds publishing the result, the PDF marksheet, and certificates such as TC, bonafide, character and fee certificate. Published marks show on the parent login only when that licence and the portal are both on.
+        Full results is quoted. It adds publishing the result, the PDF marksheet, and certificates such as TC, bonafide, character, birth, and fee certificate. Published marks show on the parent login only when that licence and the portal are both on. The certificate PDFs are explained on <Link href="/certificates" className="font-semibold text-navy-950">certificates</Link>.
+      </p>
+      <p>
+        Two more jobs sit on Full CRM, not on the cheaper packs. A complaint can be opened as a <Link href="/cases" className="font-semibold text-navy-950">case</Link> on an enrolled student, given to a staff member, and closed later. The campus can also have its own <Link href="/institute-website" className="font-semibold text-navy-950">website</Link>: home, courses, and a contact form. That site is the institute’s, not this Task Book page.
       </p>
       <h2 className="font-display text-2xl text-navy-950">How a normal school day is saved</h2>
       <p>

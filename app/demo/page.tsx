@@ -21,7 +21,7 @@ export default function DemoPage() {
           body="Bring your real problem: WhatsApp on one phone, a visitor nobody remembers, or parents calling for attendance and fees. We type a number, open a chat, show a fee PDF."
         />
         <p className="mt-4 text-sm leading-relaxed text-navy-800">
-          Read <Link href="/school-crm" className="font-semibold text-navy-950">what a school CRM should do</Link> before the call, or open <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
+          Read <Link href="/school-crm" className="font-semibold text-navy-950">school CRM</Link> or <Link href="/institute-crm" className="font-semibold text-navy-950">institute CRM</Link> before the call, or open <Link href="/pricing" className="font-semibold text-navy-950">pricing</Link>.
         </p>
         <div className="mt-10 hidden gap-6 lg:grid">
           <MockInbox />
